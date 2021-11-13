@@ -1,0 +1,54 @@
+// This is a generated file. Not intended for manual editing.
+package de.joachimsohn.language.psi.impl;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static de.joachimsohn.language.psi.CDSTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import de.joachimsohn.language.psi.*;
+
+public class CDSCase_Impl extends ASTWrapperPsiElement implements CDSCase_ {
+
+  public CDSCase_Impl(@NotNull ASTNode node) {
+    super(node);
+  }
+
+  public void accept(@NotNull CDSVisitor visitor) {
+    visitor.visitCase_(this);
+  }
+
+  @Override
+  public void accept(@NotNull PsiElementVisitor visitor) {
+    if (visitor instanceof CDSVisitor) accept((CDSVisitor)visitor);
+    else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<CDSIdentifier> getIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, CDSIdentifier.class);
+  }
+
+  @Override
+  @NotNull
+  public CDSRequired_ getRequired_() {
+    return findNotNullChildByClass(CDSRequired_.class);
+  }
+
+  @Override
+  @NotNull
+  public CDSStringConcat getStringConcat() {
+    return findNotNullChildByClass(CDSStringConcat.class);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
+  }
+
+}

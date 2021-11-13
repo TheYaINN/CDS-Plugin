@@ -1,0 +1,30 @@
+<idea-plugin>
+    <id>de.joachimsohn.CDS-highlighting-plugin</id>
+    <name>CDS Highlighter</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[
+   A cool plugin for CDS Highlighting, to improve readability
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
+        <fileType name="Cds File" implementationClass="de.joachimsohn.language.psi.CDSFileType"
+                  fieldName="INSTANCE" language="Cds" extensions="cds"/>
+        <colorSettingsPage implementation="de.joachimsohn.language.CDSColorSettingsPage"/>
+        <lang.syntaxHighlighterFactory language="Cds"
+                                       implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
+        <!--        <annotator language="JAVA" implementationClass="de.joachimsohn.language.CDSAnnotator"/>-->
+        <completion.contributor language="Cds"
+                                implementationClass="de.joachimsohn.language.CDSCompletionContributor"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
