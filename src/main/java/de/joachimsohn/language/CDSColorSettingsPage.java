@@ -18,7 +18,9 @@ public class CDSColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Key", CDSSyntaxHighlighter.KEY),
             new AttributesDescriptor("Separator", CDSSyntaxHighlighter.SEPARATOR),
             new AttributesDescriptor("Value", CDSSyntaxHighlighter.VALUE),
-            new AttributesDescriptor("Bad Value", CDSSyntaxHighlighter.BAD_CHARACTER)
+            new AttributesDescriptor("Bad value", CDSSyntaxHighlighter.BAD_CHARACTER),
+            new AttributesDescriptor("Identifier", CDSSyntaxHighlighter.IDENTIFIER),
+            new AttributesDescriptor("String", CDSSyntaxHighlighter.STRING)
     };
 
     @Nullable

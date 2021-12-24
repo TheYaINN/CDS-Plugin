@@ -1,3 +1,7 @@
 /.gradle
 /build
 /.idea
+
+
+/gen/
+/src/main/gen/

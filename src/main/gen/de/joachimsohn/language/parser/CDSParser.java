@@ -1,90 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package de.joachimsohn.language.parser;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.LightPsiParser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import com.intellij.lang.PsiParser;
+import static de.joachimsohn.language.psi.CDSTypes.*;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import com.intellij.psi.tree.IElementType;
-
-import static com.intellij.lang.parser.GeneratedParserUtilBase.TRUE_CONDITION;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._COLLAPSE_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._NONE_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.adapt_builder_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.consumeToken;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.consumeTokens;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.current_position_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.empty_element_parsed_guard_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.nextTokenIs;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.parseTokens;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.recursion_guard_;
-import static de.joachimsohn.language.psi.CDSTypes.ACTION;
-import static de.joachimsohn.language.psi.CDSTypes.ACTIONS;
-import static de.joachimsohn.language.psi.CDSTypes.ACTIONS_;
-import static de.joachimsohn.language.psi.CDSTypes.AND;
-import static de.joachimsohn.language.psi.CDSTypes.ANNOTATION;
-import static de.joachimsohn.language.psi.CDSTypes.AS;
-import static de.joachimsohn.language.psi.CDSTypes.ASSOCIATION;
-import static de.joachimsohn.language.psi.CDSTypes.ASSOCIATION_;
-import static de.joachimsohn.language.psi.CDSTypes.CASE;
-import static de.joachimsohn.language.psi.CDSTypes.COMMENT;
-import static de.joachimsohn.language.psi.CDSTypes.COMPOSITION;
-import static de.joachimsohn.language.psi.CDSTypes.COMPOSITION_;
-import static de.joachimsohn.language.psi.CDSTypes.CRLF;
-import static de.joachimsohn.language.psi.CDSTypes.DATA_TYPE;
-import static de.joachimsohn.language.psi.CDSTypes.DELETE;
-import static de.joachimsohn.language.psi.CDSTypes.ELSE;
-import static de.joachimsohn.language.psi.CDSTypes.END;
-import static de.joachimsohn.language.psi.CDSTypes.ENTITY;
-import static de.joachimsohn.language.psi.CDSTypes.ENUM;
-import static de.joachimsohn.language.psi.CDSTypes.EXCLUDING;
-import static de.joachimsohn.language.psi.CDSTypes.EXISTS;
-import static de.joachimsohn.language.psi.CDSTypes.EXPR;
-import static de.joachimsohn.language.psi.CDSTypes.FROM;
-import static de.joachimsohn.language.psi.CDSTypes.FUNCTION;
-import static de.joachimsohn.language.psi.CDSTypes.FUNCTION_;
-import static de.joachimsohn.language.psi.CDSTypes.GRANT;
-import static de.joachimsohn.language.psi.CDSTypes.HYPHEN_STRING;
-import static de.joachimsohn.language.psi.CDSTypes.IDENTIFIER;
-import static de.joachimsohn.language.psi.CDSTypes.IMPORT_;
-import static de.joachimsohn.language.psi.CDSTypes.IS;
-import static de.joachimsohn.language.psi.CDSTypes.ITEM_;
-import static de.joachimsohn.language.psi.CDSTypes.JOIN;
-import static de.joachimsohn.language.psi.CDSTypes.KEY;
-import static de.joachimsohn.language.psi.CDSTypes.LITERAL_EXPR;
-import static de.joachimsohn.language.psi.CDSTypes.MANY;
-import static de.joachimsohn.language.psi.CDSTypes.METHOD_CALL;
-import static de.joachimsohn.language.psi.CDSTypes.NAMESPACE;
-import static de.joachimsohn.language.psi.CDSTypes.NAMESPACE_;
-import static de.joachimsohn.language.psi.CDSTypes.NOT;
-import static de.joachimsohn.language.psi.CDSTypes.NULL;
-import static de.joachimsohn.language.psi.CDSTypes.NUMBER;
-import static de.joachimsohn.language.psi.CDSTypes.OF;
-import static de.joachimsohn.language.psi.CDSTypes.ON;
-import static de.joachimsohn.language.psi.CDSTypes.OR;
-import static de.joachimsohn.language.psi.CDSTypes.PROJECTION;
-import static de.joachimsohn.language.psi.CDSTypes.READ;
-import static de.joachimsohn.language.psi.CDSTypes.READONLY;
-import static de.joachimsohn.language.psi.CDSTypes.REQUIRED_;
-import static de.joachimsohn.language.psi.CDSTypes.REQUIRES;
-import static de.joachimsohn.language.psi.CDSTypes.RESTRICT;
-import static de.joachimsohn.language.psi.CDSTypes.RETURNS;
-import static de.joachimsohn.language.psi.CDSTypes.SELECT;
-import static de.joachimsohn.language.psi.CDSTypes.SERVICE;
-import static de.joachimsohn.language.psi.CDSTypes.SERVICE_;
-import static de.joachimsohn.language.psi.CDSTypes.STRING;
-import static de.joachimsohn.language.psi.CDSTypes.STRING_CONCAT;
-import static de.joachimsohn.language.psi.CDSTypes.THEN;
-import static de.joachimsohn.language.psi.CDSTypes.TO;
-import static de.joachimsohn.language.psi.CDSTypes.TYPE;
-import static de.joachimsohn.language.psi.CDSTypes.TYPE_DECLARATION;
-import static de.joachimsohn.language.psi.CDSTypes.UPDATE;
-import static de.joachimsohn.language.psi.CDSTypes.USING;
-import static de.joachimsohn.language.psi.CDSTypes.WHEN;
-import static de.joachimsohn.language.psi.CDSTypes.WHERE;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
+import com.intellij.lang.PsiParser;
+import com.intellij.lang.LightPsiParser;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class CDSParser implements PsiParser, LightPsiParser {
@@ -797,24 +722,58 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "'"(string_concat | path)"'"
+  // "'" '@'? string (('/'|'-'|'_'|'.'|'..')string)*"'"
   public static boolean hyphen_string(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "hyphen_string")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, HYPHEN_STRING, "<hyphen string>");
     r = consumeToken(b, "'");
     r = r && hyphen_string_1(b, l + 1);
+    r = r && consumeToken(b, STRING);
+    r = r && hyphen_string_3(b, l + 1);
     r = r && consumeToken(b, "'");
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // string_concat | path
+  // '@'?
   private static boolean hyphen_string_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "hyphen_string_1")) return false;
+    consumeToken(b, "@");
+    return true;
+  }
+
+  // (('/'|'-'|'_'|'.'|'..')string)*
+  private static boolean hyphen_string_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "hyphen_string_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!hyphen_string_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "hyphen_string_3", c)) break;
+    }
+    return true;
+  }
+
+  // ('/'|'-'|'_'|'.'|'..')string
+  private static boolean hyphen_string_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "hyphen_string_3_0")) return false;
     boolean r;
-    r = string_concat(b, l + 1);
-    if (!r) r = path(b, l + 1);
+    Marker m = enter_section_(b);
+    r = hyphen_string_3_0_0(b, l + 1);
+    r = r && consumeToken(b, STRING);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '/'|'-'|'_'|'.'|'..'
+  private static boolean hyphen_string_3_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "hyphen_string_3_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, "/");
+    if (!r) r = consumeToken(b, "-");
+    if (!r) r = consumeToken(b, "_");
+    if (!r) r = consumeToken(b, ".");
+    if (!r) r = consumeToken(b, "..");
     return r;
   }
 
@@ -1212,70 +1171,6 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && identifier(b, l + 1);
     r = r && consumeToken(b, ";");
     exit_section_(b, m, NAMESPACE_, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // (('@' string | '.' | '..' | string_concat | string)('/' | '.')?)*
-  static boolean path(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!path_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "path", c)) break;
-    }
-    return true;
-  }
-
-  // ('@' string | '.' | '..' | string_concat | string)('/' | '.')?
-  private static boolean path_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = path_0_0(b, l + 1);
-    r = r && path_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '@' string | '.' | '..' | string_concat | string
-  private static boolean path_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = path_0_0_0(b, l + 1);
-    if (!r) r = consumeToken(b, ".");
-    if (!r) r = consumeToken(b, "..");
-    if (!r) r = string_concat(b, l + 1);
-    if (!r) r = consumeToken(b, STRING);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // '@' string
-  private static boolean path_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path_0_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, "@");
-    r = r && consumeToken(b, STRING);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // ('/' | '.')?
-  private static boolean path_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path_0_1")) return false;
-    path_0_1_0(b, l + 1);
-    return true;
-  }
-
-  // '/' | '.'
-  private static boolean path_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "path_0_1_0")) return false;
-    boolean r;
-    r = consumeToken(b, "/");
-    if (!r) r = consumeToken(b, ".");
     return r;
   }
 

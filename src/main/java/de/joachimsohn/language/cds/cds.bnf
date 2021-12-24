@@ -38,7 +38,7 @@ private field_ ::= key? string ':' (dataType | relation_ | association_ | compos
 private relation_ ::= (Association to | Composition of ) many? string required_? (on expr)?
 dataType ::= 'String' ('('number')')? | 'Integer' | 'DateTime' | string (annotation ':' string)?
 
-required_ ::= not? null
+private required_ ::= not? null
 
 service_ ::= service literal_expr annotation? '{' ( service_entity | function_ | service_type)+ '}'
 private service_type ::= type string '{' (string ':' many? dataType';')* '};'
@@ -78,6 +78,5 @@ literal_expr ::= (string | number)+
 identifier ::= (string+ '.'?)+
 
 string_concat ::= string ('-'|'_'string)*
-hyphen_string ::= "'"(string_concat | path)"'"
 
-private path ::= (('@' string | '.' | '..' | string_concat | string)('/' | '.')?)*
+hyphen_string ::= "'" '@'? string ((('-'|'_') | ('/' ('.'|'..')?)*)? string)* "'"
