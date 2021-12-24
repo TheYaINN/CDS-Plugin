@@ -71,7 +71,7 @@ public class CDSColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return "Simple";
+        return "Cds";
     }
 
 }

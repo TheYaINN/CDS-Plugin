@@ -14,6 +14,8 @@
   tokenTypeClass="de.joachimsohn.language.psi.CDSTokenType"
 
   tokens = [
+        LINE_COMMENT = 'regexp://'
+        BLOCK_COMMENT = 'regexp:/\*.*\*/'
         SPACE = 'regexp:\s+'
         number = 'regexp:\d+(\.\d*)?'
         string = 'regexp:[a-zA-Z]+'
@@ -23,63 +25,59 @@ CDSFile ::= namespace_? import_* type_declaration* item_*
 
 namespace_ ::= namespace identifier';'
 
-import_ ::= using (import_values | identifier import_as) from "'" path "';"
-import_as ::= as string
-import_values ::= '{' string (','string)* '}'
+import_ ::= using'{'import_values'}' 'from' hyphen_string';'
+private import_values ::= string (',' string)*
+
 
 type_declaration ::= "type" string ':' type_
-type_ ::= ('String' | 'Integer') enum '{' (string';')* '};'
+private type_ ::= dataType enum '{' (string';')* '};'
 
-item_ ::= ( service_ | data_entity | COMMENT | CRLF)
-data_entity ::= annotation* entity string (':' string)? '{' field_* '}'
-field_ ::= key? string ':' (dataType | association_ | composition_) required_? ';'
-association_ ::= "Association to" many? string required_?(on expr)?
-composition_ ::= "Composition of" many? string on expr
+item_ ::= ( service_ | entity_ | COMMENT | CRLF)
+private entity_ ::= annotation* "define"? "entity" string (':' string)? '{' field_* '}'
+private field_ ::= key? string ':' (dataType | relation_ | association_ | composition_) required_? ';'
+private relation_ ::= (Association to | Composition of ) many? string required_? (on expr)?
 dataType ::= 'String' ('('number')')? | 'Integer' | 'DateTime' | string (annotation ':' string)?
 
 required_ ::= not? null
 
 service_ ::= service literal_expr annotation? '{' ( service_entity | function_ | service_type)+ '}'
-
-service_type ::= type string '{' (string ':' many? dataType';')* '};'
-
-service_entity ::= annotation? entity literal_expr mirror? join_* exclude_? ( as_ | actions_ | ';')?
-exclude_ ::= excluding '{' literal_expr '}'
-mirror ::= as (projection on | select from) identifier
-join_ ::= join_type identifier (as string)? on expr (and expr)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
-join_type ::= join | "left join" | "left outer join"
-join_condition ::= where expr
-join_expr ::= key? (identifier as string | case_)
-case_ ::= case when identifier is required_ then "'" string "'" else identifier end as string_concat ':' identifier
-as_ ::= '{' as_recursive '}'
-as_recursive ::=  identifier as literal_expr (',' as_recursive)*
+private service_type ::= type string '{' (string ':' many? dataType';')* '};'
+private service_entity ::= annotation? entity literal_expr mirror? join_* exclude_? ( as_ | actions_ | ';')?
+private exclude_ ::= excluding '{' literal_expr '}'
+private mirror ::= as (projection on | select from) identifier
+private join_ ::= join_type identifier (as string)? on expr (and expr)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
+private join_type ::= join | "left join" | "left outer join"
+private join_condition ::= where expr
+private join_expr ::= key? (identifier as string | case_)
+private case_ ::= case when identifier is required_ then "'" string "'" else identifier end as string_concat ':' identifier
+private as_ ::= '{' as_recursive '}'
+private as_recursive ::=  identifier as literal_expr (',' as_recursive)*
 
 actions_ ::= actions '{' (action_ | function_)* '};'
 function_ ::= function method_call returns literal_expr ';'
-action_ ::= action method_call returns literal_expr ';'
+private action_ ::= action method_call returns literal_expr ';'
 method_call ::= string'('(literal_expr ':' identifier)? ')'
 
 annotation ::= '@' (readonly | "cds.on.insert" | annotation_restrict | annotation_requires | annotation_assert*)
-
-annotation_requires ::= '(' requires ':' hyphen_string ')'
-annotation_assert ::= assert'.'unique ':' '{' string_concat':' '[' string (','string)* ']''}'
-annotation_restrict ::= restrict ':' '['  annotation_statement ']'
-annotation_statement ::= '{' annotation_grant annotation_to? annotation_where? '}'
-annotation_grant ::= grant ':' '[' "'" crud_op "'" (',' hyphen_string)* ']' ','?
-annotation_to ::= to ':' hyphen_string ','?
-annotation_where ::= where ':' "'" expr (concat_key exists '(' sql_Statement ')' )? "'"
-sql_Statement ::= "select" literal_expr from identifier where expr (concat_key expr)
-concat_key ::= and | or
+private annotation_requires ::= '(' requires ':' hyphen_string ')'
+private annotation_assert ::= "assert.unique" ':' '{' string_concat':' '[' string (','string)* ']''}'
+private annotation_restrict ::= restrict ':' '['  annotation_statement ']'
+private annotation_statement ::= '{' annotation_grant annotation_to? annotation_where? '}'
+private annotation_grant ::= grant ':' '[' "'" crud_op "'" (',' hyphen_string)* ']' ','?
+private annotation_to ::= to ':' hyphen_string ','?
+private annotation_where ::= where ':' "'" expr (concat_key exists '(' sql_Statement ')' )? "'"
+private sql_Statement ::= "select" literal_expr from identifier where expr (concat_key expr)
+private concat_key ::= and | or
+private crud_op ::= READ | UPDATE | DELETE
 
 expr ::= identifier '=' (identifier | variable | value_)
-variable ::= "$"identifier
-value_ ::= "'" string "'"
+private variable ::= " $"identifier
+private value_ ::= "'" string "'"
 
 literal_expr ::= (string | number)+
-identifier ::=(string+ '.'?)+
+identifier ::= (string+ '.'?)+
 
-string_concat ::= string (('-'|'_')?string)*
-hyphen_string ::= "'" string_concat "'"
+string_concat ::= string ('-'|'_'string)*
+hyphen_string ::= "'"(string_concat | path)"'"
 
-path ::= (('@' string | '.' | '..' | string_concat | string)('/' | '.')?)*
-crud_op ::= READ | UPDATE | DELETE
+private path ::= (('@' string | '.' | '..' | string_concat | string)('/' | '.')?)*

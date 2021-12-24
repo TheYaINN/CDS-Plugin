@@ -20,8 +20,6 @@
         <lang.syntaxHighlighterFactory language="Cds"
                                        implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
         <!--        <annotator language="JAVA" implementationClass="de.joachimsohn.language.CDSAnnotator"/>-->
-        <completion.contributor language="Cds"
-                                implementationClass="de.joachimsohn.language.CDSCompletionContributor"/>
     </extensions>
 
     <actions>

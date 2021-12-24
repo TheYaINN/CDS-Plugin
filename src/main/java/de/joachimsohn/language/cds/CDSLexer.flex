@@ -1,4 +1,4 @@
-package de.joachimsohn.language;
+package de.joachimsohn.language.psi;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -19,61 +19,68 @@ import static de.joachimsohn.language.psi.CDSTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
+LINE_COMMENT="//"
+BLOCK_COMMENT="/"\*.*\*"/"
 SPACE=[ \t\n\x0B\f\r]+
 NUMBER=[0-9]+(\.[0-9]*)?
 STRING=[a-zA-Z]+
 
 %%
 <YYINITIAL> {
-  {WHITE_SPACE}      { return WHITE_SPACE; }
+  {WHITE_SPACE}        { return WHITE_SPACE; }
 
-  "namespace"        { return NAMESPACE; }
-  "using"            { return USING; }
-  "from"             { return FROM; }
-  "as"               { return AS; }
-  "enum"             { return ENUM; }
-  "COMMENT"          { return COMMENT; }
-  "CRLF"             { return CRLF; }
-  "entity"           { return ENTITY; }
-  "key"              { return KEY; }
-  "many"             { return MANY; }
-  "on"               { return ON; }
-  "not"              { return NOT; }
-  "null"             { return NULL; }
-  "service"          { return SERVICE; }
-  "type"             { return TYPE; }
-  "excluding"        { return EXCLUDING; }
-  "projection"       { return PROJECTION; }
-  "select"           { return SELECT; }
-  "and"              { return AND; }
-  "join"             { return JOIN; }
-  "where"            { return WHERE; }
-  "case"             { return CASE; }
-  "when"             { return WHEN; }
-  "is"               { return IS; }
-  "then"             { return THEN; }
-  "else"             { return ELSE; }
-  "end"              { return END; }
-  "actions"          { return ACTIONS; }
-  "function"         { return FUNCTION; }
-  "returns"          { return RETURNS; }
-  "action"           { return ACTION; }
-  "readonly"         { return READONLY; }
-  "requires"         { return REQUIRES; }
-  "assert"           { return ASSERT; }
-  "unique"           { return UNIQUE; }
-  "restrict"         { return RESTRICT; }
-  "grant"            { return GRANT; }
-  "to"               { return TO; }
-  "exists"           { return EXISTS; }
-  "or"               { return OR; }
-  "READ"             { return READ; }
-  "UPDATE"           { return UPDATE; }
-  "DELETE"           { return DELETE; }
+  "namespace"          { return NAMESPACE; }
+  "using"              { return USING; }
+  "enum"               { return ENUM; }
+  "COMMENT"            { return COMMENT; }
+  "CRLF"               { return CRLF; }
+  "key"                { return KEY; }
+  "association_"       { return ASSOCIATION_; }
+  "composition_"       { return COMPOSITION_; }
+  "Association"        { return ASSOCIATION; }
+  "to"                 { return TO; }
+  "Composition"        { return COMPOSITION; }
+  "of"                 { return OF; }
+  "many"               { return MANY; }
+  "on"                 { return ON; }
+  "not"                { return NOT; }
+  "null"               { return NULL; }
+  "service"            { return SERVICE; }
+  "type"               { return TYPE; }
+  "entity"             { return ENTITY; }
+  "excluding"          { return EXCLUDING; }
+  "as"                 { return AS; }
+  "projection"         { return PROJECTION; }
+  "select"             { return SELECT; }
+  "from"               { return FROM; }
+  "and"                { return AND; }
+  "join"               { return JOIN; }
+  "where"              { return WHERE; }
+  "case"               { return CASE; }
+  "when"               { return WHEN; }
+  "is"                 { return IS; }
+  "then"               { return THEN; }
+  "else"               { return ELSE; }
+  "end"                { return END; }
+  "actions"            { return ACTIONS; }
+  "function"           { return FUNCTION; }
+  "returns"            { return RETURNS; }
+  "action"             { return ACTION; }
+  "readonly"           { return READONLY; }
+  "requires"           { return REQUIRES; }
+  "restrict"           { return RESTRICT; }
+  "grant"              { return GRANT; }
+  "exists"             { return EXISTS; }
+  "or"                 { return OR; }
+  "READ"               { return READ; }
+  "UPDATE"             { return UPDATE; }
+  "DELETE"             { return DELETE; }
 
-  {SPACE}            { return SPACE; }
-  {NUMBER}           { return NUMBER; }
-  {STRING}           { return STRING; }
+  {LINE_COMMENT}       { return LINE_COMMENT; }
+  {BLOCK_COMMENT}      { return BLOCK_COMMENT; }
+  {SPACE}              { return SPACE; }
+  {NUMBER}             { return NUMBER; }
+  {STRING}             { return STRING; }
 
 }
 

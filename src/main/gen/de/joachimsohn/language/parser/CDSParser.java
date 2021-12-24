@@ -1,15 +1,90 @@
 // This is a generated file. Not intended for manual editing.
 package de.joachimsohn.language.parser;
 
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.LightPsiParser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import static de.joachimsohn.language.psi.CDSTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
-import com.intellij.lang.LightPsiParser;
+import com.intellij.psi.tree.IElementType;
+
+import static com.intellij.lang.parser.GeneratedParserUtilBase.TRUE_CONDITION;
+import static com.intellij.lang.parser.GeneratedParserUtilBase._COLLAPSE_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase._NONE_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.adapt_builder_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.consumeToken;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.consumeTokens;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.current_position_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.empty_element_parsed_guard_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.nextTokenIs;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.parseTokens;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.recursion_guard_;
+import static de.joachimsohn.language.psi.CDSTypes.ACTION;
+import static de.joachimsohn.language.psi.CDSTypes.ACTIONS;
+import static de.joachimsohn.language.psi.CDSTypes.ACTIONS_;
+import static de.joachimsohn.language.psi.CDSTypes.AND;
+import static de.joachimsohn.language.psi.CDSTypes.ANNOTATION;
+import static de.joachimsohn.language.psi.CDSTypes.AS;
+import static de.joachimsohn.language.psi.CDSTypes.ASSOCIATION;
+import static de.joachimsohn.language.psi.CDSTypes.ASSOCIATION_;
+import static de.joachimsohn.language.psi.CDSTypes.CASE;
+import static de.joachimsohn.language.psi.CDSTypes.COMMENT;
+import static de.joachimsohn.language.psi.CDSTypes.COMPOSITION;
+import static de.joachimsohn.language.psi.CDSTypes.COMPOSITION_;
+import static de.joachimsohn.language.psi.CDSTypes.CRLF;
+import static de.joachimsohn.language.psi.CDSTypes.DATA_TYPE;
+import static de.joachimsohn.language.psi.CDSTypes.DELETE;
+import static de.joachimsohn.language.psi.CDSTypes.ELSE;
+import static de.joachimsohn.language.psi.CDSTypes.END;
+import static de.joachimsohn.language.psi.CDSTypes.ENTITY;
+import static de.joachimsohn.language.psi.CDSTypes.ENUM;
+import static de.joachimsohn.language.psi.CDSTypes.EXCLUDING;
+import static de.joachimsohn.language.psi.CDSTypes.EXISTS;
+import static de.joachimsohn.language.psi.CDSTypes.EXPR;
+import static de.joachimsohn.language.psi.CDSTypes.FROM;
+import static de.joachimsohn.language.psi.CDSTypes.FUNCTION;
+import static de.joachimsohn.language.psi.CDSTypes.FUNCTION_;
+import static de.joachimsohn.language.psi.CDSTypes.GRANT;
+import static de.joachimsohn.language.psi.CDSTypes.HYPHEN_STRING;
+import static de.joachimsohn.language.psi.CDSTypes.IDENTIFIER;
+import static de.joachimsohn.language.psi.CDSTypes.IMPORT_;
+import static de.joachimsohn.language.psi.CDSTypes.IS;
+import static de.joachimsohn.language.psi.CDSTypes.ITEM_;
+import static de.joachimsohn.language.psi.CDSTypes.JOIN;
+import static de.joachimsohn.language.psi.CDSTypes.KEY;
+import static de.joachimsohn.language.psi.CDSTypes.LITERAL_EXPR;
+import static de.joachimsohn.language.psi.CDSTypes.MANY;
+import static de.joachimsohn.language.psi.CDSTypes.METHOD_CALL;
+import static de.joachimsohn.language.psi.CDSTypes.NAMESPACE;
+import static de.joachimsohn.language.psi.CDSTypes.NAMESPACE_;
+import static de.joachimsohn.language.psi.CDSTypes.NOT;
+import static de.joachimsohn.language.psi.CDSTypes.NULL;
+import static de.joachimsohn.language.psi.CDSTypes.NUMBER;
+import static de.joachimsohn.language.psi.CDSTypes.OF;
+import static de.joachimsohn.language.psi.CDSTypes.ON;
+import static de.joachimsohn.language.psi.CDSTypes.OR;
+import static de.joachimsohn.language.psi.CDSTypes.PROJECTION;
+import static de.joachimsohn.language.psi.CDSTypes.READ;
+import static de.joachimsohn.language.psi.CDSTypes.READONLY;
+import static de.joachimsohn.language.psi.CDSTypes.REQUIRED_;
+import static de.joachimsohn.language.psi.CDSTypes.REQUIRES;
+import static de.joachimsohn.language.psi.CDSTypes.RESTRICT;
+import static de.joachimsohn.language.psi.CDSTypes.RETURNS;
+import static de.joachimsohn.language.psi.CDSTypes.SELECT;
+import static de.joachimsohn.language.psi.CDSTypes.SERVICE;
+import static de.joachimsohn.language.psi.CDSTypes.SERVICE_;
+import static de.joachimsohn.language.psi.CDSTypes.STRING;
+import static de.joachimsohn.language.psi.CDSTypes.STRING_CONCAT;
+import static de.joachimsohn.language.psi.CDSTypes.THEN;
+import static de.joachimsohn.language.psi.CDSTypes.TO;
+import static de.joachimsohn.language.psi.CDSTypes.TYPE;
+import static de.joachimsohn.language.psi.CDSTypes.TYPE_DECLARATION;
+import static de.joachimsohn.language.psi.CDSTypes.UPDATE;
+import static de.joachimsohn.language.psi.CDSTypes.USING;
+import static de.joachimsohn.language.psi.CDSTypes.WHEN;
+import static de.joachimsohn.language.psi.CDSTypes.WHERE;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class CDSParser implements PsiParser, LightPsiParser {
@@ -91,7 +166,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // action method_call returns literal_expr ';'
-  public static boolean action_(PsiBuilder b, int l) {
+  static boolean action_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "action_")) return false;
     if (!nextTokenIs(b, ACTION)) return false;
     boolean r;
@@ -101,7 +176,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, RETURNS);
     r = r && literal_expr(b, l + 1);
     r = r && consumeToken(b, ";");
-    exit_section_(b, m, ACTION_, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -178,42 +253,39 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // assert'.'unique ':' '{' string_concat':' '[' string (','string)* ']''}'
-  public static boolean annotation_assert(PsiBuilder b, int l) {
+  // "assert.unique" ':' '{' string_concat':' '[' string (','string)* ']''}'
+  static boolean annotation_assert(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_assert")) return false;
-    if (!nextTokenIs(b, ASSERT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, ASSERT);
-    r = r && consumeToken(b, ".");
-    r = r && consumeToken(b, UNIQUE);
+    r = consumeToken(b, "assert.unique");
     r = r && consumeToken(b, ":");
     r = r && consumeToken(b, "{");
     r = r && string_concat(b, l + 1);
     r = r && consumeToken(b, ":");
     r = r && consumeToken(b, "[");
     r = r && consumeToken(b, STRING);
-    r = r && annotation_assert_9(b, l + 1);
+    r = r && annotation_assert_7(b, l + 1);
     r = r && consumeToken(b, "]");
     r = r && consumeToken(b, "}");
-    exit_section_(b, m, ANNOTATION_ASSERT, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // (','string)*
-  private static boolean annotation_assert_9(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "annotation_assert_9")) return false;
+  private static boolean annotation_assert_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_assert_7")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!annotation_assert_9_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "annotation_assert_9", c)) break;
+      if (!annotation_assert_7_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "annotation_assert_7", c)) break;
     }
     return true;
   }
 
   // ','string
-  private static boolean annotation_assert_9_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "annotation_assert_9_0")) return false;
+  private static boolean annotation_assert_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "annotation_assert_7_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ",");
@@ -224,7 +296,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // grant ':' '[' "'" crud_op "'" (',' hyphen_string)* ']' ','?
-  public static boolean annotation_grant(PsiBuilder b, int l) {
+  static boolean annotation_grant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_grant")) return false;
     if (!nextTokenIs(b, GRANT)) return false;
     boolean r;
@@ -238,7 +310,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && annotation_grant_6(b, l + 1);
     r = r && consumeToken(b, "]");
     r = r && annotation_grant_8(b, l + 1);
-    exit_section_(b, m, ANNOTATION_GRANT, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -273,22 +345,22 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // '(' requires ':' hyphen_string ')'
-  public static boolean annotation_requires(PsiBuilder b, int l) {
+  static boolean annotation_requires(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_requires")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ANNOTATION_REQUIRES, "<annotation requires>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, "(");
     r = r && consumeToken(b, REQUIRES);
     r = r && consumeToken(b, ":");
     r = r && hyphen_string(b, l + 1);
     r = r && consumeToken(b, ")");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
   // restrict ':' '['  annotation_statement ']'
-  public static boolean annotation_restrict(PsiBuilder b, int l) {
+  static boolean annotation_restrict(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_restrict")) return false;
     if (!nextTokenIs(b, RESTRICT)) return false;
     boolean r;
@@ -298,22 +370,22 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "[");
     r = r && annotation_statement(b, l + 1);
     r = r && consumeToken(b, "]");
-    exit_section_(b, m, ANNOTATION_RESTRICT, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
   // '{' annotation_grant annotation_to? annotation_where? '}'
-  public static boolean annotation_statement(PsiBuilder b, int l) {
+  static boolean annotation_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_statement")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ANNOTATION_STATEMENT, "<annotation statement>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && annotation_grant(b, l + 1);
     r = r && annotation_statement_2(b, l + 1);
     r = r && annotation_statement_3(b, l + 1);
     r = r && consumeToken(b, "}");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -333,7 +405,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // to ':' hyphen_string ','?
-  public static boolean annotation_to(PsiBuilder b, int l) {
+  static boolean annotation_to(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_to")) return false;
     if (!nextTokenIs(b, TO)) return false;
     boolean r;
@@ -342,7 +414,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, ":");
     r = r && hyphen_string(b, l + 1);
     r = r && annotation_to_3(b, l + 1);
-    exit_section_(b, m, ANNOTATION_TO, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -355,7 +427,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // where ':' "'" expr (concat_key exists '(' sql_Statement ')' )? "'"
-  public static boolean annotation_where(PsiBuilder b, int l) {
+  static boolean annotation_where(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "annotation_where")) return false;
     if (!nextTokenIs(b, WHERE)) return false;
     boolean r;
@@ -366,7 +438,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && expr(b, l + 1);
     r = r && annotation_where_4(b, l + 1);
     r = r && consumeToken(b, "'");
-    exit_section_(b, m, ANNOTATION_WHERE, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -393,20 +465,20 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // '{' as_recursive '}'
-  public static boolean as_(PsiBuilder b, int l) {
+  static boolean as_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "as_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, AS_, "<as>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && as_recursive(b, l + 1);
     r = r && consumeToken(b, "}");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
   // identifier as literal_expr (',' as_recursive)*
-  public static boolean as_recursive(PsiBuilder b, int l) {
+  static boolean as_recursive(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "as_recursive")) return false;
     if (!nextTokenIs(b, STRING)) return false;
     boolean r;
@@ -415,7 +487,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, AS);
     r = r && literal_expr(b, l + 1);
     r = r && as_recursive_3(b, l + 1);
-    exit_section_(b, m, AS_RECURSIVE, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -442,55 +514,8 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "Association to" many? string required_?(on expr)?
-  public static boolean association_(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "association_")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ASSOCIATION_, "<association>");
-    r = consumeToken(b, "Association to");
-    r = r && association__1(b, l + 1);
-    r = r && consumeToken(b, STRING);
-    r = r && association__3(b, l + 1);
-    r = r && association__4(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // many?
-  private static boolean association__1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "association__1")) return false;
-    consumeToken(b, MANY);
-    return true;
-  }
-
-  // required_?
-  private static boolean association__3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "association__3")) return false;
-    required_(b, l + 1);
-    return true;
-  }
-
-  // (on expr)?
-  private static boolean association__4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "association__4")) return false;
-    association__4_0(b, l + 1);
-    return true;
-  }
-
-  // on expr
-  private static boolean association__4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "association__4_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, ON);
-    r = r && expr(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // case when identifier is required_ then "'" string "'" else identifier end as string_concat ':' identifier
-  public static boolean case_(PsiBuilder b, int l) {
+  static boolean case_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "case_")) return false;
     if (!nextTokenIs(b, CASE)) return false;
     boolean r;
@@ -509,54 +534,29 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && string_concat(b, l + 1);
     r = r && consumeToken(b, ":");
     r = r && identifier(b, l + 1);
-    exit_section_(b, m, CASE_, r);
+    exit_section_(b, m, null, r);
     return r;
-  }
-
-  /* ********************************************************** */
-  // "Composition of" many? string on expr
-  public static boolean composition_(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "composition_")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, COMPOSITION_, "<composition>");
-    r = consumeToken(b, "Composition of");
-    r = r && composition__1(b, l + 1);
-    r = r && consumeTokens(b, 0, STRING, ON);
-    r = r && expr(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // many?
-  private static boolean composition__1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "composition__1")) return false;
-    consumeToken(b, MANY);
-    return true;
   }
 
   /* ********************************************************** */
   // and | or
-  public static boolean concat_key(PsiBuilder b, int l) {
+  static boolean concat_key(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "concat_key")) return false;
-    if (!nextTokenIs(b, "<concat key>", AND, OR)) return false;
+    if (!nextTokenIs(b, "", AND, OR)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, CONCAT_KEY, "<concat key>");
     r = consumeToken(b, AND);
     if (!r) r = consumeToken(b, OR);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
   // READ | UPDATE | DELETE
-  public static boolean crud_op(PsiBuilder b, int l) {
+  static boolean crud_op(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "crud_op")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, CRUD_OP, "<crud op>");
     r = consumeToken(b, READ);
     if (!r) r = consumeToken(b, UPDATE);
     if (!r) r = consumeToken(b, DELETE);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -635,42 +635,51 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // annotation* entity string (':' string)? '{' field_* '}'
-  public static boolean data_entity(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_entity")) return false;
+  // annotation* "define"? "entity" string (':' string)? '{' field_* '}'
+  static boolean entity_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, DATA_ENTITY, "<data entity>");
-    r = data_entity_0(b, l + 1);
-    r = r && consumeTokens(b, 0, ENTITY, STRING);
-    r = r && data_entity_3(b, l + 1);
+    Marker m = enter_section_(b);
+    r = entity__0(b, l + 1);
+    r = r && entity__1(b, l + 1);
+    r = r && consumeToken(b, "entity");
+    r = r && consumeToken(b, STRING);
+    r = r && entity__4(b, l + 1);
     r = r && consumeToken(b, "{");
-    r = r && data_entity_5(b, l + 1);
+    r = r && entity__6(b, l + 1);
     r = r && consumeToken(b, "}");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // annotation*
-  private static boolean data_entity_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_entity_0")) return false;
+  private static boolean entity__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity__0")) return false;
     while (true) {
       int c = current_position_(b);
       if (!annotation(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "data_entity_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "entity__0", c)) break;
     }
     return true;
   }
 
+  // "define"?
+  private static boolean entity__1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity__1")) return false;
+    consumeToken(b, "define");
+    return true;
+  }
+
   // (':' string)?
-  private static boolean data_entity_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_entity_3")) return false;
-    data_entity_3_0(b, l + 1);
+  private static boolean entity__4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity__4")) return false;
+    entity__4_0(b, l + 1);
     return true;
   }
 
   // ':' string
-  private static boolean data_entity_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_entity_3_0")) return false;
+  private static boolean entity__4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity__4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ":");
@@ -680,19 +689,19 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   // field_*
-  private static boolean data_entity_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "data_entity_5")) return false;
+  private static boolean entity__6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "entity__6")) return false;
     while (true) {
       int c = current_position_(b);
       if (!field_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "data_entity_5", c)) break;
+      if (!empty_element_parsed_guard_(b, "entity__6", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // excluding '{' literal_expr '}'
-  public static boolean exclude_(PsiBuilder b, int l) {
+  static boolean exclude_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "exclude_")) return false;
     if (!nextTokenIs(b, EXCLUDING)) return false;
     boolean r;
@@ -701,7 +710,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "{");
     r = r && literal_expr(b, l + 1);
     r = r && consumeToken(b, "}");
-    exit_section_(b, m, EXCLUDE_, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -730,19 +739,19 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // key? string ':' (dataType | association_ | composition_) required_? ';'
-  public static boolean field_(PsiBuilder b, int l) {
+  // key? string ':' (dataType | relation_ | association_ | composition_) required_? ';'
+  static boolean field_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field_")) return false;
-    if (!nextTokenIs(b, "<field>", KEY, STRING)) return false;
+    if (!nextTokenIs(b, "", KEY, STRING)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, FIELD_, "<field>");
+    Marker m = enter_section_(b);
     r = field__0(b, l + 1);
     r = r && consumeToken(b, STRING);
     r = r && consumeToken(b, ":");
     r = r && field__3(b, l + 1);
     r = r && field__4(b, l + 1);
     r = r && consumeToken(b, ";");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -753,13 +762,14 @@ public class CDSParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // dataType | association_ | composition_
+  // dataType | relation_ | association_ | composition_
   private static boolean field__3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "field__3")) return false;
     boolean r;
     r = dataType(b, l + 1);
-    if (!r) r = association_(b, l + 1);
-    if (!r) r = composition_(b, l + 1);
+    if (!r) r = relation_(b, l + 1);
+    if (!r) r = consumeToken(b, ASSOCIATION_);
+    if (!r) r = consumeToken(b, COMPOSITION_);
     return r;
   }
 
@@ -787,15 +797,24 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "'" string_concat "'"
+  // "'"(string_concat | path)"'"
   public static boolean hyphen_string(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "hyphen_string")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, HYPHEN_STRING, "<hyphen string>");
     r = consumeToken(b, "'");
-    r = r && string_concat(b, l + 1);
+    r = r && hyphen_string_1(b, l + 1);
     r = r && consumeToken(b, "'");
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // string_concat | path
+  private static boolean hyphen_string_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "hyphen_string_1")) return false;
+    boolean r;
+    r = string_concat(b, l + 1);
+    if (!r) r = path(b, l + 1);
     return r;
   }
 
@@ -850,84 +869,50 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // using (import_values | identifier import_as) from "'" path "';"
+  // using'{'import_values'}' 'from' hyphen_string';'
   public static boolean import_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_")) return false;
     if (!nextTokenIs(b, USING)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, USING);
-    r = r && import__1(b, l + 1);
-    r = r && consumeToken(b, FROM);
-    r = r && consumeToken(b, "'");
-    r = r && path(b, l + 1);
-    r = r && consumeToken(b, "';");
+    r = r && consumeToken(b, "{");
+    r = r && import_values(b, l + 1);
+    r = r && consumeToken(b, "}");
+    r = r && consumeToken(b, "from");
+    r = r && hyphen_string(b, l + 1);
+    r = r && consumeToken(b, ";");
     exit_section_(b, m, IMPORT_, r);
     return r;
   }
 
-  // import_values | identifier import_as
-  private static boolean import__1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import__1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = import_values(b, l + 1);
-    if (!r) r = import__1_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // identifier import_as
-  private static boolean import__1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import__1_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = identifier(b, l + 1);
-    r = r && import_as(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   /* ********************************************************** */
-  // as string
-  public static boolean import_as(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import_as")) return false;
-    if (!nextTokenIs(b, AS)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, AS, STRING);
-    exit_section_(b, m, IMPORT_AS, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // '{' string (','string)* '}'
-  public static boolean import_values(PsiBuilder b, int l) {
+  // string (',' string)*
+  static boolean import_values(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "import_values")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, IMPORT_VALUES, "<import values>");
-    r = consumeToken(b, "{");
-    r = r && consumeToken(b, STRING);
-    r = r && import_values_2(b, l + 1);
-    r = r && consumeToken(b, "}");
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    r = r && import_values_1(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
-  // (','string)*
-  private static boolean import_values_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import_values_2")) return false;
+  // (',' string)*
+  private static boolean import_values_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_values_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!import_values_2_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "import_values_2", c)) break;
+      if (!import_values_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "import_values_1", c)) break;
     }
     return true;
   }
 
-  // ','string
-  private static boolean import_values_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "import_values_2_0")) return false;
+  // ',' string
+  private static boolean import_values_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_values_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ",");
@@ -937,13 +922,13 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // service_ | data_entity | COMMENT | CRLF
+  // service_ | entity_ | COMMENT | CRLF
   public static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ITEM_, "<item>");
     r = service_(b, l + 1);
-    if (!r) r = data_entity(b, l + 1);
+    if (!r) r = entity_(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     exit_section_(b, l, m, r, false, null);
@@ -952,10 +937,10 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // join_type identifier (as string)? on expr (and expr)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
-  public static boolean join_(PsiBuilder b, int l) {
+  static boolean join_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "join_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, JOIN_, "<join>");
+    Marker m = enter_section_(b);
     r = join_type(b, l + 1);
     r = r && identifier(b, l + 1);
     r = r && join__2(b, l + 1);
@@ -963,7 +948,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && expr(b, l + 1);
     r = r && join__5(b, l + 1);
     r = r && join__6(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1068,26 +1053,26 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // where expr
-  public static boolean join_condition(PsiBuilder b, int l) {
+  static boolean join_condition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "join_condition")) return false;
     if (!nextTokenIs(b, WHERE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, WHERE);
     r = r && expr(b, l + 1);
-    exit_section_(b, m, JOIN_CONDITION, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
   // key? (identifier as string | case_)
-  public static boolean join_expr(PsiBuilder b, int l) {
+  static boolean join_expr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "join_expr")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, JOIN_EXPR, "<join expr>");
+    Marker m = enter_section_(b);
     r = join_expr_0(b, l + 1);
     r = r && join_expr_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1122,14 +1107,12 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // join | "left join" | "left outer join"
-  public static boolean join_type(PsiBuilder b, int l) {
+  static boolean join_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "join_type")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, JOIN_TYPE, "<join type>");
     r = consumeToken(b, JOIN);
     if (!r) r = consumeToken(b, "left join");
     if (!r) r = consumeToken(b, "left outer join");
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1195,7 +1178,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // as (projection on | select from) identifier
-  public static boolean mirror(PsiBuilder b, int l) {
+  static boolean mirror(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mirror")) return false;
     if (!nextTokenIs(b, AS)) return false;
     boolean r;
@@ -1203,7 +1186,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, AS);
     r = r && mirror_1(b, l + 1);
     r = r && identifier(b, l + 1);
-    exit_section_(b, m, MIRROR, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1234,15 +1217,13 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // (('@' string | '.' | '..' | string_concat | string)('/' | '.')?)*
-  public static boolean path(PsiBuilder b, int l) {
+  static boolean path(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path")) return false;
-    Marker m = enter_section_(b, l, _NONE_, PATH, "<path>");
     while (true) {
       int c = current_position_(b);
       if (!path_0(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "path", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
     return true;
   }
 
@@ -1295,6 +1276,65 @@ public class CDSParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, "/");
     if (!r) r = consumeToken(b, ".");
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (Association to | Composition of ) many? string required_? (on expr)?
+  static boolean relation_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation_")) return false;
+    if (!nextTokenIs(b, "", ASSOCIATION, COMPOSITION)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = relation__0(b, l + 1);
+    r = r && relation__1(b, l + 1);
+    r = r && consumeToken(b, STRING);
+    r = r && relation__3(b, l + 1);
+    r = r && relation__4(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // Association to | Composition of
+  private static boolean relation__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation__0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = parseTokens(b, 0, ASSOCIATION, TO);
+    if (!r) r = parseTokens(b, 0, COMPOSITION, OF);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // many?
+  private static boolean relation__1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation__1")) return false;
+    consumeToken(b, MANY);
+    return true;
+  }
+
+  // required_?
+  private static boolean relation__3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation__3")) return false;
+    required_(b, l + 1);
+    return true;
+  }
+
+  // (on expr)?
+  private static boolean relation__4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation__4")) return false;
+    relation__4_0(b, l + 1);
+    return true;
+  }
+
+  // on expr
+  private static boolean relation__4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "relation__4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ON);
+    r = r && expr(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1369,10 +1409,10 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // annotation? entity literal_expr mirror? join_* exclude_? ( as_ | actions_ | ';')?
-  public static boolean service_entity(PsiBuilder b, int l) {
+  static boolean service_entity(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "service_entity")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SERVICE_ENTITY, "<service entity>");
+    Marker m = enter_section_(b);
     r = service_entity_0(b, l + 1);
     r = r && consumeToken(b, ENTITY);
     r = r && literal_expr(b, l + 1);
@@ -1380,7 +1420,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && service_entity_4(b, l + 1);
     r = r && service_entity_5(b, l + 1);
     r = r && service_entity_6(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1435,7 +1475,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // type string '{' (string ':' many? dataType';')* '};'
-  public static boolean service_type(PsiBuilder b, int l) {
+  static boolean service_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "service_type")) return false;
     if (!nextTokenIs(b, TYPE)) return false;
     boolean r;
@@ -1444,7 +1484,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "{");
     r = r && service_type_3(b, l + 1);
     r = r && consumeToken(b, "};");
-    exit_section_(b, m, SERVICE_TYPE, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1482,10 +1522,10 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // "select" literal_expr from identifier where expr (concat_key expr)
-  public static boolean sql_Statement(PsiBuilder b, int l) {
+  static boolean sql_Statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sql_Statement")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SQL_STATEMENT, "<sql statement>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, "select");
     r = r && literal_expr(b, l + 1);
     r = r && consumeToken(b, FROM);
@@ -1493,7 +1533,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, WHERE);
     r = r && expr(b, l + 1);
     r = r && sql_Statement_6(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1509,7 +1549,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // string (('-'|'_')?string)*
+  // string ('-'|'_'string)*
   public static boolean string_concat(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_concat")) return false;
     if (!nextTokenIs(b, STRING)) return false;
@@ -1521,7 +1561,7 @@ public class CDSParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (('-'|'_')?string)*
+  // ('-'|'_'string)*
   private static boolean string_concat_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_concat_1")) return false;
     while (true) {
@@ -1532,54 +1572,40 @@ public class CDSParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ('-'|'_')?string
+  // '-'|'_'string
   private static boolean string_concat_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_concat_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = string_concat_1_0_0(b, l + 1);
+    r = consumeToken(b, "-");
+    if (!r) r = string_concat_1_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '_'string
+  private static boolean string_concat_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_concat_1_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "_");
     r = r && consumeToken(b, STRING);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ('-'|'_')?
-  private static boolean string_concat_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "string_concat_1_0_0")) return false;
-    string_concat_1_0_0_0(b, l + 1);
-    return true;
-  }
-
-  // '-'|'_'
-  private static boolean string_concat_1_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "string_concat_1_0_0_0")) return false;
-    boolean r;
-    r = consumeToken(b, "-");
-    if (!r) r = consumeToken(b, "_");
-    return r;
-  }
-
   /* ********************************************************** */
-  // ('String' | 'Integer') enum '{' (string';')* '};'
-  public static boolean type_(PsiBuilder b, int l) {
+  // dataType enum '{' (string';')* '};'
+  static boolean type_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TYPE_, "<type>");
-    r = type__0(b, l + 1);
+    Marker m = enter_section_(b);
+    r = dataType(b, l + 1);
     r = r && consumeToken(b, ENUM);
     r = r && consumeToken(b, "{");
     r = r && type__3(b, l + 1);
     r = r && consumeToken(b, "};");
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // 'String' | 'Integer'
-  private static boolean type__0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type__0")) return false;
-    boolean r;
-    r = consumeToken(b, "String");
-    if (!r) r = consumeToken(b, "Integer");
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1621,26 +1647,26 @@ public class CDSParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // "'" string "'"
-  public static boolean value_(PsiBuilder b, int l) {
+  static boolean value_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, VALUE_, "<value>");
+    Marker m = enter_section_(b);
     r = consumeToken(b, "'");
     r = r && consumeToken(b, STRING);
     r = r && consumeToken(b, "'");
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // "$"identifier
-  public static boolean variable(PsiBuilder b, int l) {
+  // " $"identifier
+  static boolean variable(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, VARIABLE, "<variable>");
-    r = consumeToken(b, "$");
+    Marker m = enter_section_(b);
+    r = consumeToken(b, " $");
     r = r && identifier(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
