@@ -1,14 +1,13 @@
 <idea-plugin>
     <id>de.joachimsohn.CDS-highlighting-plugin</id>
     <name>CDS Highlighter</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">CDS-Plugin</vendor>
+    <idea-version since-build="213"/>
 
     <description><![CDATA[
    A cool plugin for CDS Highlighting, to improve readability
     ]]></description>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
 
