@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'de.joachimsohn'
-version '0.2.0'
+version '0.3.0'
 
 repositories {
     mavenCentral()
@@ -21,10 +21,6 @@ intellij {
 
 test {
     useJUnitPlatform()
-}
-
-publishPlugin {
-    token = System.getenv("DE_JOACHIMSOHN_CAP-CDS-LANG-SUPP_intellijPublishToken")
 }
 
 intellij {
