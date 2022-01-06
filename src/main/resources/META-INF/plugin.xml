@@ -1,7 +1,11 @@
 <idea-plugin>
+
     <id>de.joachimsohn.CDS-Language-Support</id>
+
     <name>CAP CDS-Language Support</name>
-    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
     <idea-version since-build="213"/>
 
     <description><![CDATA[
@@ -10,16 +14,21 @@
     ]]>
     </description>
 
-    <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.java</depends>
+    <change-notes>
+        <![CDATA[
+            - Simple syntax highlighting & checking
+        ]]>
+    </change-notes>
+
+    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <extensions defaultExtensionNs="com.intellij">
-        <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
         <fileType name="Cds File" implementationClass="de.joachimsohn.language.psi.CDSFileType"
                   fieldName="INSTANCE" language="Cds" extensions="cds"/>
-        <colorSettingsPage implementation="de.joachimsohn.language.CDSColorSettingsPage"/>
+        <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Cds"
                                        implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="de.joachimsohn.language.CDSColorSettingsPage"/>
     </extensions>
 
     <actions>
