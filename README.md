@@ -50,7 +50,6 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
         </ul>
     <h3>0.4.0</h3>
         <ul>
-            <li>Add line marker provider</li>
             <li>Add completion contributor</li>
         </ul>
     <h3>0.5.0</h3>
