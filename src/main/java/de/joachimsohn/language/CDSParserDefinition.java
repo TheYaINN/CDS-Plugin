@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class CDSParserDefinition implements ParserDefinition {
 
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet COMMENTS = TokenSet.create(CDSTypes.COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(CDSTypes.BLOCK_COMMENT, CDSTypes.LINE_COMMENT);
 
     public static final IFileElementType FILE = new IFileElementType(CDSLanguage.INSTANCE);
 
@@ -45,7 +45,7 @@ public class CDSParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return TokenSet.EMPTY;
+        return TokenSet.create(CDSTypes.STRING);
     }
 
     @NotNull

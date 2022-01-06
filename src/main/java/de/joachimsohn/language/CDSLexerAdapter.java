@@ -1,7 +1,7 @@
 package de.joachimsohn.language;
 
 import com.intellij.lexer.FlexAdapter;
-import de.joachimsohn.language.psi.CDSLexer;
+import de.joachimsohn.language.cds.CDSLexer;
 
 public class CDSLexerAdapter extends FlexAdapter {
 

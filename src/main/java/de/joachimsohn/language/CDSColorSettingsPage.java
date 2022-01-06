@@ -15,12 +15,12 @@ import java.util.Map;
 public class CDSColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Key", CDSSyntaxHighlighter.KEY),
-            new AttributesDescriptor("Separator", CDSSyntaxHighlighter.SEPARATOR),
-            new AttributesDescriptor("Value", CDSSyntaxHighlighter.VALUE),
-            new AttributesDescriptor("Bad value", CDSSyntaxHighlighter.BAD_CHARACTER),
-            new AttributesDescriptor("Identifier", CDSSyntaxHighlighter.IDENTIFIER),
-            new AttributesDescriptor("String", CDSSyntaxHighlighter.STRING)
+            new AttributesDescriptor("Key", CDSHighlighter.KEY),
+            new AttributesDescriptor("Separator", CDSHighlighter.SEPARATOR),
+            new AttributesDescriptor("Value", CDSHighlighter.VALUE),
+            new AttributesDescriptor("Bad value", CDSHighlighter.BAD_CHARACTER),
+            new AttributesDescriptor("Identifier", CDSHighlighter.IDENTIFIER),
+            new AttributesDescriptor("String", CDSHighlighter.STRING)
     };
 
     @Nullable
@@ -32,7 +32,7 @@ public class CDSColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public SyntaxHighlighter getHighlighter() {
-        return new CDSSyntaxHighlighter();
+        return new CDSHighlighter();
     }
 
     @NotNull

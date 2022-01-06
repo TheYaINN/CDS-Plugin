@@ -1,4 +1,4 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.language.cds;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -19,7 +19,7 @@ import static de.joachimsohn.language.psi.CDSTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-LINE_COMMENT="//"
+LINE_COMMENT="//".+
 BLOCK_COMMENT="/"\*.*\*"/"
 SPACE=[ \t\n\x0B\f\r]+
 NUMBER=[0-9]+(\.[0-9]*)?
@@ -31,12 +31,9 @@ STRING=[a-zA-Z]+
 
   "namespace"          { return NAMESPACE; }
   "using"              { return USING; }
+  "from"               { return FROM; }
   "enum"               { return ENUM; }
-  "COMMENT"            { return COMMENT; }
-  "CRLF"               { return CRLF; }
   "key"                { return KEY; }
-  "association_"       { return ASSOCIATION_; }
-  "composition_"       { return COMPOSITION_; }
   "Association"        { return ASSOCIATION; }
   "to"                 { return TO; }
   "Composition"        { return COMPOSITION; }
@@ -52,7 +49,6 @@ STRING=[a-zA-Z]+
   "as"                 { return AS; }
   "projection"         { return PROJECTION; }
   "select"             { return SELECT; }
-  "from"               { return FROM; }
   "and"                { return AND; }
   "join"               { return JOIN; }
   "where"              { return WHERE; }
