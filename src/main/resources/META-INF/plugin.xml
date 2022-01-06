@@ -29,6 +29,7 @@
         <lang.syntaxHighlighterFactory language="Cds"
                                        implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="de.joachimsohn.language.CDSColorSettingsPage"/>
+        <lang.commenter language="Cds" implementationClass="de.joachimsohn.language.extensions.CDSCommenter"/>
     </extensions>
 
     <actions>
