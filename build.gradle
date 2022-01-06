@@ -18,13 +18,13 @@ dependencies {
 intellij {
     version = '2021.2.2'
 }
-patchPluginXml {
-    changeNotes = """
-      - simpleSyntax checking
-      - simple highlighting"""
-}
+
 test {
     useJUnitPlatform()
+}
+
+publishPlugin {
+    token = System.getenv("DE_JOACHIMSOHN_CAP-CDS-LANG-SUPP_intellijPublishToken")
 }
 
 intellij {

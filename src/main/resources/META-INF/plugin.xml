@@ -3,24 +3,37 @@
     <id>de.joachimsohn.CDS-Language-Support</id>
 
     <name>CAP CDS-Language Support</name>
+    <version>0.2.0</version>
+    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
-    <idea-version since-build="213"/>
+    <idea-version since-build="211"/>
 
     <description><![CDATA[
-    A simple Plugin for CDS Highlighting and syntax checking to improve readability in the editor.
-    See README for further information.
+    <p>Provides basic support while editing your CDS files.</p>
+    <p>Enjoy your favorite features integrated into your development environment:</p>
+    Coding assistance:
+    <ul>
+        <li>Error & Syntax highlighting</li>
+        <li>Code completion (Soon)</li>
+        <li>Intention actions and Quick fix (Soon)</li>
+    </ul>
+    <p>This plugin comes with ABSOLUTELY NO WARRANTY.</p>
+    <p>This is free software, and you are welcome to redistribute it under certain conditions.</p>
+    You can find the source code and more details in this <a href="https://github.com/TheYaINN/CDS-Plugin">repository</a>
     ]]>
     </description>
 
     <change-notes>
         <![CDATA[
-            - Simple syntax highlighting & checking
+        <ul>
+            <li>Added Comment support</li>
+            <li>fixed highlighting</li>
+        </ul>
         ]]>
     </change-notes>
 
-    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Cds File" implementationClass="de.joachimsohn.language.psi.CDSFileType"
