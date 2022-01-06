@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>de.joachimsohn.CDS-highlighting-plugin</id>
+    <id>de.joachimsohn.CDS-Language-Support</id>
     <name>CAP CDS-Language Support</name>
-    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">CDS-Plugin</vendor>
+    <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
     <idea-version since-build="213"/>
 
     <description><![CDATA[
-    A simple Plugin for CDS Highlighting and improving readability in the editor.
+    A simple Plugin for CDS Highlighting and syntax checking to improve readability in the editor.
     See README for further information.
     ]]>
     </description>
