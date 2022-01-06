@@ -1,12 +1,14 @@
 <idea-plugin>
     <id>de.joachimsohn.CDS-highlighting-plugin</id>
-    <name>CDS Highlighter</name>
+    <name>CAP CDS-Language Support</name>
     <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">CDS-Plugin</vendor>
     <idea-version since-build="213"/>
 
     <description><![CDATA[
-   A cool plugin for CDS Highlighting, to improve readability
-    ]]></description>
+    A simple Plugin for CDS Highlighting and improving readability in the editor.
+    See README for further information.
+    ]]>
+    </description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
@@ -22,6 +24,5 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
     </actions>
 </idea-plugin>
