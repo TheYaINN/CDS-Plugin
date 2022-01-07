@@ -71,6 +71,7 @@ R_DATE=[0-9]{2}\.[0-9]{2}\.[0-9]{4}
   "Association to"      { return KW_ASSOCIATION_TO; }
   "Composition of"      { return KW_COMPOSITION_OF; }
   "many"                { return KW_MANY; }
+  "array of"            { return KW_ARRAY; }
   "on"                  { return KW_ON; }
   "as"                  { return KW_AS; }
   "default"             { return KW_DEFAULT; }

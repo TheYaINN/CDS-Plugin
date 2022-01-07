@@ -109,7 +109,7 @@ private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multip
 private import_multiple_item ::= import_identifier import_as?
 private import_identifier ::= path_dot { extends = identifier }
 
-private body_ ::= annotation_ ( model_ | service_ )
+private body_ ::= annotation ( model_ | service_ )
 
 model_ ::= KW_DEFINE? ( type_ | entity_ )
 
@@ -123,7 +123,7 @@ private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_
 private entity_extend ::= T_COLON entity_extend_identifier
 private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
-private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? annotation_ T_SEMI
+private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? annotation T_SEMI
 private entity_default ::= KW_DEFAULT entity_default_value
 private entity_default_value ::= R_NUMERIC | single_quoted_string
 private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
@@ -161,8 +161,8 @@ private join_body ::= T_LBRACE join_field  (T_COMMA join_field)* T_RBRACE
 private join_field ::= path_dot ( KW_AS identifier)?
 private join_condition ::= KW_WHERE expression
 
-annotation_ ::= annotation_entry*
-annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
+annotation ::= annotation_entry*
+private annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
 private annotation_cds ::= KW_CDS_ON (KW_INSERT | KW_UPDATE) T_COLON T_DOLLAR (KW_NOW | KW_USER)
 private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON single_quoted_string T_RPAREN
 private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)

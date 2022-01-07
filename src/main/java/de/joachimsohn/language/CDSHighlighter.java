@@ -45,14 +45,6 @@ public class CDSHighlighter extends SyntaxHighlighterBase {
                 || tokenType.equals(CDSTypes.KW_KEY) || tokenType.equals(CDSTypes.KW_FUNCTION)
                 || tokenType.equals(CDSTypes.KW_SERVICE) || tokenType.equals(CDSTypes.KW_FROM)) {
             return KEY_KEYS;
-        } else if (tokenType.equals(CDSTypes.SINGLE_QUOTED_STRING)) {
-            return STRING_KEYS;
-        } else if (tokenType.equals(CDSTypes.R_NUMERIC)) {
-            return NUMBER_KEYS;
-        } else if (tokenType.equals(CDSTypes.IDENTIFIER)) {
-            return METHOD_KEYS;
-        } else if (tokenType.equals(CDSTypes.BLOCK_COMMENT) || tokenType.equals(CDSTypes.LINE_COMMENT)) {
-            return COMMENT_KEYS;
         } else {
             return EMPTY_KEYS;
         }
