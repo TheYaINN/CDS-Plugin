@@ -47,7 +47,7 @@ public class CDSHighlighter extends SyntaxHighlighterBase {
             return KEY_KEYS;
         } else if (tokenType.equals(CDSTypes.SINGLE_QUOTED_STRING)) {
             return STRING_KEYS;
-        } else if (tokenType.equals(CDSTypes.LITERAL_NUMBER)) {
+        } else if (tokenType.equals(CDSTypes.R_NUMERIC)) {
             return NUMBER_KEYS;
         } else if (tokenType.equals(CDSTypes.IDENTIFIER)) {
             return METHOD_KEYS;

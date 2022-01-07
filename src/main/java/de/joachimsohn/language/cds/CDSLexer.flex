@@ -27,13 +27,17 @@ WHITE_SPACE=\s+
 
 LINE_COMMENT="//".+
 BLOCK_COMMENT="/"\*.*\*"/"
-LITERAL_NUMBER=[0-9]+(\.[0-9]*)?
-LITERAL_STRING=[a-zA-Z]+
+R_NUMERIC=[0-9]+(\.[0-9]*)?
+R_STRING=[a-zA-Z]+
+R_DATE=[0-9]{2}\.[0-9]{2}\.[0-9]{4}
 
 %%
 <YYINITIAL> {
   {WHITE_SPACE}         { return WHITE_SPACE; }
 
+  "enum"                { return KW_ENUM; }
+  "true"                { return KW_TRUE; }
+  "false"               { return KW_FALSE; }
   "{"                   { return T_LBRACE; }
   "("                   { return T_LPAREN; }
   "["                   { return T_LBRACK; }
@@ -63,6 +67,7 @@ LITERAL_STRING=[a-zA-Z]+
   "type"                { return KW_TYPE; }
   "key"                 { return KW_KEY; }
   "not null"            { return KW_REQUIRED; }
+  "requires"            { return KW_REQUIRES; }
   "Association to"      { return KW_ASSOCIATION_TO; }
   "Composition of"      { return KW_COMPOSITION_OF; }
   "many"                { return KW_MANY; }
@@ -86,23 +91,32 @@ LITERAL_STRING=[a-zA-Z]+
   "and"                 { return KW_AND; }
   "or"                  { return KW_OR; }
   "exists"              { return KW_EXISTS; }
-  "readonly"            { return READONLY; }
-  "requires"            { return REQUIRES; }
-  "hyphen_string"       { return HYPHEN_STRING; }
-  "string_concat"       { return STRING_CONCAT; }
-  "STRING"              { return STRING; }
-  "restrict"            { return RESTRICT; }
-  "grant"               { return GRANT; }
-  "to"                  { return TO; }
-  "concat_key"          { return CONCAT_KEY; }
+  "readonly"            { return KW_READ_ONLY; }
+  "cds.on"              { return KW_CDS_ON; }
+  "insert"              { return KW_INSERT; }
+  "assert"              { return KW_ASSERT; }
+  "unique"              { return KW_UNIQUE; }
+  "integrity"           { return KW_INTEGRITY; }
+  "format"              { return KW_FORMAT; }
+  "range"               { return KW_RANGE; }
+  "notNull"             { return KW_NOTNULL; }
+  "null"                { return KW_NULL; }
+  "not null"            { return KW_NOT_NULL; }
+  "update"              { return UPDATE; }
+  "user"                { return KW_USER; }
+  "now"                 { return KW_NOW; }
+  "restrict"            { return KW_RESTRICT; }
+  "grant"               { return KW_GRANT; }
+  "to"                  { return KW_TO; }
+  "KW_UPDATE"           { return KW_UPDATE; }
   "READ"                { return READ; }
-  "UPDATE"              { return UPDATE; }
   "DELETE"              { return DELETE; }
 
   {LINE_COMMENT}        { return LINE_COMMENT; }
   {BLOCK_COMMENT}       { return BLOCK_COMMENT; }
-  {LITERAL_NUMBER}      { return LITERAL_NUMBER; }
-  {LITERAL_STRING}      { return LITERAL_STRING; }
+  {R_NUMERIC}           { return R_NUMERIC; }
+  {R_STRING}            { return R_STRING; }
+  {R_DATE}              { return R_DATE; }
 
 }
 

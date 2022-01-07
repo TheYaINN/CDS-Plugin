@@ -45,7 +45,7 @@ public class CDSParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return TokenSet.create(CDSTypes.STRING);
+        return TokenSet.create(CDSTypes.R_STRING);
     }
 
     @NotNull
