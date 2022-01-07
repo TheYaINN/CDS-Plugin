@@ -16,10 +16,14 @@
 
     LINE_COMMENT = 'regexp://.+'
     BLOCK_COMMENT = 'regexp:/\*.*\*/'
-    //DOC_COMMENT = 'regexp:/\*\*.*\*/'
 
     LITERAL_NUMBER = 'regexp:\d+(\.\d*)?'
     LITERAL_STRING = 'regexp:[a-zA-Z]+'
+    R_DATE = 'regexp:[0-9]{2}\.[0-9]{2}\.[0-9]{4}'
+
+    KW_ENUM = 'enum'
+    KW_TRUE = 'true'
+    KW_FALSE = 'false'
 
     T_LBRACE = '{'
     T_LPAREN = '('
@@ -51,6 +55,7 @@
     KW_TYPE = 'type'
     KW_KEY = 'key'
     KW_REQUIRED = 'not null'
+    KW_REQUIRES = 'requires'
     KW_ASSOCIATION_TO = 'Association to'
     KW_COMPOSITION_OF = 'Composition of'
     KW_MANY = 'many'
@@ -65,6 +70,30 @@
     KW_ACTION = 'action'
     KW_ACTIONS = 'actions'
     KW_RETURNS = 'returns'
+    KW_JOIN = 'join'
+    KW_LEFT = 'left'
+    KW_RIGHT = 'right'
+    KW_OUTER = 'outer'
+    KW_INNER = 'inner'
+    KW_WHERE = 'where'
+    KW_AND = 'and'
+    KW_OR = 'or'
+    KW_EXISTS = 'exists'
+    KW_READ_ONLY = 'readonly'
+    KW_CDS = 'cds'
+    KW_INSERT = 'insert'
+    KW_ASSERT = 'assert'
+    KW_UNIQUE = 'unique'
+    KW_INTEGRITY = 'integrity'
+    KW_FORMAT = 'format'
+    KW_RANGE = 'range'
+    KW_NOT_NULL = 'notNull'
+    UPDATE = 'update'
+    KW_USER = 'user'
+    KW_NOW = 'now'
+    KW_RESTRICT = 'restrict'
+    KW_GRANT = 'grant'
+    KW_TO = 'to'
   ]
 }
 root ::= namespace_? import_* body_*
@@ -77,9 +106,9 @@ private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multip
 private import_multiple_item ::= import_identifier import_as?
 private import_identifier ::= path_dot { extends = identifier }
 
-private body_ ::= model_ | service_
+private body_ ::= model_ | service_ | LINE_COMMENT | BLOCK_COMMENT
 
-model_ ::= annotation* KW_DEFINE? ( type_ | entity_ )
+model_ ::= annotation_* KW_DEFINE? ( type_ | entity_ )
 
 private type_ ::= KW_TYPE type_identifier ( T_COLON  ( dataType | relation_ ) | type_object ) T_SEMI
 private type_identifier ::= identifier
@@ -100,66 +129,86 @@ private entity_field_identifier ::= identifier
 
 service_ ::= KW_SERVICE service_identifier service_body T_SEMI
 private service_identifier ::= identifier
-private service_body ::= T_LBRACE ( service_entity |  service_type | method_ )+ T_RBRACE
-private service_entity ::= KW_ENTITY service_entity_identifier service_entity_mirror join_* service_entity_exclude? ( as_ | actions_ | T_SEMI)?
+private service_body ::= T_LBRACE ( service_entity |  service_type | method_ | actions_ )+ T_RBRACE
+private service_entity ::= KW_ENTITY service_entity_identifier method_parameters? service_entity_mirror (join_body | join_ | sql_where_clause )? (actions_ | T_SEMI)?
 private service_entity_identifier ::= identifier
-private service_entity_mirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) service_entity_mirror_identifier
+private service_entity_mirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) service_entity_mirror_identifier (T_LPAREN service_entity_mirror_params T_RPAREN)?
+private service_entity_mirror_params ::= service_entity_mirror_params_identifier service_entity_mirror_params_value (T_COMMA service_entity_mirror_params_identifier service_entity_mirror_params_value)*
+private service_entity_mirror_params_value ::= T_COLON identifier
+private service_entity_mirror_params_identifier ::= identifier T_COLON
 private service_entity_mirror_identifier ::= path_dot
 private service_type ::= KW_TYPE service_type_identifier T_LBRACE service_type_field+ T_RBRACE T_SEMI
 private service_type_field ::= service_type_field_identifier T_COLON KW_MANY? dataType T_SEMI
 private service_type_field_identifier ::= identifier
 private service_type_identifier ::= identifier
-private service_entity_exclude ::= KW_EXCLUDING T_LBRACE string T_RBRACE
-
-private join_ ::= join_type identifier (KW_AS STRING)? KW_ON expression (and expression)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
-private join_type ::= join | "left join" | "left outer join"
-private join_condition ::= where expression
-private join_expr ::= KW_KEY? (identifier KW_AS STRING | case_)
-private case_ ::= case when identifier is KW_REQUIRED then "'" STRING "'" else identifier end KW_AS string_concat ':' identifier
-private as_ ::= '{' as_recursive '}'
-private as_recursive ::=  identifier KW_AS literal_expr (',' as_recursive)*
 
 private actions_ ::= KW_ACTIONS T_LBRACE (method_ )* T_RBRACE T_SEMI
-private method_ ::= ( KW_ACTION | KW_FUNCTION ) method_parameters KW_RETURNS dataType T_SEMI
-private method_parameters ::= method_identifier T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
+private method_ ::= ( KW_ACTION | KW_FUNCTION ) method_identifier method_parameters method_return? T_SEMI
+private method_return ::= KW_RETURNS dataType
+private method_parameters ::= T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
 method_identifier ::= identifier
 private method_parameters_value ::= identifier T_COLON identifier
 
-annotation ::= T_AT (readonly | "cds.on.insert" | annotation_restrict | annotation_requires | annotation_assert*)
-private annotation_requires ::= '(' requires ':' hyphen_string ')'
-private annotation_assert ::= "assert.unique" ':' '{' string_concat':' '[' STRING (','STRING)* ']''}'
-private annotation_restrict ::= restrict ':' '['  annotation_statement ']'
-private annotation_statement ::= '{' annotation_grant annotation_to? annotation_where? '}'
-private annotation_grant ::= grant ':' '[' "'" crud_op "'" (',' hyphen_string)* ']' ','?
-private annotation_to ::= to ':' hyphen_string ','?
-private annotation_where ::= where ':' "'" expression (concat_key exists '(' sql_Statement ')' )? "'"
-private sql_Statement ::= "select" literal_expr KW_FROM identifier where expression (concat_key expression)
-private concat_key ::= and | or
-private crud_op ::= READ | UPDATE | DELETE
+private join_ ::= join_type identifier KW_ON expression join_body? join_condition
+private join_type ::=  (KW_LEFT | KW_RIGHT)? (KW_OUTER | KW_INNER)? KW_JOIN
+private join_body ::= T_LBRACE join_field  (T_COMMA join_field)* T_RBRACE
+private join_field ::= path_dot ( KW_AS identifier)?
+private join_condition ::= KW_WHERE expression
 
-private expression ::= expression_key T_ASSIGN expression_value
-private expression_value ::= expression_value_variable | expression_value_field
+annotation_ ::= annotation_entry*
+annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
+private annotation_cds ::= KW_CDS T_DOT KW_ON T_DOT (KW_INSERT | KW_UPDATE) T_COLON T_DOLLAR (KW_NOW | KW_USER)
+private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON single_quoted_string T_RPAREN
+private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
+private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_assert_unique_field (T_COMMA annotation_assert_unique_field)* T_RBRACE
+private annotation_assert_unique_field ::= entity_field_identifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
+private annotation_assert_integrity ::= KW_INTEGRITY T_COLON dataType_boolean
+private annotation_assert_format ::= KW_FORMAT T_COLON single_quoted_string T_COLON
+private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( dataType_numeric | R_DATE ) T_RBRACK | dataType_enum) T_COLON
+private annotation_assert_notnull ::= KW_NOT_NULL T_COLON dataType_boolean
+//TODO: refactor
+private annotation_restrict ::= KW_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
+private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
+private annotation_grant ::= KW_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA single_quoted_string)* T_RBRACK T_COMMA?
+private annotation_to ::= KW_TO T_COLON single_quoted_string T_COMMA?
+private annotation_where ::= KW_WHERE T_COLON T_HYPH expression ( KW_EXISTS T_LPAREN sql_Statement T_RPAREN )? T_HYPH
+private annotation_grant_authorization ::= READ | KW_UPDATE | DELETE
+//TODO: refactor end
+
+private sql_Statement ::= sql_select_clause sql_from_clause sql_where_clause
+private sql_select_clause ::= KW_SELECT sql_select_clause_identifier (KW_AS sql_select_clause_identifier)?
+private sql_select_clause_identifier ::= identifier
+private sql_from_clause ::= KW_FROM sql_from_clause_identifier (KW_AS sql_from_clause_identifier)?
+private sql_from_clause_identifier ::= identifier
+private sql_where_clause ::= KW_WHERE expression ((KW_AND | KW_OR) expression)*
+
+private expression ::= (expression_key T_ASSIGN expression_value) | expression_exists
 private expression_key ::= path_dot
-private expression_value_variable ::= T_DOLLAR identifier
-private expression_value_field ::= LITERAL_STRING (T_UNDER LITERAL_STRING)?
+private expression_value ::= string_under | ( T_DOLLAR | T_COLON )? path_dot
+private expression_exists ::= KW_EXISTS T_LPAREN sql_Statement T_RPAREN
 
-identifier ::= LITERAL_STRING
+identifier ::= (string_under | LITERAL_STRING | LITERAL_NUMBER )+
 
 private string_encapsulation ::= T_HYPH | T_QOUTE
-single_quoted_string ::= string_encapsulation (LITERAL_STRING | path_slash) string_encapsulation
-private path_dot ::= LITERAL_STRING ('.' LITERAL_STRING)*
+single_quoted_string ::= string_encapsulation ( path_slash |  LITERAL_STRING ) string_encapsulation
+private string_under ::= LITERAL_STRING (T_UNDER LITERAL_STRING)+
+private path_dot ::= LITERAL_STRING (T_DOT LITERAL_STRING)*
 private path_slash ::= T_AT? file_path_element (T_SLASH file_path_element)*
 private file_path_element ::= ( file_path_relative | LITERAL_STRING )
 private file_path_relative ::= ( T_DOT | T_RECURSIVE_DESCENT )
 
-dataType ::= 'String' ('('LITERAL_NUMBER')' | 'enum' T_LBRACE (identifier T_SEMI)+ T_RBRACE)?
+dataType ::= 'String' '('LITERAL_NUMBER')' | dataType_enum
             | 'Integer'
             | 'Decimal'('('LITERAL_NUMBER','LITERAL_NUMBER')')?
             | 'DateTime'
             | 'Currency'
-            | 'array of' identifier
+            | 'array of' ( entity_identifier | type_identifier )
             | entity_identifier
             | type_identifier
+
+private dataType_enum ::= KW_ENUM T_LBRACE (identifier T_SEMI)+ T_RBRACE
+private dataType_boolean ::= KW_TRUE | KW_FALSE
+private dataType_numeric ::= LITERAL_NUMBER (T_DOT LITERAL_NUMBER)? //TODO: move to LITERAL_NUMBER to include .
 
 private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
 private relation_single ::= relation_identifier KW_REQUIRED? (KW_ON expression)?

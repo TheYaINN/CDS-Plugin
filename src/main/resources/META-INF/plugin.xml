@@ -27,10 +27,18 @@
 
     <change-notes>
         <![CDATA[
+        Now supports:
         <ul>
-            <li>Added Comment support</li>
-            <li>fixed highlighting</li>
+            <li>Line comments</li>
+            <li>Annotations</li>
+            <ul>
+                <li>assert</li>
+                <li>grant</li>
+                <li>restrict</li>
+                <li>cds.on.insert / cds.on.update</li>
+            </ul>
         </ul>
+        improved overall syntax checking to support more cases
         ]]>
     </change-notes>
 
@@ -41,7 +49,6 @@
         <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Cds"
                                        implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
-        <colorSettingsPage implementation="de.joachimsohn.language.CDSColorSettingsPage"/>
         <lang.commenter language="Cds" implementationClass="de.joachimsohn.language.extensions.CDSCommenter"/>
     </extensions>
 

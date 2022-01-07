@@ -9,9 +9,14 @@ import static de.joachimsohn.language.psi.CDSTypes.*;
 
 %%
 
+%{
+  public _CDSLexer() {
+    this((java.io.Reader)null);
+  }
+%}
 
 %public
-%class CDSLexer
+%class _CDSLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -72,26 +77,24 @@ LITERAL_STRING=[a-zA-Z]+
   "action"              { return KW_ACTION; }
   "actions"             { return KW_ACTIONS; }
   "returns"             { return KW_RETURNS; }
-  "string"              { return STRING; }
-  "and"                 { return AND; }
-  "join"                { return JOIN; }
-  "where"               { return WHERE; }
-  "case"                { return CASE; }
-  "when"                { return WHEN; }
-  "is"                  { return IS; }
-  "then"                { return THEN; }
-  "else"                { return ELSE; }
-  "end"                 { return END; }
-  "string_concat"       { return STRING_CONCAT; }
-  "literal_expr"        { return LITERAL_EXPR; }
+  "join"                { return KW_JOIN; }
+  "left"                { return KW_LEFT; }
+  "right"               { return KW_RIGHT; }
+  "outer"               { return KW_OUTER; }
+  "inner"               { return KW_INNER; }
+  "where"               { return KW_WHERE; }
+  "and"                 { return KW_AND; }
+  "or"                  { return KW_OR; }
+  "exists"              { return KW_EXISTS; }
   "readonly"            { return READONLY; }
   "requires"            { return REQUIRES; }
   "hyphen_string"       { return HYPHEN_STRING; }
+  "string_concat"       { return STRING_CONCAT; }
+  "STRING"              { return STRING; }
   "restrict"            { return RESTRICT; }
   "grant"               { return GRANT; }
   "to"                  { return TO; }
-  "exists"              { return EXISTS; }
-  "or"                  { return OR; }
+  "concat_key"          { return CONCAT_KEY; }
   "READ"                { return READ; }
   "UPDATE"              { return UPDATE; }
   "DELETE"              { return DELETE; }
