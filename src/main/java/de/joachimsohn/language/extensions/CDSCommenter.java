@@ -21,11 +21,11 @@ public class CDSCommenter implements Commenter {
 
     @Override
     public @Nullable String getCommentedBlockCommentPrefix() {
-        return null;
+        return "/**";
     }
 
     @Override
     public @Nullable String getCommentedBlockCommentSuffix() {
-        return null;
+        return "*/";
     }
 }

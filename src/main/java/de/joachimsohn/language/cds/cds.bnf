@@ -1,7 +1,5 @@
 {
   parserClass="de.joachimsohn.language.parser.CDSParser"
-  //parserUtilClass="de.joachimsohn.language.parser.CDSParserUtil"
-
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="CDS"
@@ -14,70 +12,158 @@
   tokenTypeClass="de.joachimsohn.language.psi.CDSTokenType"
 
   tokens = [
-        LINE_COMMENT = 'regexp://.+'
-        BLOCK_COMMENT = 'regexp:/\*.*\*/'
-        //TODO: DOC_COMMENT missing https://cap.cloud.sap/docs/cds/cdl#doc-comment
-        SPACE = 'regexp:\s+'
-        NUMBER = 'regexp:\d+(\.\d*)?'
-        STRING = 'regexp:[a-zA-Z]+'
+    //https://github.com/JetBrains/intellij-community/blob/master/plugins/groovy/groovy-psi/src/org/jetbrains/plugins/groovy/lang/parser/groovy.bnf
+
+    LINE_COMMENT = 'regexp://.+'
+    BLOCK_COMMENT = 'regexp:/\*.*\*/'
+    //DOC_COMMENT = 'regexp:/\*\*.*\*/'
+
+    LITERAL_NUMBER = 'regexp:\d+(\.\d*)?'
+    LITERAL_STRING = 'regexp:[a-zA-Z]+'
+
+    T_LBRACE = '{'
+    T_LPAREN = '('
+    T_LBRACK = '['
+    T_RBRACK = ']'
+    T_RPAREN = ')'
+    T_RBRACE = '}'
+    T_DOLLAR = '$'
+    T_AT = '@'
+    T_SLASH = '/'
+    T_BACKSLASH = '\'
+    T_SEMI = ';'
+    T_COLON = ':'
+    T_COMMA = ','
+    T_DOT = '.'
+    T_RECURSIVE_DESCENT = '..'
+    T_HYPH = "'"
+    T_QOUTE = '"'
+    T_ASSIGN = '='
+    T_UNDER = '_'
+    T_MINUS = '-'
+
+    KW_NAMESPACE = 'namespace'
+    KW_USING = 'using'
+    KW_FROM = 'from'
+    KW_DEFINE = 'define'
+    KW_ENTITY = 'entity'
+    KW_SERVICE = 'service'
+    KW_TYPE = 'type'
+    KW_KEY = 'key'
+    KW_REQUIRED = 'not null'
+    KW_ASSOCIATION_TO = 'Association to'
+    KW_COMPOSITION_OF = 'Composition of'
+    KW_MANY = 'many'
+    KW_ON = 'on'
+    KW_AS = 'as'
+    KW_DEFAULT = 'default'
+    KW_TYPE_OF = 'type of'
+    KW_FUNCTION = 'function'
+    KW_PROJECTION = 'projection'
+    KW_SELECT = 'select'
+    KW_EXCLUDING = 'excluding'
+    KW_ACTION = 'action'
+    KW_ACTIONS = 'actions'
+    KW_RETURNS = 'returns'
   ]
 }
 root ::= namespace_? import_* body_*
-namespace_ ::= namespace path';'
+namespace_ ::= KW_NAMESPACE path_dot T_SEMI
 
-import_ ::= using '{' identifier (',' identifier)* '}' from hyphen_string';' //TODO: improve to match https://cap.cloud.sap/docs/cds/cdl#imports
+import_ ::= KW_USING  ( import_multiple | import_identifier ) import_as? KW_FROM single_quoted_string T_SEMI
+private import_as ::= KW_AS import_as_identifier
+private import_as_identifier ::= identifier
+private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multiple_item)* T_RBRACE
+private import_multiple_item ::= import_identifier import_as?
+private import_identifier ::= path_dot { extends = identifier }
 
-private body_ ::= type_declaration | item_ | BLOCK_COMMENT | LINE_COMMENT
+private body_ ::= model_ | service_
 
-private type_declaration ::= "type" identifier ':' type_
-private type_ ::= dataType enum '{' ( identifier';')+ '};'
+model_ ::= annotation* KW_DEFINE? ( type_ | entity_ )
 
-item_ ::= ( service_ | entity_)
-private entity_ ::= annotation* "define"? "entity" identifier (':' identifier)? '{' field_* '}'
-private field_ ::= key? identifier ':' (dataType | relation_) required_? ';'
-private relation_ ::= (Association to | Composition of) many? identifier required_? (on expr)?
-dataType ::= 'String' ('('NUMBER')')? | 'Integer' | 'DateTime' | STRING (annotation ':' STRING)?
+private type_ ::= KW_TYPE type_identifier ( T_COLON  ( dataType | relation_ ) | type_object ) T_SEMI
+private type_identifier ::= identifier
+private type_object ::= T_LBRACE type_field* T_RBRACE
+private type_field ::= type_field_identifier T_COLON dataType T_SEMI
+private type_field_identifier ::= identifier
 
-private required_ ::= not null
+private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_field+ T_RBRACE T_SEMI
+private entity_extend ::= T_COLON entity_extend_identifier
+private entity_extend_identifier ::= identifier
+private entity_identifier ::= identifier
+private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? T_SEMI
+private entity_default ::= KW_DEFAULT entity_default_value
+private entity_default_value ::= LITERAL_NUMBER | single_quoted_string
+private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
+private entity_type_reference_object_identifier ::= LITERAL_STRING (T_COLON LITERAL_STRING)? { extends = identifier }
+private entity_field_identifier ::= identifier
 
-service_ ::= service literal_expr annotation? '{' ( service_entity | function_ | service_type)+ '}'
-private service_type ::= type STRING '{' (STRING ':' many? dataType';')* '};'
-private service_entity ::= annotation? entity literal_expr mirror? join_* exclude_? ( as_ | actions_ | ';')?
-private exclude_ ::= excluding '{' literal_expr '}'
-private mirror ::= as (projection on | select from) identifier
-private join_ ::= join_type identifier (as STRING)? on expr (and expr)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
+service_ ::= KW_SERVICE service_identifier service_body T_SEMI
+private service_identifier ::= identifier
+private service_body ::= T_LBRACE ( service_entity |  service_type | method_ )+ T_RBRACE
+private service_entity ::= KW_ENTITY service_entity_identifier service_entity_mirror join_* service_entity_exclude? ( as_ | actions_ | T_SEMI)?
+private service_entity_identifier ::= identifier
+private service_entity_mirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) service_entity_mirror_identifier
+private service_entity_mirror_identifier ::= path_dot
+private service_type ::= KW_TYPE service_type_identifier T_LBRACE service_type_field+ T_RBRACE T_SEMI
+private service_type_field ::= service_type_field_identifier T_COLON KW_MANY? dataType T_SEMI
+private service_type_field_identifier ::= identifier
+private service_type_identifier ::= identifier
+private service_entity_exclude ::= KW_EXCLUDING T_LBRACE string T_RBRACE
+
+private join_ ::= join_type identifier (KW_AS STRING)? KW_ON expression (and expression)? ('{' join_expr (','join_expr)* ('} 'join_condition | '};'))?
 private join_type ::= join | "left join" | "left outer join"
-private join_condition ::= where expr
-private join_expr ::= key? (identifier as STRING | case_)
-private case_ ::= case when identifier is required_ then "'" STRING "'" else identifier end as string_concat ':' identifier
+private join_condition ::= where expression
+private join_expr ::= KW_KEY? (identifier KW_AS STRING | case_)
+private case_ ::= case when identifier is KW_REQUIRED then "'" STRING "'" else identifier end KW_AS string_concat ':' identifier
 private as_ ::= '{' as_recursive '}'
-private as_recursive ::=  identifier as literal_expr (',' as_recursive)*
+private as_recursive ::=  identifier KW_AS literal_expr (',' as_recursive)*
 
-private actions_ ::= actions '{' (action_ | function_)* '};'
-private function_ ::= function method_call returns literal_expr ';'
-private action_ ::= action method_call returns literal_expr ';'
-private method_call ::= STRING'('(literal_expr ':' identifier)? ')'
+private actions_ ::= KW_ACTIONS T_LBRACE (method_ )* T_RBRACE T_SEMI
+private method_ ::= ( KW_ACTION | KW_FUNCTION ) method_parameters KW_RETURNS dataType T_SEMI
+private method_parameters ::= method_identifier T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
+method_identifier ::= identifier
+private method_parameters_value ::= identifier T_COLON identifier
 
-annotation ::= '@' (readonly | "cds.on.insert" | annotation_restrict | annotation_requires | annotation_assert*)
+annotation ::= T_AT (readonly | "cds.on.insert" | annotation_restrict | annotation_requires | annotation_assert*)
 private annotation_requires ::= '(' requires ':' hyphen_string ')'
 private annotation_assert ::= "assert.unique" ':' '{' string_concat':' '[' STRING (','STRING)* ']''}'
 private annotation_restrict ::= restrict ':' '['  annotation_statement ']'
 private annotation_statement ::= '{' annotation_grant annotation_to? annotation_where? '}'
 private annotation_grant ::= grant ':' '[' "'" crud_op "'" (',' hyphen_string)* ']' ','?
 private annotation_to ::= to ':' hyphen_string ','?
-private annotation_where ::= where ':' "'" expr (concat_key exists '(' sql_Statement ')' )? "'"
-private sql_Statement ::= "select" literal_expr from identifier where expr (concat_key expr)
+private annotation_where ::= where ':' "'" expression (concat_key exists '(' sql_Statement ')' )? "'"
+private sql_Statement ::= "select" literal_expr KW_FROM identifier where expression (concat_key expression)
 private concat_key ::= and | or
 private crud_op ::= READ | UPDATE | DELETE
 
-private expr ::= identifier '=' (identifier | variable | value_)
-private variable ::= " $"identifier
-private value_ ::= "'" STRING "'"
+private expression ::= expression_key T_ASSIGN expression_value
+private expression_value ::= expression_value_variable | expression_value_field
+private expression_key ::= path_dot
+private expression_value_variable ::= T_DOLLAR identifier
+private expression_value_field ::= LITERAL_STRING (T_UNDER LITERAL_STRING)?
 
-private literal_expr ::= (STRING | number)+
+identifier ::= LITERAL_STRING
 
-private string_concat ::= STRING ('-'|'_'STRING)*
+private string_encapsulation ::= T_HYPH | T_QOUTE
+single_quoted_string ::= string_encapsulation (LITERAL_STRING | path_slash) string_encapsulation
+private path_dot ::= LITERAL_STRING ('.' LITERAL_STRING)*
+private path_slash ::= T_AT? file_path_element (T_SLASH file_path_element)*
+private file_path_element ::= ( file_path_relative | LITERAL_STRING )
+private file_path_relative ::= ( T_DOT | T_RECURSIVE_DESCENT )
 
-hyphen_string ::= "'" '@'? STRING ((('-'|'_') | ('/' ('.'|'..')?)*)? STRING)* "'"
-identifier ::= STRING
-private path ::= STRING (('.' | '/') STRING)*
+dataType ::= 'String' ('('LITERAL_NUMBER')' | 'enum' T_LBRACE (identifier T_SEMI)+ T_RBRACE)?
+            | 'Integer'
+            | 'Decimal'('('LITERAL_NUMBER','LITERAL_NUMBER')')?
+            | 'DateTime'
+            | 'Currency'
+            | 'array of' identifier
+            | entity_identifier
+            | type_identifier
+
+private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
+private relation_single ::= relation_identifier KW_REQUIRED? (KW_ON expression)?
+private relation_identifier ::= path_dot { extends = identifier }
+private relation_body ::= T_LBRACE relation_field+ T_RBRACE
+private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( dataType | relation_ ) T_SEMI
+private relation_field_identifier ::= identifier
