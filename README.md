@@ -21,6 +21,12 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
 
 <hr>
 <h2 id="patch-notes">Patch notes</h2>
+    <h3>0.3.0</h3>
+        <ul>
+            <li>Add missing implementations</li>
+            <li>Improve highlighting for annotations</li>
+            <li>Improve syntax for annotations to support more</li>
+        </ul>
  <h3>0.2.0</h3>
         <ul>
             <li>Add Commenter</li>
@@ -42,12 +48,6 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
          <li>Remove TODOS</li>
          <li>Add Documentation</li>
     </ul>
-    <h3>0.3.0</h3>
-        <ul>
-            <li>Add missing implementations</li>
-            <li>Improve highlighting for annotations</li>
-            <li>Improve syntax for annotations to support more</li>
-        </ul>
     <h3>0.4.0</h3>
         <ul>
             <li>Add completion contributor</li>

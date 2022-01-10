@@ -50,6 +50,8 @@
         <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Cds"
                                        implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
+        <completion.contributor language="Cds"
+                                implementationClass="de.joachimsohn.language.CDSCompletionContributor"/>
         <lang.commenter language="Cds" implementationClass="de.joachimsohn.language.extensions.CDSCommenter"/>
     </extensions>
 

@@ -38,7 +38,7 @@ public class CDSHighlighter extends SyntaxHighlighterBase {
 
 
     @Override
-    public @NotNull TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+    public @NotNull TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
         if (tokenType.equals(CDSTypes.KW_NAMESPACE) || tokenType.equals(CDSTypes.KW_USING)
                 || tokenType.equals(CDSTypes.KW_TYPE) || tokenType.equals(CDSTypes.KW_ENTITY)
                 || tokenType.equals(CDSTypes.KW_ACTION) || tokenType.equals(CDSTypes.KW_ACTIONS)
