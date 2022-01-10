@@ -120,7 +120,7 @@ private type_field ::= type_field_identifier T_COLON dataType T_SEMI
 private type_field_identifier ::= identifier
 
 private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_field+ T_RBRACE T_SEMI
-private entity_extend ::= T_COLON entity_extend_identifier
+private entity_extend ::= T_COLON entity_extend_identifier (T_COMMA entity_extend_identifier)*
 private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
 private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? annotation T_SEMI
