@@ -3,7 +3,7 @@
     <id>de.joachimsohn.CDS-Language-Support</id>
 
     <name>CAP CDS-Language Support</name>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -37,6 +37,7 @@
                 <li>restrict</li>
                 <li>cds.on.insert / cds.on.update</li>
             </ul>
+            <li>entities can now extend multiple objects</li>
         </ul>
         improved overall syntax checking to support more cases
         ]]>
