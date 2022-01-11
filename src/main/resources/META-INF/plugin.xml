@@ -3,12 +3,12 @@
     <id>de.joachimsohn.CDS-Language-Support</id>
 
     <name>CAP CDS-Language Support</name>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
     <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
-    <idea-version since-build="211"/>
+    <idea-version since-build="211.*" until-build="213.*"/>
 
     <description><![CDATA[
     <p>Provides basic support while editing your CDS files.</p>
