@@ -13,8 +13,8 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import de.joachimsohn.cds.lang.CDSFile;
 import de.joachimsohn.cds.lang.CDSLanguage;
-import de.joachimsohn.language.parser.CDSParser;
-import de.joachimsohn.language.psi.CDSTypes;
+import de.joachimsohn.cds.parser.CDSParser;
+import de.joachimsohn.cds.psi.CDSTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class CDSParserDefinition implements ParserDefinition {
@@ -45,7 +45,7 @@ public class CDSParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return TokenSet.create(CDSTypes.SINGLE_QUOTED_STRING);
+        return TokenSet.create(CDSTypes.STRINGLIT);
     }
 
     @NotNull

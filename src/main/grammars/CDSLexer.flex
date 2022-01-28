@@ -1,11 +1,11 @@
-package de.joachimsohn.language.cds;
+package de.joachimsohn.cds.parser;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static de.joachimsohn.language.psi.CDSTypes.*;
+import static de.joachimsohn.cds.psi.CDSTypes.*;
 
 %%
 
@@ -27,9 +27,9 @@ WHITE_SPACE=\s+
 
 LINE_COMMENT="//".+
 BLOCK_COMMENT="/"\*.*\*"/"
-R_NUMERIC=[0-9]+(\.[0-9]*)?
-R_STRING=[a-zA-Z]+
-R_DATE=[0-9]{2}\.[0-9]{2}\.[0-9]{4}
+STRINGLIT='[\w\./@]+'
+NUMBERLIT=[0-9]+(\.[0-9]*)?
+ID=[a-zA-Z_0-9]+
 
 %%
 <YYINITIAL> {
@@ -63,6 +63,7 @@ R_DATE=[0-9]{2}\.[0-9]{2}\.[0-9]{4}
   "from"                { return KW_FROM; }
   "define"              { return KW_DEFINE; }
   "entity"              { return KW_ENTITY; }
+  "aspect"              { return KW_ASPECT; }
   "service"             { return KW_SERVICE; }
   "type"                { return KW_TYPE; }
   "key"                 { return KW_KEY; }
@@ -110,14 +111,15 @@ R_DATE=[0-9]{2}\.[0-9]{2}\.[0-9]{4}
   "grant"               { return KW_GRANT; }
   "to"                  { return KW_TO; }
   "KW_UPDATE"           { return KW_UPDATE; }
+  "R_DATE"              { return R_DATE; }
   "READ"                { return READ; }
   "DELETE"              { return DELETE; }
 
   {LINE_COMMENT}        { return LINE_COMMENT; }
   {BLOCK_COMMENT}       { return BLOCK_COMMENT; }
-  {R_NUMERIC}           { return R_NUMERIC; }
-  {R_STRING}            { return R_STRING; }
-  {R_DATE}              { return R_DATE; }
+  {STRINGLIT}           { return STRINGLIT; }
+  {NUMBERLIT}           { return NUMBERLIT; }
+  {ID}                  { return ID; }
 
 }
 

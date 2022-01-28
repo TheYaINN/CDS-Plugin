@@ -1,7 +1,4 @@
 # CAP CDS Language Support
-
-[![CodeQL](https://github.com/TheYaINN/CDS-Plugin/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/TheYaINN/CDS-Plugin/actions/workflows/codeql-analysis.yml)
-
 | Buildstatus |                                                                                                                                                                                                  |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Main        | [![CodeQL](https://github.com/TheYaINN/CDS-Plugin/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/TheYaINN/CDS-Plugin/actions/workflows/codeql-analysis.yml)  |
@@ -10,20 +7,17 @@
 This Project is a simple SAP CAP CDS languge support for IntelliJ.
 
 ## Table Of Content
-
 * [General](#general)
 * [Changelog](#changelog)
 * [Roadmap](#roadmap)
 * [License](./LICENSE)
 
 ## General
-
 Want to support me with a donation? <a href="https://www.paypal.com/donate/?hosted_button_id=ZF95ZSZUWBCR8">click
 here!</a> <br>
 Want to support otherwise? -> help me improve the plugin by opening issues or contribute with your own code!
 
 ## Changelog
-
 * 0.3.0
     * Add missing implementations
     * Improve highlighting for annotations
@@ -39,7 +33,6 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
     * Simple Syntax checking
 
 ## Roadmap
-
 * Add completion contributor
 * Add reference contributor
 * Add usage provider
