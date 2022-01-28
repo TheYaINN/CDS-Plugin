@@ -1,4 +1,4 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.cds.lang;
 
 import com.intellij.lang.Language;
 
@@ -7,7 +7,13 @@ public class CDSLanguage extends Language {
     public static final CDSLanguage INSTANCE = new CDSLanguage();
 
     private CDSLanguage() {
-        super("Cds");
+        super(Constants.NAME);
     }
+
+    @Override
+    public boolean isCaseSensitive() {
+        return true;
+    }
+
 
 }

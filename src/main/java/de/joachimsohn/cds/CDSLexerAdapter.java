@@ -1,4 +1,4 @@
-package de.joachimsohn.language;
+package de.joachimsohn.cds;
 
 import com.intellij.lexer.FlexAdapter;
 import de.joachimsohn.language.cds._CDSLexer;

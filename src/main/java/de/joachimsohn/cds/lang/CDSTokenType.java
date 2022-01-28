@@ -1,4 +1,4 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.cds.lang;
 
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NonNls;
@@ -12,7 +12,7 @@ public class CDSTokenType extends IElementType {
 
     @Override
     public String toString() {
-        return "CDSTokenType." + super.toString();
+        return Constants.TOKENTYPE + super.toString();
     }
 
 }

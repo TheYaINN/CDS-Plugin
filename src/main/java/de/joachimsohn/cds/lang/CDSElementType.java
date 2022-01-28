@@ -1,4 +1,4 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.cds.lang;
 
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NonNls;

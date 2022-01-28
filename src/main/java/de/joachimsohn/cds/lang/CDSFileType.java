@@ -1,10 +1,12 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.cds.lang;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
+import javax.swing.*;
+
+import static de.joachimsohn.cds.lang.Constants.EXTENSIONS;
 
 public class CDSFileType extends LanguageFileType {
 
@@ -17,7 +19,7 @@ public class CDSFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Cds File";
+        return Constants.FILE;
     }
 
     @NotNull
@@ -29,7 +31,7 @@ public class CDSFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "cds";
+        return EXTENSIONS;
     }
 
     @Nullable

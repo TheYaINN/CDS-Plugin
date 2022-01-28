@@ -1,4 +1,4 @@
-package de.joachimsohn.language;
+package de.joachimsohn.cds.highlight;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

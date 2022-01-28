@@ -8,8 +8,8 @@
   psiImplPackage="de.joachimsohn.language.psi.impl"
 
   elementTypeHolderClass="de.joachimsohn.language.psi.CDSTypes"
-  elementTypeClass="de.joachimsohn.language.psi.CDSElementType"
-  tokenTypeClass="de.joachimsohn.language.psi.CDSTokenType"
+  elementTypeClass="de.joachimsohn.cds.lang.CDSElementType"
+  tokenTypeClass="de.joachimsohn.cds.lang.CDSTokenType"
 
   tokens = [
     //https://github.com/JetBrains/intellij-community/blob/master/plugins/groovy/groovy-psi/src/org/jetbrains/plugins/groovy/lang/parser/groovy.bnf
@@ -18,7 +18,7 @@
     BLOCK_COMMENT = 'regexp:/\*.*\*/'
 
     R_NUMERIC = 'regexp:\d+(\.\d*)?'
-    R_STRING = 'regexp:[a-zA-Z]+'
+    R_STRING = 'regexp:"[a-zA-Z]+"'
     R_DATE = 'regexp:[0-9]{2}\.[0-9]{2}\.[0-9]{4}'
 
     KW_ENUM = 'enum'
@@ -51,6 +51,7 @@
     KW_FROM = 'from'
     KW_DEFINE = 'define'
     KW_ENTITY = 'entity'
+    KW_ASPECT = 'aspect'
     KW_SERVICE = 'service'
     KW_TYPE = 'type'
     KW_KEY = 'key'
@@ -99,19 +100,23 @@
     KW_TO = 'to'
   ]
 }
-root ::= namespace_? import_* body_*
+File ::= namespace_? import_* body_*
 namespace_ ::= KW_NAMESPACE path_dot T_SEMI
 
-import_ ::= KW_USING  ( import_multiple | import_identifier ) import_as? KW_FROM single_quoted_string T_SEMI
+import_ ::= KW_USING  ( import_multiple | import_identifier )? KW_FROM single_quoted_string T_SEMI
 private import_as ::= KW_AS import_as_identifier
 private import_as_identifier ::= identifier
 private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multiple_item)* T_RBRACE
-private import_multiple_item ::= import_identifier import_as?
-private import_identifier ::= path_dot { extends = identifier }
+private import_multiple_item ::= import_identifier
+private import_identifier ::= path_dot import_as? { extends = identifier }
 
 private body_ ::= annotation ( model_ | service_ )
 
-model_ ::= KW_DEFINE? ( type_ | entity_ )
+model_ ::= KW_DEFINE? ( type_ | entity_ | aspect_ )
+
+private aspect_ ::= KW_ASPECT aspect_identifier T_LBRACE aspect_field+ T_RBRACE T_SEMI
+private aspect_identifier ::= identifier
+private aspect_field ::= aspect_identifier T_COLON dataType T_SEMI
 
 private type_ ::= KW_TYPE type_identifier ( T_COLON  ( dataType | relation_ ) | type_object ) T_SEMI
 private type_identifier ::= identifier
@@ -125,9 +130,9 @@ private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
 private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? annotation T_SEMI
 private entity_default ::= KW_DEFAULT entity_default_value
-private entity_default_value ::= R_NUMERIC | single_quoted_string
+private entity_default_value ::= literal_number | single_quoted_string
 private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
-private entity_type_reference_object_identifier ::= R_STRING (T_COLON R_STRING)? { extends = identifier }
+private entity_type_reference_object_identifier ::= literal_string (T_COLON literal_string)? { extends = identifier }
 private entity_field_identifier ::= identifier
 
 service_ ::= KW_SERVICE service_identifier service_body T_SEMI
@@ -170,7 +175,7 @@ private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_asser
 private annotation_assert_unique_field ::= entity_field_identifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
 private annotation_assert_integrity ::= KW_INTEGRITY T_COLON dataType_boolean
 private annotation_assert_format ::= KW_FORMAT T_COLON single_quoted_string T_COLON
-private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( R_NUMERIC | R_DATE ) T_RBRACK | dataType_enum) T_COLON
+private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | dataType_enum) T_COLON
 private annotation_assert_notnull ::= KW_NOTNULL T_COLON dataType_boolean
 private annotation_restrict ::= KW_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
 private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
@@ -191,18 +196,18 @@ private expression_key ::= path_dot
 private expression_value ::= string_under | ( T_DOLLAR | T_COLON )? path_dot
 private expression_exists ::= KW_EXISTS T_LPAREN sql_Statement T_RPAREN
 
-identifier ::= (string_under | R_STRING | R_NUMERIC )+
+identifier ::= (string_under | literal_string | literal_number )+
 
 private string_encapsulation ::= T_HYPH | T_QOUTE
-single_quoted_string ::= string_encapsulation ( path_slash |  R_STRING ) string_encapsulation
-private string_under ::= R_STRING (T_UNDER R_STRING)+
-private path_dot ::= R_STRING (T_DOT R_STRING)*
+single_quoted_string ::= string_encapsulation ( path_slash |  literal_string ) string_encapsulation
+private string_under ::= literal_string (T_UNDER literal_string)+
+private path_dot ::= literal_string (T_DOT literal_string)*
 private path_slash ::= T_AT? file_path_element (T_SLASH file_path_element)*
-private file_path_element ::= T_DOT | T_RECURSIVE_DESCENT | R_STRING
+private file_path_element ::= T_DOT | T_RECURSIVE_DESCENT | literal_string
 
-dataType ::= 'String' ('('R_NUMERIC')' | dataType_enum)?
+dataType ::= 'String' ('('literal_number')' | dataType_enum)?
             | 'Integer'
-            | 'Decimal'('('R_NUMERIC','R_NUMERIC')')?
+            | 'Decimal'('('literal_number','literal_number')')?
             | 'DateTime'
             | 'Currency'
             | 'array of' ( entity_identifier | type_identifier )
@@ -219,3 +224,6 @@ private relation_identifier ::= path_dot { extends = identifier }
 private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( dataType | relation_ ) T_SEMI
 private relation_field_identifier ::= identifier
+
+private literal_string ::= R_STRING
+private literal_number ::= R_NUMERIC

@@ -1,4 +1,4 @@
-package de.joachimsohn.language.extensions;
+package de.joachimsohn.cds.extensions;
 
 import com.intellij.lang.Commenter;
 import org.jetbrains.annotations.Nullable;
