@@ -1,10 +1,10 @@
 plugins {
-    id 'org.jetbrains.intellij' version '1.2.0'
+    id 'org.jetbrains.intellij' version '1.3.1'
     id 'java'
 }
 
 group 'de.joachimsohn'
-version '0.3.1'
+version '0.3.2'
 
 repositories {
     mavenCentral()
@@ -16,7 +16,7 @@ dependencies {
 }
 
 intellij {
-    version = '2021.2.2'
+    version = '2021.3.1'
 }
 
 test {

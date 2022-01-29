@@ -1,4 +1,4 @@
-package de.joachimsohn.language.psi;
+package de.joachimsohn.cds.lang;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -19,7 +19,7 @@ public class CDSFile extends PsiFileBase {
 
     @Override
     public String toString() {
-        return "Cds File";
+        return Constants.FILE;
     }
 
 }

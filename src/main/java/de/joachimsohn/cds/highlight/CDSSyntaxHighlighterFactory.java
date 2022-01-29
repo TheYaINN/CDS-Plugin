@@ -1,4 +1,4 @@
-package de.joachimsohn.language;
+package de.joachimsohn.cds.highlight;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
@@ -11,6 +11,6 @@ public class CDSSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
 
     @Override
     public @NotNull SyntaxHighlighter getSyntaxHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
-        return new CDSHighlighter();
+        return new CDSSyntaxHighlighter();
     }
 }

@@ -3,12 +3,10 @@
     <id>de.joachimsohn.CDS-Language-Support</id>
 
     <name>CAP CDS-Language Support</name>
-    <version>0.3.1</version>
     <vendor email="CDSPlugin@gmail.com" url="https://github.com/TheYaINN/CDS-Plugin">Bengt Joachimsohn</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
-    <idea-version since-build="211.*" until-build="213.*"/>
 
     <description><![CDATA[
     <p>Provides basic support while editing your CDS files.</p>
@@ -45,14 +43,14 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="Cds File" implementationClass="de.joachimsohn.language.psi.CDSFileType"
-                  fieldName="INSTANCE" language="Cds" extensions="cds"/>
-        <lang.parserDefinition language="Cds" implementationClass="de.joachimsohn.language.CDSParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="Cds"
-                                       implementationClass="de.joachimsohn.language.CDSSyntaxHighlighterFactory"/>
-        <completion.contributor language="Cds"
-                                implementationClass="de.joachimsohn.language.CDSCompletionContributor"/>
-        <lang.commenter language="Cds" implementationClass="de.joachimsohn.language.extensions.CDSCommenter"/>
+        <fileType name="Cds File" implementationClass="de.joachimsohn.cds.lang.CDSFileType"
+                  fieldName="INSTANCE" language="CAP CDS" extensions="cds"/>
+        <lang.parserDefinition language="CAP CDS" implementationClass="de.joachimsohn.cds.CDSParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="CAP CDS"
+                                       implementationClass="de.joachimsohn.cds.highlight.CDSSyntaxHighlighter$CDSSyntaxHighlighterFactory"/>
+        <completion.contributor language="CAP CDS"
+                                implementationClass="de.joachimsohn.cds.completion.CDSCompletionContributor"/>
+        <lang.commenter language="CAP CDS" implementationClass="de.joachimsohn.cds.extensions.CDSCommenter"/>
     </extensions>
 
     <actions>

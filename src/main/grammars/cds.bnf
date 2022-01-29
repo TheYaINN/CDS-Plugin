@@ -1,25 +1,23 @@
 {
-  parserClass="de.joachimsohn.language.parser.CDSParser"
+  parserClass="de.joachimsohn.cds.parser.CDSParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="CDS"
   psiImplClassSuffix="Impl"
-  psiPackage="de.joachimsohn.language.psi"
-  psiImplPackage="de.joachimsohn.language.psi.impl"
+  psiPackage="de.joachimsohn.cds.psi"
+  psiImplPackage="de.joachimsohn.cds.psi.impl"
 
-  elementTypeHolderClass="de.joachimsohn.language.psi.CDSTypes"
-  elementTypeClass="de.joachimsohn.language.psi.CDSElementType"
-  tokenTypeClass="de.joachimsohn.language.psi.CDSTokenType"
+  elementTypeHolderClass="de.joachimsohn.cds.psi.CDSTypes"
+  elementTypeClass="de.joachimsohn.cds.lang.CDSElementType"
+  tokenTypeClass="de.joachimsohn.cds.lang.CDSTokenType"
 
   tokens = [
-    //https://github.com/JetBrains/intellij-community/blob/master/plugins/groovy/groovy-psi/src/org/jetbrains/plugins/groovy/lang/parser/groovy.bnf
-
     LINE_COMMENT = 'regexp://.+'
     BLOCK_COMMENT = 'regexp:/\*.*\*/'
 
-    R_NUMERIC = 'regexp:\d+(\.\d*)?'
-    R_STRING = 'regexp:[a-zA-Z]+'
-    R_DATE = 'regexp:[0-9]{2}\.[0-9]{2}\.[0-9]{4}'
+    stringlit = "regexp:'[\w\./@]+'"
+    numberlit = 'regexp:\d+(\.\d*)?'
+    id = 'regexp:\w+'
 
     KW_ENUM = 'enum'
     KW_TRUE = 'true'
@@ -51,6 +49,7 @@
     KW_FROM = 'from'
     KW_DEFINE = 'define'
     KW_ENTITY = 'entity'
+    KW_ASPECT = 'aspect'
     KW_SERVICE = 'service'
     KW_TYPE = 'type'
     KW_KEY = 'key'
@@ -99,19 +98,23 @@
     KW_TO = 'to'
   ]
 }
-root ::= namespace_? import_* body_*
-namespace_ ::= KW_NAMESPACE path_dot T_SEMI
+File ::= [Namespace] import_* RootItems
+Namespace ::= KW_NAMESPACE PropertyPath T_SEMI
 
-import_ ::= KW_USING  ( import_multiple | import_identifier ) import_as? KW_FROM single_quoted_string T_SEMI
+import_ ::= KW_USING  ( import_multiple | import_identifier )? KW_FROM stringlit T_SEMI
 private import_as ::= KW_AS import_as_identifier
 private import_as_identifier ::= identifier
 private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multiple_item)* T_RBRACE
-private import_multiple_item ::= import_identifier import_as?
-private import_identifier ::= path_dot { extends = identifier }
+private import_multiple_item ::= import_identifier
+private import_identifier ::= PropertyPath [import_as]
 
-private body_ ::= annotation ( model_ | service_ )
+RootItems ::= annotation ( model_ | service_ )*
 
-model_ ::= KW_DEFINE? ( type_ | entity_ )
+model_ ::= KW_DEFINE? ( type_ | entity_ | aspect_ )
+
+private aspect_ ::= KW_ASPECT aspect_identifier T_LBRACE aspect_field+ T_RBRACE T_SEMI
+private aspect_identifier ::= identifier
+private aspect_field ::= aspect_identifier T_COLON dataType T_SEMI
 
 private type_ ::= KW_TYPE type_identifier ( T_COLON  ( dataType | relation_ ) | type_object ) T_SEMI
 private type_identifier ::= identifier
@@ -123,11 +126,11 @@ private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_
 private entity_extend ::= T_COLON entity_extend_identifier (T_COMMA entity_extend_identifier)*
 private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
-private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType entity_default? | relation_ | entity_type_reference ) KW_REQUIRED? annotation T_SEMI
+private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType [entity_default] | relation_ | entity_type_reference ) [KW_REQUIRED] annotation T_SEMI
 private entity_default ::= KW_DEFAULT entity_default_value
-private entity_default_value ::= R_NUMERIC | single_quoted_string
+private entity_default_value ::= literal_number | stringlit
 private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
-private entity_type_reference_object_identifier ::= R_STRING (T_COLON R_STRING)? { extends = identifier }
+private entity_type_reference_object_identifier ::= id [T_COLON id] { extends = identifier }
 private entity_field_identifier ::= identifier
 
 service_ ::= KW_SERVICE service_identifier service_body T_SEMI
@@ -135,14 +138,14 @@ private service_identifier ::= identifier
 private service_body ::= T_LBRACE (( service_entity |  service_type | method_ | actions_ ) T_SEMI )+ T_RBRACE
 private service_entity ::= KW_ENTITY service_entity_identifier method_parameters? (service_entity_body | service_entity_mirror) (join_body | join_ | sql_where_clause )? actions_?
 private service_entity_body ::= T_LBRACE service_entity_field T_RBRACE
-private service_entity_field ::= KW_KEY? service_entity_field_identifier T_COLON dataType
+private service_entity_field ::= [KW_KEY] service_entity_field_identifier T_COLON dataType
 private service_entity_field_identifier ::= identifier
 private service_entity_identifier ::= identifier
 private service_entity_mirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) service_entity_mirror_identifier (T_LPAREN service_entity_mirror_params T_RPAREN)?
 private service_entity_mirror_params ::= service_entity_mirror_params_identifier service_entity_mirror_params_value (T_COMMA service_entity_mirror_params_identifier service_entity_mirror_params_value)*
 private service_entity_mirror_params_value ::= T_COLON identifier
 private service_entity_mirror_params_identifier ::= identifier T_COLON
-private service_entity_mirror_identifier ::= path_dot
+private service_entity_mirror_identifier ::= PropertyPath
 private service_type ::= KW_TYPE service_type_identifier T_LBRACE service_type_field+ T_RBRACE
 private service_type_field ::= service_type_field_identifier T_COLON KW_MANY? dataType T_SEMI
 private service_type_field_identifier ::= identifier
@@ -152,30 +155,30 @@ private actions_ ::= KW_ACTIONS T_LBRACE (method_ T_SEMI)* T_RBRACE
 private method_ ::= ( KW_ACTION | KW_FUNCTION ) method_identifier method_parameters method_return?
 private method_return ::= KW_RETURNS dataType
 private method_parameters ::= T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
-method_identifier ::= identifier
+private method_identifier ::= identifier
 private method_parameters_value ::= identifier T_COLON identifier
 
-private join_ ::= join_type identifier KW_ON expression join_body? join_condition
+private join_ ::= join_type identifier KW_ON expression [join_body] join_condition
 private join_type ::=  (KW_LEFT | KW_RIGHT)? (KW_OUTER | KW_INNER)? KW_JOIN
 private join_body ::= T_LBRACE join_field  (T_COMMA join_field)* T_RBRACE
-private join_field ::= path_dot ( KW_AS identifier)?
+private join_field ::= PropertyPath ( KW_AS identifier)?
 private join_condition ::= KW_WHERE expression
 
 annotation ::= annotation_entry*
 private annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
 private annotation_cds ::= KW_CDS_ON (KW_INSERT | KW_UPDATE) T_COLON T_DOLLAR (KW_NOW | KW_USER)
-private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON single_quoted_string T_RPAREN
+private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON stringlit T_RPAREN
 private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
 private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_assert_unique_field (T_COMMA annotation_assert_unique_field)* T_RBRACE
 private annotation_assert_unique_field ::= entity_field_identifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
 private annotation_assert_integrity ::= KW_INTEGRITY T_COLON dataType_boolean
-private annotation_assert_format ::= KW_FORMAT T_COLON single_quoted_string T_COLON
-private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( R_NUMERIC | R_DATE ) T_RBRACK | dataType_enum) T_COLON
+private annotation_assert_format ::= KW_FORMAT T_COLON stringlit T_COLON
+private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | dataType_enum) T_COLON
 private annotation_assert_notnull ::= KW_NOTNULL T_COLON dataType_boolean
 private annotation_restrict ::= KW_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
 private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
-private annotation_grant ::= KW_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA single_quoted_string)* T_RBRACK T_COMMA?
-private annotation_to ::= KW_TO T_COLON single_quoted_string T_COMMA?
+private annotation_grant ::= KW_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA stringlit)* T_RBRACK T_COMMA?
+private annotation_to ::= KW_TO T_COLON stringlit T_COMMA?
 private annotation_where ::= KW_WHERE T_COLON T_HYPH expression ( KW_EXISTS T_LPAREN sql_Statement T_RPAREN )? T_HYPH
 private annotation_grant_authorization ::= READ | KW_UPDATE | DELETE
 
@@ -187,22 +190,18 @@ private sql_from_clause_identifier ::= identifier
 private sql_where_clause ::= KW_WHERE expression ((KW_AND | KW_OR) expression)*
 
 private expression ::= (expression_key T_ASSIGN expression_value) | expression_exists
-private expression_key ::= path_dot
-private expression_value ::= string_under | ( T_DOLLAR | T_COLON )? path_dot
+private expression_key ::= PropertyPath
+private expression_value ::= string_under | ( T_DOLLAR | T_COLON )? PropertyPath
 private expression_exists ::= KW_EXISTS T_LPAREN sql_Statement T_RPAREN
 
-identifier ::= (string_under | R_STRING | R_NUMERIC )+
+identifier ::= id
 
-private string_encapsulation ::= T_HYPH | T_QOUTE
-single_quoted_string ::= string_encapsulation ( path_slash |  R_STRING ) string_encapsulation
-private string_under ::= R_STRING (T_UNDER R_STRING)+
-private path_dot ::= R_STRING (T_DOT R_STRING)*
-private path_slash ::= T_AT? file_path_element (T_SLASH file_path_element)*
-private file_path_element ::= T_DOT | T_RECURSIVE_DESCENT | R_STRING
+private string_under ::= literal_string (T_UNDER literal_string)+
+private PropertyPath ::= id (T_DOT id)*
 
-dataType ::= 'String' ('('R_NUMERIC')' | dataType_enum)?
+dataType ::= 'String' ('('literal_number')' | dataType_enum)?
             | 'Integer'
-            | 'Decimal'('('R_NUMERIC','R_NUMERIC')')?
+            | 'Decimal'('('literal_number','literal_number')')?
             | 'DateTime'
             | 'Currency'
             | 'array of' ( entity_identifier | type_identifier )
@@ -215,7 +214,10 @@ private dataType_boolean ::= KW_TRUE | KW_FALSE
 
 private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
 private relation_single ::= relation_identifier KW_REQUIRED? (KW_ON expression)?
-private relation_identifier ::= path_dot { extends = identifier }
+private relation_identifier ::= PropertyPath { extends = identifier }
 private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( dataType | relation_ ) T_SEMI
 private relation_field_identifier ::= identifier
+
+private literal_string ::= stringlit
+private literal_number ::= numberlit
