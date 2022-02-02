@@ -17,11 +17,11 @@
 
     stringlit = "regexp:'[\w\./@]+'"
     numberlit = 'regexp:\d+(\.\d*)?'
+    B_TRUE = 'true'
+    B_FALSE = 'false'
     id = 'regexp:\w+'
 
     KW_ENUM = 'enum'
-    KW_TRUE = 'true'
-    KW_FALSE = 'false'
 
     T_LBRACE = '{'
     T_LPAREN = '('
@@ -101,7 +101,7 @@
 File ::= [Namespace] import_* RootItems
 Namespace ::= KW_NAMESPACE PropertyPath T_SEMI
 
-import_ ::= KW_USING  ( import_multiple | import_identifier )? KW_FROM stringlit T_SEMI
+import_ ::= KW_USING  ( import_multiple | import_identifier )? KW_FROM literal_string T_SEMI
 private import_as ::= KW_AS import_as_identifier
 private import_as_identifier ::= identifier
 private import_multiple ::= T_LBRACE import_multiple_item (T_COMMA import_multiple_item)* T_RBRACE
@@ -114,19 +114,19 @@ model_ ::= KW_DEFINE? ( type_ | entity_ | aspect_ )
 
 private aspect_ ::= KW_ASPECT aspect_identifier T_LBRACE aspect_field+ T_RBRACE T_SEMI
 private aspect_identifier ::= identifier
-private aspect_field ::= aspect_identifier T_COLON dataType T_SEMI
+private aspect_field ::= aspect_identifier T_COLON Datatype T_SEMI
 
-private type_ ::= KW_TYPE type_identifier ( T_COLON  ( dataType | relation_ ) | type_object ) T_SEMI
+private type_ ::= KW_TYPE type_identifier ( T_COLON  ( Datatype | relation_ ) | type_object ) T_SEMI
 private type_identifier ::= identifier
 private type_object ::= T_LBRACE type_field* T_RBRACE
-private type_field ::= type_field_identifier T_COLON dataType T_SEMI
+private type_field ::= type_field_identifier T_COLON Datatype T_SEMI
 private type_field_identifier ::= identifier
 
 private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_field+ T_RBRACE T_SEMI
 private entity_extend ::= T_COLON entity_extend_identifier (T_COMMA entity_extend_identifier)*
 private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
-private entity_field ::= KW_KEY? entity_field_identifier T_COLON (dataType [entity_default] | relation_ | entity_type_reference ) [KW_REQUIRED] annotation T_SEMI
+private entity_field ::= KW_KEY? entity_field_identifier T_COLON (Datatype [entity_default] | relation_ | entity_type_reference ) [KW_REQUIRED] annotation T_SEMI
 private entity_default ::= KW_DEFAULT entity_default_value
 private entity_default_value ::= literal_number | stringlit
 private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
@@ -138,7 +138,7 @@ private service_identifier ::= identifier
 private service_body ::= T_LBRACE (( service_entity |  service_type | method_ | actions_ ) T_SEMI )+ T_RBRACE
 private service_entity ::= KW_ENTITY service_entity_identifier method_parameters? (service_entity_body | service_entity_mirror) (join_body | join_ | sql_where_clause )? actions_?
 private service_entity_body ::= T_LBRACE service_entity_field T_RBRACE
-private service_entity_field ::= [KW_KEY] service_entity_field_identifier T_COLON dataType
+private service_entity_field ::= [KW_KEY] service_entity_field_identifier T_COLON Datatype
 private service_entity_field_identifier ::= identifier
 private service_entity_identifier ::= identifier
 private service_entity_mirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) service_entity_mirror_identifier (T_LPAREN service_entity_mirror_params T_RPAREN)?
@@ -147,13 +147,13 @@ private service_entity_mirror_params_value ::= T_COLON identifier
 private service_entity_mirror_params_identifier ::= identifier T_COLON
 private service_entity_mirror_identifier ::= PropertyPath
 private service_type ::= KW_TYPE service_type_identifier T_LBRACE service_type_field+ T_RBRACE
-private service_type_field ::= service_type_field_identifier T_COLON KW_MANY? dataType T_SEMI
+private service_type_field ::= service_type_field_identifier T_COLON KW_MANY? Datatype T_SEMI
 private service_type_field_identifier ::= identifier
 private service_type_identifier ::= identifier
 
 private actions_ ::= KW_ACTIONS T_LBRACE (method_ T_SEMI)* T_RBRACE
 private method_ ::= ( KW_ACTION | KW_FUNCTION ) method_identifier method_parameters method_return?
-private method_return ::= KW_RETURNS dataType
+private method_return ::= KW_RETURNS Datatype
 private method_parameters ::= T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
 private method_identifier ::= identifier
 private method_parameters_value ::= identifier T_COLON identifier
@@ -171,10 +171,10 @@ private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON stringlit T_RPAREN
 private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
 private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_assert_unique_field (T_COMMA annotation_assert_unique_field)* T_RBRACE
 private annotation_assert_unique_field ::= entity_field_identifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
-private annotation_assert_integrity ::= KW_INTEGRITY T_COLON dataType_boolean
+private annotation_assert_integrity ::= KW_INTEGRITY T_COLON literal_boolean
 private annotation_assert_format ::= KW_FORMAT T_COLON stringlit T_COLON
-private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | dataType_enum) T_COLON
-private annotation_assert_notnull ::= KW_NOTNULL T_COLON dataType_boolean
+private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
+private annotation_assert_notnull ::= KW_NOTNULL T_COLON literal_boolean
 private annotation_restrict ::= KW_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
 private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
 private annotation_grant ::= KW_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA stringlit)* T_RBRACK T_COMMA?
@@ -199,25 +199,36 @@ identifier ::= id
 private string_under ::= literal_string (T_UNDER literal_string)+
 private PropertyPath ::= id (T_DOT id)*
 
-dataType ::= 'String' ('('literal_number')' | dataType_enum)?
+private Datatype ::= Datatypes [Datatype_Enum]
+
+Datatypes ::= 'Boolean'
             | 'Integer'
-            | 'Decimal'('('literal_number','literal_number')')?
+            | 'Integer64'
+            | 'Decimal' [Datatype_Argument_Decimal]
+            | 'Double'
+            | 'Date'
+            | 'Time'
             | 'DateTime'
-            | 'Currency'
-            | 'array of' ( entity_identifier | type_identifier )
+            | 'String' [Datatype_Argument]
+            | 'Binary' [Datatype_Argument]
+            | 'LargeBinary'
+            | 'LargeString'
             | entity_identifier
             | type_identifier
 
-private dataType_array ::= KW_MANY | KW_ARRAY //TODO https://cap.cloud.sap/docs/cds/cdl#arrayed-types and replace in dataType
-private dataType_enum ::= KW_ENUM T_LBRACE (identifier T_SEMI)+ T_RBRACE
-private dataType_boolean ::= KW_TRUE | KW_FALSE
+private Datatype_Argument ::= T_LPAREN literal_number T_RPAREN
+private Datatype_Argument_Decimal ::= T_LPAREN literal_number T_COMMA  literal_number T_RPAREN
+
+private Datatype_Enum ::= KW_ENUM T_LBRACE (identifier (Datatype_Enum_assignment)? T_SEMI)+ T_RBRACE
+private Datatype_Enum_assignment ::= T_ASSIGN (literal_string | literal_number | literal_boolean)
 
 private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
 private relation_single ::= relation_identifier KW_REQUIRED? (KW_ON expression)?
 private relation_identifier ::= PropertyPath { extends = identifier }
 private relation_body ::= T_LBRACE relation_field+ T_RBRACE
-private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( dataType | relation_ ) T_SEMI
+private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | relation_ ) T_SEMI
 private relation_field_identifier ::= identifier
 
 private literal_string ::= stringlit
 private literal_number ::= numberlit
+private literal_boolean ::= B_FALSE | B_TRUE

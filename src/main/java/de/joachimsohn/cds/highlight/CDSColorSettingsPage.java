@@ -69,7 +69,7 @@ public class CDSColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return Constants.NAME;
+        return Constants.LANG_NAME;
     }
 
 }
