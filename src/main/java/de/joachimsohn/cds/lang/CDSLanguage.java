@@ -7,7 +7,7 @@ public class CDSLanguage extends Language {
     public static final CDSLanguage INSTANCE = new CDSLanguage();
 
     private CDSLanguage() {
-        super(Constants.NAME);
+        super(Constants.LANG_NAME);
     }
 
     @Override

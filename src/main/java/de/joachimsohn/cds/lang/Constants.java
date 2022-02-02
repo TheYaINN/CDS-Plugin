@@ -2,7 +2,7 @@ package de.joachimsohn.cds.lang;
 
 public interface Constants {
 
-    String NAME = "CAP CDS";
+    String LANG_NAME = "Cds";
 
     String FILE = "Cds File";
 

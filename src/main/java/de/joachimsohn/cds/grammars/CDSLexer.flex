@@ -1,4 +1,4 @@
-package de.joachimsohn.cds.parser;
+package de.joachimsohn.cds.grammars;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -35,9 +35,9 @@ ID=[a-zA-Z_0-9]+
 <YYINITIAL> {
   {WHITE_SPACE}         { return WHITE_SPACE; }
 
+  "true"                { return B_TRUE; }
+  "false"               { return B_FALSE; }
   "enum"                { return KW_ENUM; }
-  "true"                { return KW_TRUE; }
-  "false"               { return KW_FALSE; }
   "{"                   { return T_LBRACE; }
   "("                   { return T_LPAREN; }
   "["                   { return T_LBRACK; }
