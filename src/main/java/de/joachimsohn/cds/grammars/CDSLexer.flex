@@ -67,7 +67,6 @@ ID=[a-zA-Z_0-9]+
   "service"             { return KW_SERVICE; }
   "type"                { return KW_TYPE; }
   "key"                 { return KW_KEY; }
-  "not null"            { return KW_REQUIRED; }
   "requires"            { return KW_REQUIRES; }
   "Association to"      { return KW_ASSOCIATION_TO; }
   "Composition of"      { return KW_COMPOSITION_OF; }
@@ -102,7 +101,6 @@ ID=[a-zA-Z_0-9]+
   "format"              { return KW_FORMAT; }
   "range"               { return KW_RANGE; }
   "notNull"             { return KW_NOTNULL; }
-  "null"                { return KW_NULL; }
   "not null"            { return KW_NOT_NULL; }
   "update"              { return UPDATE; }
   "user"                { return KW_USER; }

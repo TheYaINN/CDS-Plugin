@@ -66,7 +66,7 @@ public class CDSParserDefinition implements ParserDefinition {
 
     @Override
     public @NotNull SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
-        return SpaceRequirements.MAY;
+        return SpaceRequirements.MUST;
     }
 
     @NotNull

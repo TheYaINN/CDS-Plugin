@@ -49,6 +49,8 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(CDSTypes.KW_NAMESPACE) || tokenType.equals(CDSTypes.KW_USING)
                 || tokenType.equals(CDSTypes.KW_TYPE) || tokenType.equals(CDSTypes.KW_ENTITY)
                 || tokenType.equals(CDSTypes.KW_ACTION) || tokenType.equals(CDSTypes.KW_ACTIONS)
+                || tokenType.equals(CDSTypes.KW_ASPECT) || tokenType.equals(CDSTypes.B_TRUE)
+                || tokenType.equals(CDSTypes.B_FALSE)
                 || tokenType.equals(CDSTypes.KW_KEY) || tokenType.equals(CDSTypes.KW_FUNCTION)
                 || tokenType.equals(CDSTypes.KW_SERVICE) || tokenType.equals(CDSTypes.KW_FROM)) {
             return KEY_KEYS;

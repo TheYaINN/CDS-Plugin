@@ -53,7 +53,6 @@
     KW_SERVICE = 'service'
     KW_TYPE = 'type'
     KW_KEY = 'key'
-    KW_REQUIRED = 'not null'
     KW_REQUIRES = 'requires'
     KW_ASSOCIATION_TO = 'Association to'
     KW_COMPOSITION_OF = 'Composition of'
@@ -88,7 +87,6 @@
     KW_FORMAT = 'format'
     KW_RANGE = 'range'
     KW_NOTNULL = 'notNull'
-    KW_NULL = 'null'
     KW_NOT_NULL = 'not null'
     UPDATE = 'update'
     KW_USER = 'user'
@@ -126,7 +124,7 @@ private entity_ ::=  KW_ENTITY entity_identifier entity_extend? T_LBRACE entity_
 private entity_extend ::= T_COLON entity_extend_identifier (T_COMMA entity_extend_identifier)*
 private entity_extend_identifier ::= identifier
 private entity_identifier ::= identifier
-private entity_field ::= KW_KEY? entity_field_identifier T_COLON (Datatype [entity_default] | relation_ | entity_type_reference ) [KW_REQUIRED] annotation T_SEMI
+private entity_field ::= KW_KEY? entity_field_identifier T_COLON (Datatype [entity_default] | relation_ | entity_type_reference ) [KW_NOT_NULL] annotation T_SEMI
 private entity_default ::= KW_DEFAULT entity_default_value
 private entity_default_value ::= literal_number | stringlit
 private entity_type_reference ::= KW_TYPE_OF entity_type_reference_object_identifier
@@ -167,7 +165,7 @@ private join_condition ::= KW_WHERE expression
 annotation ::= annotation_entry*
 private annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
 private annotation_cds ::= KW_CDS_ON (KW_INSERT | KW_UPDATE) T_COLON T_DOLLAR (KW_NOW | KW_USER)
-private annotation_requires ::= T_LPAREN KW_REQUIRED T_COLON stringlit T_RPAREN
+private annotation_requires ::= T_LPAREN KW_NOT_NULL T_COLON stringlit T_RPAREN
 private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
 private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_assert_unique_field (T_COMMA annotation_assert_unique_field)* T_RBRACE
 private annotation_assert_unique_field ::= entity_field_identifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
@@ -199,7 +197,7 @@ identifier ::= id
 private string_under ::= literal_string (T_UNDER literal_string)+
 private PropertyPath ::= id (T_DOT id)*
 
-private Datatype ::= Datatypes [Datatype_Enum]
+private Datatype ::= Datatypes [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 
 Datatypes ::= 'Boolean'
             | 'Integer'
@@ -213,17 +211,15 @@ Datatypes ::= 'Boolean'
             | 'Binary' [Datatype_Argument]
             | 'LargeBinary'
             | 'LargeString'
-            | entity_identifier
-            | type_identifier
 
 private Datatype_Argument ::= T_LPAREN literal_number T_RPAREN
-private Datatype_Argument_Decimal ::= T_LPAREN literal_number T_COMMA  literal_number T_RPAREN
+private Datatype_Argument_Decimal ::= T_LPAREN literal_number T_COMMA literal_number T_RPAREN
 
 private Datatype_Enum ::= KW_ENUM T_LBRACE (identifier (Datatype_Enum_assignment)? T_SEMI)+ T_RBRACE
 private Datatype_Enum_assignment ::= T_ASSIGN (literal_string | literal_number | literal_boolean)
 
 private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
-private relation_single ::= relation_identifier KW_REQUIRED? (KW_ON expression)?
+private relation_single ::= relation_identifier KW_NOT_NULL? (KW_ON expression)?
 private relation_identifier ::= PropertyPath { extends = identifier }
 private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | relation_ ) T_SEMI
