@@ -2,4 +2,4 @@
 /build
 /.idea
 
-**/gen
+**/gen/

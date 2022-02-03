@@ -15,7 +15,7 @@
     LINE_COMMENT = 'regexp://.+'
     BLOCK_COMMENT = 'regexp:/\*.*\*/'
 
-    stringlit = "regexp:'[\w\./@]+'"
+    stringlit = "regexp:'[\w\.(\.\.)\-/@]+'"
     numberlit = 'regexp:\d+(\.\d*)?'
     B_TRUE = 'true'
     B_FALSE = 'false'
