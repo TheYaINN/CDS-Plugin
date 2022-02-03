@@ -197,6 +197,13 @@ identifier ::= id
 private string_under ::= literal_string (T_UNDER literal_string)+
 private PropertyPath ::= id (T_DOT id)*
 
+private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
+private relation_single ::= relation_identifier KW_NOT_NULL? (KW_ON expression)?
+private relation_identifier ::= PropertyPath { extends = identifier }
+private relation_body ::= T_LBRACE relation_field+ T_RBRACE
+private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | relation_ ) T_SEMI
+private relation_field_identifier ::= identifier
+
 private Datatype ::= Datatypes [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 
 Datatypes ::= 'Boolean'
@@ -217,13 +224,6 @@ private Datatype_Argument_Decimal ::= T_LPAREN literal_number T_COMMA literal_nu
 
 private Datatype_Enum ::= KW_ENUM T_LBRACE (identifier (Datatype_Enum_assignment)? T_SEMI)+ T_RBRACE
 private Datatype_Enum_assignment ::= T_ASSIGN (literal_string | literal_number | literal_boolean)
-
-private relation_ ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
-private relation_single ::= relation_identifier KW_NOT_NULL? (KW_ON expression)?
-private relation_identifier ::= PropertyPath { extends = identifier }
-private relation_body ::= T_LBRACE relation_field+ T_RBRACE
-private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | relation_ ) T_SEMI
-private relation_field_identifier ::= identifier
 
 private literal_string ::= stringlit
 private literal_number ::= numberlit
