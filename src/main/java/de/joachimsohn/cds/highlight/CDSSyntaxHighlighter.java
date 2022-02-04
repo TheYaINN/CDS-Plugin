@@ -60,6 +60,8 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
             return STRING_KEYS;
         } else if (tokenType.equals(CDSTypes.ANNOTATION)) {
             return METHOD_KEYS;
+        } else if (tokenType.equals(CDSTypes.LINE_COMMENT) || tokenType.equals(CDSTypes.BLOCK_COMMENT)) {
+            return COMMENT_KEYS;
         } else {
             return EMPTY_KEYS;
         }
