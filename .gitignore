@@ -2,4 +2,4 @@
 /build
 /.idea
 
-src/gen/
+/src/main/gen/
