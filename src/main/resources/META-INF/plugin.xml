@@ -33,6 +33,9 @@
         <completion.contributor language="Cds"
                                 implementationClass="de.joachimsohn.cds.completion.CDSCompletionContributor"/>
         <lang.commenter language="Cds" implementationClass="de.joachimsohn.cds.extensions.CDSCommenter"/>
+        <codeStyleSettingsProvider implementation="de.joachimsohn.cds.codestyle.CDSCodeStyleProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="de.joachimsohn.cds.codestyle.CDSLanguageCodeStyleSettingsProvider"/>
     </extensions>
 
     <actions>

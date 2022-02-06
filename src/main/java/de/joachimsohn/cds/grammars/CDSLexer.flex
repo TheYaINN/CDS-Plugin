@@ -26,9 +26,11 @@ EOL=\R
 WHITE_SPACE=\s+
 
 LINE_COMMENT="//".+
-BLOCK_COMMENT="/"\*.*\*"/"
-STRINGLIT='[\w\./@]+'
-NUMBERLIT=[0-9]+(\.[0-9]*)?
+
+BLOCK_COMMENT="/"\*[\w\n]*\*"/"
+STRINGLIT='[\w\.(\.\.)\-/@]+'
+NUMBERLIT=-?[0-9]+(\.[0-9]*)?
+
 ID=[a-zA-Z_0-9]+
 
 %%
@@ -67,7 +69,7 @@ ID=[a-zA-Z_0-9]+
   "service"             { return KW_SERVICE; }
   "type"                { return KW_TYPE; }
   "key"                 { return KW_KEY; }
-  "not null"            { return KW_REQUIRED; }
+  "virtual"             { return KW_VIRTUAL; }
   "requires"            { return KW_REQUIRES; }
   "Association to"      { return KW_ASSOCIATION_TO; }
   "Composition of"      { return KW_COMPOSITION_OF; }
@@ -102,7 +104,6 @@ ID=[a-zA-Z_0-9]+
   "format"              { return KW_FORMAT; }
   "range"               { return KW_RANGE; }
   "notNull"             { return KW_NOTNULL; }
-  "null"                { return KW_NULL; }
   "not null"            { return KW_NOT_NULL; }
   "update"              { return UPDATE; }
   "user"                { return KW_USER; }
@@ -110,6 +111,7 @@ ID=[a-zA-Z_0-9]+
   "restrict"            { return KW_RESTRICT; }
   "grant"               { return KW_GRANT; }
   "to"                  { return KW_TO; }
+  "Core.MediaType"      { return KW_CORE_MEDIATYPE; }
   "KW_UPDATE"           { return KW_UPDATE; }
   "R_DATE"              { return R_DATE; }
   "READ"                { return READ; }

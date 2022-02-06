@@ -17,7 +17,7 @@ public class CDSColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Key", CDSSyntaxHighlighter.KEY),
-            new AttributesDescriptor("Method", CDSSyntaxHighlighter.METHOD),
+            new AttributesDescriptor("Method", CDSSyntaxHighlighter.ANNOTATION),
             new AttributesDescriptor("Bad value", CDSSyntaxHighlighter.BAD_CHARACTER)
     };
 
