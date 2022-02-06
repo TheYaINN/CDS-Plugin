@@ -95,6 +95,7 @@
     KW_RESTRICT = 'restrict'
     KW_GRANT = 'grant'
     KW_TO = 'to'
+    KW_CORE_MEDIATYPE = 'Core.MediaType'
   ]
 }
 File ::= [Namespace] Import* RootItems
@@ -113,7 +114,7 @@ Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
 private Aspect ::= KW_ASPECT AspectIdentifier T_LBRACE AspectField+ T_RBRACE T_SEMI
 private AspectIdentifier ::= identifier
-private AspectField ::= AspectIdentifier T_COLON Datatype T_SEMI
+private AspectField ::= [Annotation] AspectIdentifier T_COLON Datatype T_SEMI
 
 private Type ::= KW_TYPE type_identifier ( T_COLON  ( Datatype | Relation ) | type_object ) T_SEMI
 private type_identifier ::= identifier
@@ -125,7 +126,7 @@ private Entity ::=  KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | Enti
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
-private EntityField ::= [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody ) Annotation T_SEMI
+private EntityField ::= [Annotation] [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody ) Annotation T_SEMI
 private EntityFieldModifier ::= KW_KEY | KW_VIRTUAL
 private EntityFieldIdentifier ::= identifier
 private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) EntityMirrorIdentifier [EntityMirrorSpecifier]
@@ -150,8 +151,9 @@ private method_parameters ::= T_LPAREN (method_parameters_value (T_COMMA method_
 private method_identifier ::= identifier
 private method_parameters_value ::= identifier T_COLON identifier
 
-Annotation ::= annotation_entry*
-private annotation_entry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert)
+Annotation ::= AnnotationEntry*
+private AnnotationEntry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert | AnnotationMediaType)
+private AnnotationMediaType ::= KW_CORE_MEDIATYPE T_COLON literal_string
 private annotation_cds ::= KW_CDS_ON (KW_INSERT | KW_UPDATE) T_COLON T_DOLLAR (KW_NOW | KW_USER)
 private annotation_requires ::= T_LPAREN KW_NOT_NULL T_COLON stringlit T_RPAREN
 private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
@@ -192,7 +194,7 @@ private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | Relation ) T_SEMI
 private relation_field_identifier ::= identifier
 
-private Datatype ::= Datatypes [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
+private Datatype ::= Datatypes [Annotation] [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 
 Datatypes ::= 'Boolean'
             | 'Integer'

@@ -109,6 +109,7 @@ ID=[a-zA-Z_0-9]+
   "restrict"            { return KW_RESTRICT; }
   "grant"               { return KW_GRANT; }
   "to"                  { return KW_TO; }
+  "Core.MediaType"      { return KW_CORE_MEDIATYPE; }
   "KW_UPDATE"           { return KW_UPDATE; }
   "R_DATE"              { return R_DATE; }
   "READ"                { return READ; }
