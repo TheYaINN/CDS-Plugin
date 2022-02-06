@@ -19,20 +19,19 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    private static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("Block Comment", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
-    private static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("Line Comment", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey ANNOTATION = createTextAttributesKey("CDSAnnotation", DefaultLanguageHighlighterColors.METADATA);
+    private static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("CDSBlockComment", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
 
     public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SIMPLE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
     public static final TextAttributesKey KEY = createTextAttributesKey("CDSKey", DefaultLanguageHighlighterColors.KEYWORD);
     private static final TextAttributesKey STRING = createTextAttributesKey("CDSString", DefaultLanguageHighlighterColors.STRING);
     private static final TextAttributesKey NUMBER = createTextAttributesKey("CDSNumber", DefaultLanguageHighlighterColors.NUMBER);
-    public static final TextAttributesKey METHOD = createTextAttributesKey("CDSMethod", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
+    private static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("CDSLineComment", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{LINE_COMMENT, BLOCK_COMMENT};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-
-    private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
+    private static final TextAttributesKey[] ANNOTATION_KEYS = new TextAttributesKey[]{ANNOTATION};
     private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
     private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
@@ -58,8 +57,9 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
             return NUMBER_KEYS;
         } else if (tokenType.equals(CDSTypes.STRINGLIT)) {
             return STRING_KEYS;
-        } else if (tokenType.equals(CDSTypes.ANNOTATION)) {
-            return METHOD_KEYS;
+        } else if (tokenType.equals(CDSTypes.ANNOTATION) || tokenType.equals(CDSTypes.T_AT)
+                || tokenType.equals(CDSTypes.KW_READ_ONLY) || tokenType.equals(CDSTypes.KW_CORE_MEDIATYPE)) {
+            return ANNOTATION_KEYS;
         } else if (tokenType.equals(CDSTypes.LINE_COMMENT) || tokenType.equals(CDSTypes.BLOCK_COMMENT)) {
             return COMMENT_KEYS;
         } else {
