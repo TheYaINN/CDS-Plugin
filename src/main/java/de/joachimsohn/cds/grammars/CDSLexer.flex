@@ -26,11 +26,9 @@ EOL=\R
 WHITE_SPACE=\s+
 
 LINE_COMMENT="//".+
-
 BLOCK_COMMENT="/"\*[\w\n]*\*"/"
 STRINGLIT='[\w\.(\.\.)\-/@]+'
 NUMBERLIT=-?[0-9]+(\.[0-9]*)?
-
 ID=[a-zA-Z_0-9]+
 
 %%
