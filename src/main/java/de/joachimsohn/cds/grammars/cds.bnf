@@ -17,6 +17,7 @@
 
     stringlit = "regexp:'[\w\.(\.\.)\-/@]+'"
     numberlit = 'regexp:-?\d+(\.\d*)?'
+
     B_TRUE = 'true'
     B_FALSE = 'false'
     id = 'regexp:\w+'
@@ -53,6 +54,7 @@
     KW_SERVICE = 'service'
     KW_TYPE = 'type'
     KW_KEY = 'key'
+
     KW_VIRTUAL = 'virtual'
     KW_REQUIRES = 'requires'
     KW_ASSOCIATION_TO = 'Association to'
@@ -95,6 +97,7 @@
     KW_RESTRICT = 'restrict'
     KW_GRANT = 'grant'
     KW_TO = 'to'
+
     KW_CORE_MEDIATYPE = 'Core.MediaType'
   ]
 }
@@ -121,6 +124,7 @@ private type_identifier ::= identifier
 private type_object ::= T_LBRACE type_field* T_RBRACE
 private type_field ::= type_field_identifier T_COLON Datatype T_SEMI
 private type_field_identifier ::= identifier
+
 
 private Entity ::=  KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | EntityMirror) T_SEMI
 private EntityIdentifier ::= identifier
@@ -150,6 +154,7 @@ private method_return ::= KW_RETURNS Datatype
 private method_parameters ::= T_LPAREN (method_parameters_value (T_COMMA method_parameters_value)*)? T_RPAREN
 private method_identifier ::= identifier
 private method_parameters_value ::= identifier T_COLON identifier
+
 
 Annotation ::= AnnotationEntry*
 private AnnotationEntry ::= T_AT (KW_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert | AnnotationMediaType)
@@ -187,6 +192,7 @@ identifier ::= id
 private string_under ::= literal_string (T_UNDER literal_string)+
 private PropertyPath ::= id (T_DOT id)*
 
+
 private Relation ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
 private relation_single ::= relation_identifier KW_NOT_NULL? (KW_ON expression)?
 private relation_identifier ::= PropertyPath { extends = identifier }
@@ -195,7 +201,6 @@ private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype 
 private relation_field_identifier ::= identifier
 
 private Datatype ::= Datatypes [Annotation] [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
-
 Datatypes ::= 'Boolean'
             | 'Integer'
             | 'Integer64'
@@ -209,8 +214,10 @@ Datatypes ::= 'Boolean'
             | 'LargeBinary'
             | 'LargeString'
 
+
 private Datatype_Argument ::= T_LPAREN literal_number T_RPAREN
 private Datatype_Argument_Decimal ::= T_LPAREN literal_number T_COMMA literal_number T_RPAREN
+
 
 private Datatype_Enum ::= KW_ENUM T_LBRACE (identifier (Datatype_Enum_assignment)? T_SEMI)+ T_RBRACE
 private Datatype_Enum_assignment ::= T_ASSIGN (literal_string | literal_number | literal_boolean)
