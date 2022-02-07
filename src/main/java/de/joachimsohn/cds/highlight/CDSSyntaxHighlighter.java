@@ -58,7 +58,8 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(CDSTypes.STRINGLIT)) {
             return STRING_KEYS;
         } else if (tokenType.equals(CDSTypes.ANNOTATION) || tokenType.equals(CDSTypes.T_AT)
-                || tokenType.equals(CDSTypes.KW_READ_ONLY) || tokenType.equals(CDSTypes.KW_CORE_MEDIATYPE)) {
+                || tokenType.equals(CDSTypes.ANNOT_READ_ONLY) || tokenType.equals(CDSTypes.ANNOT_CORE_MEDIATYPE)
+                || tokenType.equals(CDSTypes.ANNOT_FIORI_DRAFT_ENABLED) || tokenType.equals(CDSTypes.ANNOT_ODATA_DRAFT_ENABLED)) {
             return ANNOTATION_KEYS;
         } else if (tokenType.equals(CDSTypes.LINE_COMMENT) || tokenType.equals(CDSTypes.BLOCK_COMMENT)) {
             return COMMENT_KEYS;
