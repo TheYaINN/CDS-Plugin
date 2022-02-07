@@ -23,12 +23,20 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
 The `type` is strictly not a keyword or reserved in CDS, yet to avoid parsing errors it is seen as a reserved word.
 
 ## Changelog
+* 0.3.5
+  * BNF massively improved
+  * Improved Syntax Highlighting
+  * Added more Annotations and refactored BNF File
+  *
 
 * 0.3.41
   * BNF improved
     * The Entity syntax is now simplified to a general entity, whether it is defined within a service or as a normal
       entity.
-    *
+    * fixed block comments
+    * fixed strings
+    * added codestyle and codestyle provider, waiting for implementation
+    * changed SpaceRequirements to `must`
 
 * 0.3.0
   * Add missing implementations
