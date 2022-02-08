@@ -47,7 +47,7 @@
     T_MUL = '*'
 
 
-    //reserved words
+    //Definitions
     KW_NAMESPACE = 'namespace'
     KW_USING = 'using'
     KW_FROM = 'from'
@@ -57,9 +57,11 @@
     KW_SERVICE = 'service'
     KW_TYPE = 'type'
     KW_KEY = 'key'
-
     KW_VIRTUAL = 'virtual'
-    KW_REQUIRES = 'requires'
+    KW_FUNCTION = 'function'
+    KW_ACTION = 'action'
+    KW_RETURNS = 'returns'
+
     KW_ASSOCIATION_TO = 'Association to'
     KW_COMPOSITION_OF = 'Composition of'
     KW_MANY = 'many'
@@ -68,19 +70,11 @@
     KW_AS = 'as'
     KW_DEFAULT = 'default'
     KW_TYPE_OF = 'type of'
-    KW_FUNCTION = 'function'
     KW_PROJECTION = 'projection'
-    KW_SELECT = 'select'
     KW_EXCLUDING = 'excluding'
-    KW_ACTION = 'action'
     KW_ACTIONS = 'actions'
-    KW_RETURNS = 'returns'
-    KW_JOIN = 'join'
-    KW_LEFT = 'left'
-    KW_RIGHT = 'right'
-    KW_OUTER = 'outer'
-    KW_INNER = 'inner'
-    KW_WHERE = 'where'
+
+    KW_SELECT = 'select'
     KW_AND = 'and'
     KW_OR = 'or'
     KW_EXISTS = 'exists'
@@ -91,22 +85,30 @@
     KW_NOTNULL = 'notNull'
     KW_NOT_NULL = 'not null'
     UPDATE = 'update'
-    KW_USER = 'user'
-    KW_NOW = 'now'
+    KW_USER = '$user'
+    KW_NOW = '$now'
+    KW_SELF = '$self'
 
     //SQL
     KW_GROUP_BY = 'group by'
     KW_ORDER_BY = 'order by'
     KW_ASC = 'asc'
     KW_DESC = 'desc'
+    KW_JOIN = 'join'
+    KW_LEFT = 'left'
+    KW_RIGHT = 'right'
+    KW_OUTER = 'outer'
+    KW_INNER = 'inner'
+    KW_WHERE = 'where'
 
     //annotations
-    KW_RESTRICT = 'restrict'
-    KW_GRANT = 'grant'
-    KW_TO = 'to'
-    KW_ASSERT = 'assert'
-    KW_UNIQUE = 'unique'
-    KW_CDS_ON = 'cds.on'
+    ANNOT_REEQUIRES = 'requires'
+    ANNOT_RESTRICT = 'restrict'
+    ANNOT_GRANT = 'grant'
+    ANNOT_TO = 'to'
+    ANNOT_ASSERT = 'assert'
+    ANNOT_UNIQUE = 'unique'
+    ANNOT_CDS_ON = 'cds.on'
     ANNOT_READ_ONLY = 'readonly'
     ANNOT_MANDATORY = 'mandatory'
     ANNOT_CORE_MEDIATYPE = 'Core.MediaType'
@@ -124,7 +126,7 @@ private ImportMultiple ::= T_LBRACE ImportMultipleItem (T_COMMA ImportMultipleIt
 private ImportMultipleItem ::= ImportIdentifier
 private ImportIdentifier ::= PropertyPath [ImportAs]
 
-RootItems ::= Annotation ( Model | Service )
+RootItems ::= [Annotation] ( Model | Service )
 
 Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
@@ -142,11 +144,10 @@ private Entity ::=  KW_ENTITY EntityIdentifier [EntityExtend] ( EntityBody | Ent
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
-private EntityField ::= [Annotation] [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody ) Annotation T_SEMI
+private EntityField ::= [Annotation] [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody ) [Annotation] T_SEMI
 private EntityFieldModifier ::= KW_KEY | KW_VIRTUAL
 private EntityFieldIdentifier ::= identifier
-private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) EntityMirrorIdentifier [EntityMirrorSpecifier]
-private EntityMirrorIdentifier ::= identifier
+private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) PropertyPath [EntityMirrorSpecifier]
 private EntityMirrorSpecifier ::= T_LBRACE EntityMirrorSpecifierParameter T_RBRACE
 private EntityMirrorSpecifierParameter ::= identifier | T_MUL
 private EntityTypeReference ::= KW_TYPE_OF EntityTypeReferenceObjectIdentifier
@@ -157,9 +158,9 @@ private JoinType ::= ( KW_LEFT | KW_RIGHT )? ( KW_OUTER | KW_INNER )? KW_JOIN
 private JoinBody ::= T_LBRACE JoinField (T_COMMA JoinField)* T_RBRACE
 private JoinField ::= PropertyPath (KW_AS identifier)?
 
-Service ::= KW_SERVICE ServiceIdentifier ServiceBody T_SEMI
+Service ::= KW_SERVICE ServiceIdentifier [Annotation] ServiceBody T_SEMI
 private ServiceIdentifier ::= identifier
-private ServiceBody ::= T_LBRACE (( Entity |  ServiceType | Method | Actions ) T_SEMI )+ T_RBRACE
+private ServiceBody ::= T_LBRACE ( [Annotation] ( Entity |  ServiceType | Method | Actions ) T_SEMI )+ T_RBRACE
 private ServiceType ::= KW_TYPE service_type_identifier T_LBRACE ServiceTypeField+ T_RBRACE
 private ServiceTypeField ::= service_type_field_identifier T_COLON KW_MANY? Datatype T_SEMI
 private service_type_field_identifier ::= identifier
@@ -172,24 +173,34 @@ private MethodParams ::= T_LPAREN (MethodParamsValue (T_COMMA MethodParamsValue)
 private MethodIdentifier ::= identifier
 private MethodParamsValue ::= identifier T_COLON identifier
 
-Annotation ::= AnnotationEntry*
-private AnnotationEntry ::= T_AT ( ANNOT_READ_ONLY | annotation_cds | annotation_restrict | annotation_requires | annotation_assert | AnnotationMediaType | ANNOT_FIORI_DRAFT_ENABLED | )
+Annotation ::= (T_AT AnnotationParenthesized | T_AT AnnotationEntry)*
+private AnnotationParenthesized ::= T_LPAREN AnnotationEntry* T_RPAREN
+private AnnotationEntry ::=  AnnotationType
 private AnnotationMediaType ::= ANNOT_CORE_MEDIATYPE T_COLON literal_string
-private annotation_cds ::= KW_CDS_ON ( KW_INSERT | KW_UPDATE ) T_COLON T_DOLLAR (KW_NOW | KW_USER)
-private annotation_requires ::= T_LPAREN KW_NOT_NULL T_COLON stringlit T_RPAREN
-private annotation_assert ::= KW_ASSERT T_DOT (annotation_assert_unique | annotation_assert_integrity | annotation_assert_format | annotation_assert_range | annotation_assert_notnull)
-private annotation_assert_unique ::= KW_UNIQUE T_COLON T_LBRACE annotation_assert_unique_field (T_COMMA annotation_assert_unique_field)* T_RBRACE
-private annotation_assert_unique_field ::= EntityFieldIdentifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
-private annotation_assert_integrity ::= KW_INTEGRITY T_COLON literal_boolean
-private annotation_assert_format ::= KW_FORMAT T_COLON stringlit T_COLON
-private annotation_assert_range ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
-private annotation_assert_notnull ::= KW_NOTNULL T_COLON literal_boolean
-private annotation_restrict ::= KW_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
+private AnnotationCDS ::= ANNOT_CDS_ON ( KW_INSERT | KW_UPDATE ) T_COLON (KW_NOW | KW_USER)
+private AnnotationRequires ::= ANNOT_REEQUIRES T_COLON literal_string
+private AnnotationAssert ::= ANNOT_ASSERT T_DOT (AnnotationAssertUnique | AnnotationAssertIntegrity | AnnotationAssertFormat | AnnotationAssertRange | AnnotationAssertNotNull)
+private AnnotationAssertUnique ::= ANNOT_UNIQUE T_COLON T_LBRACE AnnotationAssertUniqueField (T_COMMA AnnotationAssertUniqueField)* T_RBRACE
+private AnnotationAssertUniqueField ::= EntityFieldIdentifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
+private AnnotationAssertIntegrity ::= KW_INTEGRITY T_COLON literal_boolean
+private AnnotationAssertFormat ::= KW_FORMAT T_COLON literal_string T_COLON
+private AnnotationAssertRange ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
+private AnnotationAssertNotNull ::= KW_NOTNULL T_COLON literal_boolean
+private AnnotationRestrict ::= ANNOT_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
 private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
-private annotation_grant ::= KW_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA stringlit)* T_RBRACK T_COMMA?
-private annotation_to ::= KW_TO T_COLON stringlit T_COMMA?
+private annotation_grant ::= ANNOT_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA stringlit)* T_RBRACK T_COMMA?
+private annotation_to ::= ANNOT_TO T_COLON literal_string T_COMMA?
 private annotation_where ::= KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
 private annotation_grant_authorization ::= READ | KW_UPDATE | DELETE
+
+private AnnotationType ::=  ANNOT_READ_ONLY
+                          | ANNOT_FIORI_DRAFT_ENABLED
+                          | ANNOT_MANDATORY
+                          | AnnotationCDS
+                          | AnnotationRestrict
+                          | AnnotationRequires
+                          | AnnotationAssert
+                          | AnnotationMediaType
 
 SQL ::= SQLSelect SQLFrom [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private SQLSelect ::= KW_SELECT SQLSelectIdentifier (KW_AS SQLSelectIdentifier)?
@@ -202,11 +213,11 @@ SQLOrderBy ::= KW_ORDER_BY identifier ( KW_ASC | KW_DESC )?
 
 private Expression ::= ExpressionKey (T_ASSIGN ExpressionValue)?
 private ExpressionKey ::= PropertyPath
-private ExpressionValue ::= [T_DOLLAR] PropertyPath
+private ExpressionValue ::= ( KW_USER | KW_NOW  | KW_SELF) | PropertyPath
 
 identifier ::= id
 
-private PropertyPath ::= id (T_DOT id)*
+private PropertyPath ::= EntityIdentifier (T_DOT ( EntityIdentifier | EntityFieldIdentifier))*
 
 private Relation ::= (KW_ASSOCIATION_TO | KW_COMPOSITION_OF) KW_MANY? (relation_single | relation_body)
 private relation_single ::= relation_identifier KW_NOT_NULL? (KW_ON Expression)?
@@ -224,6 +235,7 @@ Datatypes ::= 'Boolean'
             | 'Date'
             | 'Time'
             | 'DateTime'
+            | 'Timestamp'
             | 'String' [Datatype_Argument]
             | 'Binary' [Datatype_Argument]
             | 'LargeBinary'

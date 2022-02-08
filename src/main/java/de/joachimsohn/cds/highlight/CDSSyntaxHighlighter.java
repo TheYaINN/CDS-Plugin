@@ -53,13 +53,18 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
                 || tokenType.equals(CDSTypes.KW_KEY) || tokenType.equals(CDSTypes.KW_FUNCTION)
                 || tokenType.equals(CDSTypes.KW_SERVICE) || tokenType.equals(CDSTypes.KW_FROM)) {
             return KEY_KEYS;
-        } else if (tokenType.equals(CDSTypes.NUMBERLIT)) {
+        } else if (tokenType.equals(CDSTypes.NUMBERLIT) || tokenType.equals(CDSTypes.KW_USER) || tokenType.equals(CDSTypes.KW_NOW) || tokenType.equals(CDSTypes.KW_SELF)) {
             return NUMBER_KEYS;
         } else if (tokenType.equals(CDSTypes.STRINGLIT)) {
             return STRING_KEYS;
-        } else if (tokenType.equals(CDSTypes.ANNOTATION) || tokenType.equals(CDSTypes.T_AT)
-                || tokenType.equals(CDSTypes.ANNOT_READ_ONLY) || tokenType.equals(CDSTypes.ANNOT_CORE_MEDIATYPE)
-                || tokenType.equals(CDSTypes.ANNOT_FIORI_DRAFT_ENABLED) || tokenType.equals(CDSTypes.ANNOT_ODATA_DRAFT_ENABLED)) {
+        } else if (tokenType.equals(CDSTypes.T_AT) || tokenType.equals(CDSTypes.ANNOT_RESTRICT)
+                || tokenType.equals(CDSTypes.ANNOT_GRANT) || tokenType.equals(CDSTypes.ANNOT_TO)
+                || tokenType.equals(CDSTypes.ANNOT_ASSERT) || tokenType.equals(CDSTypes.ANNOT_UNIQUE)
+                || tokenType.equals(CDSTypes.ANNOT_CDS_ON) || tokenType.equals(CDSTypes.ANNOT_READ_ONLY)
+                || tokenType.equals(CDSTypes.ANNOT_MANDATORY) || tokenType.equals(CDSTypes.ANNOT_CORE_MEDIATYPE)
+                || tokenType.equals(CDSTypes.ANNOT_FIORI_DRAFT_ENABLED) || tokenType.equals(CDSTypes.ANNOT_ODATA_DRAFT_ENABLED)
+                || tokenType.equals(CDSTypes.ANNOT_REEQUIRES)
+        ) {
             return ANNOTATION_KEYS;
         } else if (tokenType.equals(CDSTypes.LINE_COMMENT) || tokenType.equals(CDSTypes.BLOCK_COMMENT)) {
             return COMMENT_KEYS;

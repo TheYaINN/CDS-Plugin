@@ -69,7 +69,9 @@ ID=[a-zA-Z_0-9]+
   "type"                     { return KW_TYPE; }
   "key"                      { return KW_KEY; }
   "virtual"                  { return KW_VIRTUAL; }
-  "requires"                 { return KW_REQUIRES; }
+  "function"                 { return KW_FUNCTION; }
+  "action"                   { return KW_ACTION; }
+  "returns"                  { return KW_RETURNS; }
   "Association to"           { return KW_ASSOCIATION_TO; }
   "Composition of"           { return KW_COMPOSITION_OF; }
   "many"                     { return KW_MANY; }
@@ -78,42 +80,42 @@ ID=[a-zA-Z_0-9]+
   "as"                       { return KW_AS; }
   "default"                  { return KW_DEFAULT; }
   "type of"                  { return KW_TYPE_OF; }
-  "function"                 { return KW_FUNCTION; }
   "projection"               { return KW_PROJECTION; }
-  "select"                   { return KW_SELECT; }
   "excluding"                { return KW_EXCLUDING; }
-  "action"                   { return KW_ACTION; }
   "actions"                  { return KW_ACTIONS; }
-  "returns"                  { return KW_RETURNS; }
-  "join"                     { return KW_JOIN; }
-  "left"                     { return KW_LEFT; }
-  "right"                    { return KW_RIGHT; }
-  "outer"                    { return KW_OUTER; }
-  "inner"                    { return KW_INNER; }
-  "where"                    { return KW_WHERE; }
+  "select"                   { return KW_SELECT; }
   "and"                      { return KW_AND; }
   "or"                       { return KW_OR; }
   "exists"                   { return KW_EXISTS; }
-  "cds.on"                   { return KW_CDS_ON; }
   "insert"                   { return KW_INSERT; }
-  "assert"                   { return KW_ASSERT; }
-  "unique"                   { return KW_UNIQUE; }
   "integrity"                { return KW_INTEGRITY; }
   "format"                   { return KW_FORMAT; }
   "range"                    { return KW_RANGE; }
   "notNull"                  { return KW_NOTNULL; }
   "not null"                 { return KW_NOT_NULL; }
   "update"                   { return UPDATE; }
-  "user"                     { return KW_USER; }
-  "now"                      { return KW_NOW; }
-  "restrict"                 { return KW_RESTRICT; }
-  "grant"                    { return KW_GRANT; }
-  "to"                       { return KW_TO; }
+  "$user"                    { return KW_USER; }
+  "$now"                     { return KW_NOW; }
+  "$self"                    { return KW_SELF; }
   "group by"                 { return KW_GROUP_BY; }
   "order by"                 { return KW_ORDER_BY; }
   "asc"                      { return KW_ASC; }
   "desc"                     { return KW_DESC; }
+  "join"                     { return KW_JOIN; }
+  "left"                     { return KW_LEFT; }
+  "right"                    { return KW_RIGHT; }
+  "outer"                    { return KW_OUTER; }
+  "inner"                    { return KW_INNER; }
+  "where"                    { return KW_WHERE; }
+  "requires"                 { return ANNOT_REEQUIRES; }
+  "restrict"                 { return ANNOT_RESTRICT; }
+  "grant"                    { return ANNOT_GRANT; }
+  "to"                       { return ANNOT_TO; }
+  "assert"                   { return ANNOT_ASSERT; }
+  "unique"                   { return ANNOT_UNIQUE; }
+  "cds.on"                   { return ANNOT_CDS_ON; }
   "readonly"                 { return ANNOT_READ_ONLY; }
+  "mandatory"                { return ANNOT_MANDATORY; }
   "Core.MediaType"           { return ANNOT_CORE_MEDIATYPE; }
   "fiori.draft.enabled"      { return ANNOT_FIORI_DRAFT_ENABLED; }
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
