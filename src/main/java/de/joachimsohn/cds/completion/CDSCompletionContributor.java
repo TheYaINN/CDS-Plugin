@@ -23,6 +23,7 @@ public class CDSCompletionContributor extends CompletionContributor {
                         if (parameters.getEditor().getDocument().getText().contains("namespace")) {
                             resultSet.addElement(LookupElementBuilder.create("namespace"));
                         }
+                        //PsiTreeUtil.getParentOfType()
                         if (isInContext(parameters, CDSTypes.ANNOTATION)) {
                             System.out.println("CONTEXT");
                         }

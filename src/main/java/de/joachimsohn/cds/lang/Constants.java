@@ -4,7 +4,7 @@ public interface Constants {
 
     String LANG_NAME = "Cds";
 
-    String FILE = "Cds File";
+    String FILE = "Cds";
 
     String EXTENSIONS = "cds";
 
