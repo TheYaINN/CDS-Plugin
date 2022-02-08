@@ -4,12 +4,14 @@ package de.joachimsohn.cds.completion;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.util.ProcessingContext;
-import de.joachimsohn.cds.psi.CDSTypes;
 import org.jetbrains.annotations.NotNull;
 
+
+/**
+ * Look at other implementation here:
+ * See {@link JavaCompletionContributor}
+ */
 public class CDSCompletionContributor extends CompletionContributor {
 
     public CDSCompletionContributor() {
@@ -24,20 +26,8 @@ public class CDSCompletionContributor extends CompletionContributor {
                             resultSet.addElement(LookupElementBuilder.create("namespace"));
                         }
                         //PsiTreeUtil.getParentOfType()
-                        if (isInContext(parameters, CDSTypes.ANNOTATION)) {
-                            System.out.println("CONTEXT");
-                        }
                     }
                 }
         );
-    }
-
-    private boolean isInContext(@NotNull CompletionParameters parameters, @NotNull IElementType type) {
-        PsiElement context = parameters.getPosition().getContext();
-        if (context == null) {
-            return false;
-        } else {
-            return context.getParent().equals(type);
-        }
     }
 }

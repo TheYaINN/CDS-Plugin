@@ -102,7 +102,7 @@
     KW_WHERE = 'where'
 
     //annotations
-    ANNOT_REEQUIRES = 'requires'
+    ANNOT_REQUIRES = 'requires'
     ANNOT_RESTRICT = 'restrict'
     ANNOT_GRANT = 'grant'
     ANNOT_TO = 'to'
@@ -126,13 +126,13 @@ private ImportMultiple ::= T_LBRACE ImportMultipleItem (T_COMMA ImportMultipleIt
 private ImportMultipleItem ::= ImportIdentifier
 private ImportIdentifier ::= PropertyPath [ImportAs]
 
-RootItems ::= [Annotation] ( Model | Service )
+RootItems ::= Model | Service
 
 Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
 private Aspect ::= KW_ASPECT AspectIdentifier T_LBRACE AspectField+ T_RBRACE T_SEMI
 private AspectIdentifier ::= identifier
-private AspectField ::= [Annotation] AspectIdentifier T_COLON Datatype T_SEMI
+private AspectField ::= Annotation AspectIdentifier T_COLON Datatype T_SEMI
 
 private Type ::= KW_TYPE TypeIdentifier ( T_COLON  ( Datatype | Relation ) | TypeObject ) T_SEMI
 private TypeIdentifier ::= identifier
@@ -140,14 +140,15 @@ private TypeObject ::= T_LBRACE TypeField* T_RBRACE
 private TypeField ::= TypeFieldIdentifier T_COLON Datatype T_SEMI
 private TypeFieldIdentifier ::= identifier
 
-private Entity ::=  KW_ENTITY EntityIdentifier [EntityExtend] ( EntityBody | EntityMirror ) [Join] [Actions] T_SEMI
+private Entity ::=  Annotation KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | EntityMirror) [Join] [Actions] T_SEMI
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
-private EntityField ::= [Annotation] [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody ) [Annotation] T_SEMI
+private EntityField ::= Annotation [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody) Annotation T_SEMI
 private EntityFieldModifier ::= KW_KEY | KW_VIRTUAL
 private EntityFieldIdentifier ::= identifier
-private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) PropertyPath [EntityMirrorSpecifier]
+private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) PropertyPath (EntityMirrorSpecifier | EntityMirrorExcluding)?
+private EntityMirrorExcluding ::= KW_EXCLUDING  T_LBRACE EntityFieldIdentifier T_RBRACE
 private EntityMirrorSpecifier ::= T_LBRACE EntityMirrorSpecifierParameter T_RBRACE
 private EntityMirrorSpecifierParameter ::= identifier | T_MUL
 private EntityTypeReference ::= KW_TYPE_OF EntityTypeReferenceObjectIdentifier
@@ -158,9 +159,9 @@ private JoinType ::= ( KW_LEFT | KW_RIGHT )? ( KW_OUTER | KW_INNER )? KW_JOIN
 private JoinBody ::= T_LBRACE JoinField (T_COMMA JoinField)* T_RBRACE
 private JoinField ::= PropertyPath (KW_AS identifier)?
 
-Service ::= KW_SERVICE ServiceIdentifier [Annotation] ServiceBody T_SEMI
+Service ::= Annotation KW_SERVICE ServiceIdentifier Annotation ServiceBody T_SEMI
 private ServiceIdentifier ::= identifier
-private ServiceBody ::= T_LBRACE ( [Annotation] ( Entity |  ServiceType | Method | Actions ) T_SEMI )+ T_RBRACE
+private ServiceBody ::= T_LBRACE (Entity | ServiceType | Method | Actions)+ T_RBRACE
 private ServiceType ::= KW_TYPE service_type_identifier T_LBRACE ServiceTypeField+ T_RBRACE
 private ServiceTypeField ::= service_type_field_identifier T_COLON KW_MANY? Datatype T_SEMI
 private service_type_field_identifier ::= identifier
@@ -178,7 +179,7 @@ private AnnotationParenthesized ::= T_LPAREN AnnotationEntry* T_RPAREN
 private AnnotationEntry ::=  AnnotationType
 private AnnotationMediaType ::= ANNOT_CORE_MEDIATYPE T_COLON literal_string
 private AnnotationCDS ::= ANNOT_CDS_ON ( KW_INSERT | KW_UPDATE ) T_COLON (KW_NOW | KW_USER)
-private AnnotationRequires ::= ANNOT_REEQUIRES T_COLON literal_string
+private AnnotationRequires ::= ANNOT_REQUIRES T_COLON literal_string
 private AnnotationAssert ::= ANNOT_ASSERT T_DOT (AnnotationAssertUnique | AnnotationAssertIntegrity | AnnotationAssertFormat | AnnotationAssertRange | AnnotationAssertNotNull)
 private AnnotationAssertUnique ::= ANNOT_UNIQUE T_COLON T_LBRACE AnnotationAssertUniqueField (T_COMMA AnnotationAssertUniqueField)* T_RBRACE
 private AnnotationAssertUniqueField ::= EntityFieldIdentifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
@@ -186,12 +187,12 @@ private AnnotationAssertIntegrity ::= KW_INTEGRITY T_COLON literal_boolean
 private AnnotationAssertFormat ::= KW_FORMAT T_COLON literal_string T_COLON
 private AnnotationAssertRange ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
 private AnnotationAssertNotNull ::= KW_NOTNULL T_COLON literal_boolean
-private AnnotationRestrict ::= ANNOT_RESTRICT  T_COLON T_LBRACK annotation_statement T_RBRACK
-private annotation_statement ::= T_LBRACK annotation_grant annotation_to? annotation_where? T_RBRACE
-private annotation_grant ::= ANNOT_GRANT T_COLON T_LBRACK T_HYPH annotation_grant_authorization T_HYPH (T_COMMA stringlit)* T_RBRACK T_COMMA?
-private annotation_to ::= ANNOT_TO T_COLON literal_string T_COMMA?
-private annotation_where ::= KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
-private annotation_grant_authorization ::= READ | KW_UPDATE | DELETE
+private AnnotationRestrict ::= ANNOT_RESTRICT T_COLON T_LBRACK T_LBRACE AnnotationStatement T_RBRACE T_RBRACK
+private AnnotationStatement ::= AnnotationGrant [AnnotationGrantTo] [AnnotationGrantWhere]
+private AnnotationGrant ::= ANNOT_GRANT T_COLON T_LBRACK AnnotationGrantType (T_COMMA literal_string)* T_RBRACK
+private AnnotationGrantTo ::= T_COMMA ANNOT_TO T_COLON literal_string T_COMMA?
+private AnnotationGrantWhere ::= T_COMMA KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
+private AnnotationGrantType ::= literal_string //TODO: T_HYPH ('READ' | KW_UPDATE | 'DELETE') T_HYPH
 
 private AnnotationType ::=  ANNOT_READ_ONLY
                           | ANNOT_FIORI_DRAFT_ENABLED
@@ -226,7 +227,7 @@ private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | Relation ) T_SEMI
 private relation_field_identifier ::= identifier
 
-private Datatype ::= Datatypes [Annotation] [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
+private Datatype ::= Datatypes Annotation [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 Datatypes ::= 'Boolean'
             | 'Integer'
             | 'Integer64'

@@ -107,7 +107,7 @@ ID=[a-zA-Z_0-9]+
   "outer"                    { return KW_OUTER; }
   "inner"                    { return KW_INNER; }
   "where"                    { return KW_WHERE; }
-  "requires"                 { return ANNOT_REEQUIRES; }
+  "requires"                 { return ANNOT_REQUIRES; }
   "restrict"                 { return ANNOT_RESTRICT; }
   "grant"                    { return ANNOT_GRANT; }
   "to"                       { return ANNOT_TO; }
@@ -121,8 +121,6 @@ ID=[a-zA-Z_0-9]+
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
   "KW_UPDATE"                { return KW_UPDATE; }
   "R_DATE"                   { return R_DATE; }
-  "READ"                     { return READ; }
-  "DELETE"                   { return DELETE; }
 
   {LINE_COMMENT}             { return LINE_COMMENT; }
   {BLOCK_COMMENT}            { return BLOCK_COMMENT; }
