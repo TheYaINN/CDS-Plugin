@@ -111,7 +111,12 @@
     ANNOT_CDS_ON = 'cds.on'
     ANNOT_READ_ONLY = 'readonly'
     ANNOT_MANDATORY = 'mandatory'
-    ANNOT_CORE_MEDIATYPE = 'Core.MediaType'
+    ANNOT_CORE = 'Core'
+    ANNOT_MEDIATYPE = 'MediaType'
+    ANNOT_COMPUTED = 'Computed'
+    ANNOT_IMMUTABLE = 'Immutable'
+    ANNOT_ISMEDIATYPE = 'IsMediaType'
+    ANNOT_ISURL = 'IsUrl'
     ANNOT_FIORI_DRAFT_ENABLED = 'fiori.draft.enabled'
     ANNOT_ODATA_DRAFT_ENABLED = 'odata.draft.enabled'
   ]
@@ -177,7 +182,8 @@ private MethodParamsValue ::= identifier T_COLON identifier
 Annotation ::= (T_AT AnnotationParenthesized | T_AT AnnotationEntry)*
 private AnnotationParenthesized ::= T_LPAREN AnnotationEntry* T_RPAREN
 private AnnotationEntry ::=  AnnotationType
-private AnnotationMediaType ::= ANNOT_CORE_MEDIATYPE T_COLON literal_string
+private AnnotationCore ::= ANNOT_CORE T_DOT (AnnotationCoreMediaType | ANNOT_COMPUTED | ANNOT_IMMUTABLE | ANNOT_ISMEDIATYPE | ANNOT_ISURL)
+private AnnotationCoreMediaType ::= ANNOT_MEDIATYPE T_COLON literal_string
 private AnnotationCDS ::= ANNOT_CDS_ON ( KW_INSERT | KW_UPDATE ) T_COLON (KW_NOW | KW_USER)
 private AnnotationRequires ::= ANNOT_REQUIRES T_COLON literal_string
 private AnnotationAssert ::= ANNOT_ASSERT T_DOT (AnnotationAssertUnique | AnnotationAssertIntegrity | AnnotationAssertFormat | AnnotationAssertRange | AnnotationAssertNotNull)
@@ -201,7 +207,7 @@ private AnnotationType ::=  ANNOT_READ_ONLY
                           | AnnotationRestrict
                           | AnnotationRequires
                           | AnnotationAssert
-                          | AnnotationMediaType
+                          | AnnotationCore
 
 SQL ::= SQLSelect SQLFrom [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private SQLSelect ::= KW_SELECT SQLSelectIdentifier (KW_AS SQLSelectIdentifier)?

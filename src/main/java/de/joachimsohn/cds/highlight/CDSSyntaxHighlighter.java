@@ -61,7 +61,9 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
                 || tokenType.equals(CDSTypes.ANNOT_GRANT) || tokenType.equals(CDSTypes.ANNOT_TO)
                 || tokenType.equals(CDSTypes.ANNOT_ASSERT) || tokenType.equals(CDSTypes.ANNOT_UNIQUE)
                 || tokenType.equals(CDSTypes.ANNOT_CDS_ON) || tokenType.equals(CDSTypes.ANNOT_READ_ONLY)
-                || tokenType.equals(CDSTypes.ANNOT_MANDATORY) || tokenType.equals(CDSTypes.ANNOT_CORE_MEDIATYPE)
+                || tokenType.equals(CDSTypes.ANNOT_MANDATORY) || tokenType.equals(CDSTypes.ANNOT_CORE)
+                || tokenType.equals(CDSTypes.ANNOT_IMMUTABLE) || tokenType.equals(CDSTypes.ANNOT_ISMEDIATYPE)
+                || tokenType.equals(CDSTypes.ANNOT_ISURL) || tokenType.equals(CDSTypes.ANNOT_MEDIATYPE)
                 || tokenType.equals(CDSTypes.ANNOT_FIORI_DRAFT_ENABLED) || tokenType.equals(CDSTypes.ANNOT_ODATA_DRAFT_ENABLED)
                 || tokenType.equals(CDSTypes.ANNOT_REQUIRES)
         ) {

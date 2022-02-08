@@ -116,7 +116,12 @@ ID=[a-zA-Z_0-9]+
   "cds.on"                   { return ANNOT_CDS_ON; }
   "readonly"                 { return ANNOT_READ_ONLY; }
   "mandatory"                { return ANNOT_MANDATORY; }
-  "Core.MediaType"           { return ANNOT_CORE_MEDIATYPE; }
+  "Core"                     { return ANNOT_CORE; }
+  "MediaType"                { return ANNOT_MEDIATYPE; }
+  "Computed"                 { return ANNOT_COMPUTED; }
+  "Immutable"                { return ANNOT_IMMUTABLE; }
+  "IsMediaType"              { return ANNOT_ISMEDIATYPE; }
+  "IsUrl"                    { return ANNOT_ISURL; }
   "fiori.draft.enabled"      { return ANNOT_FIORI_DRAFT_ENABLED; }
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
   "KW_UPDATE"                { return KW_UPDATE; }
