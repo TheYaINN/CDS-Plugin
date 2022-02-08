@@ -130,17 +130,17 @@ RootItems ::= Model | Service
 
 Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
-private Aspect ::= KW_ASPECT AspectIdentifier T_LBRACE AspectField+ T_RBRACE T_SEMI
+Aspect ::= KW_ASPECT AspectIdentifier T_LBRACE AspectField+ T_RBRACE T_SEMI
 private AspectIdentifier ::= identifier
 private AspectField ::= Annotation AspectIdentifier T_COLON Datatype T_SEMI
 
-private Type ::= KW_TYPE TypeIdentifier ( T_COLON  ( Datatype | Relation ) | TypeObject ) T_SEMI
+Type ::= KW_TYPE TypeIdentifier ( T_COLON  ( Datatype | Relation ) | TypeObject ) T_SEMI
 private TypeIdentifier ::= identifier
 private TypeObject ::= T_LBRACE TypeField* T_RBRACE
 private TypeField ::= TypeFieldIdentifier T_COLON Datatype T_SEMI
 private TypeFieldIdentifier ::= identifier
 
-private Entity ::=  Annotation KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | EntityMirror) [Join] [Actions] T_SEMI
+Entity ::=  Annotation KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | EntityMirror) [Join] [Actions] T_SEMI
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
@@ -167,7 +167,7 @@ private ServiceTypeField ::= service_type_field_identifier T_COLON KW_MANY? Data
 private service_type_field_identifier ::= identifier
 private service_type_identifier ::= identifier
 
-private Actions ::= KW_ACTIONS T_LBRACE (Method T_SEMI)* T_RBRACE
+Actions ::= KW_ACTIONS T_LBRACE (Method T_SEMI)* T_RBRACE
 private Method ::= ( KW_ACTION | KW_FUNCTION ) MethodIdentifier MethodParams MethodReturn?
 private MethodReturn ::= KW_RETURNS Datatype
 private MethodParams ::= T_LPAREN (MethodParamsValue (T_COMMA MethodParamsValue)*)? T_RPAREN
