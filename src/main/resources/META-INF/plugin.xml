@@ -36,6 +36,8 @@
         <codeStyleSettingsProvider implementation="de.joachimsohn.cds.codestyle.CDSCodeStyleProvider"/>
         <langCodeStyleSettingsProvider
                 implementation="de.joachimsohn.cds.codestyle.CDSLanguageCodeStyleSettingsProvider"/>
+        <lang.formatter language="Cds"
+                        implementationClass="de.joachimsohn.cds.formatter.CDSFormattingBuilder"/>
     </extensions>
 
     <actions>

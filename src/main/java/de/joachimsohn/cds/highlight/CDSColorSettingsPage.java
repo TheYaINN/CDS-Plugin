@@ -1,5 +1,6 @@
 package de.joachimsohn.cds.highlight;
 
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
@@ -16,9 +17,9 @@ import java.util.Map;
 public class CDSColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Key", CDSSyntaxHighlighter.KEY),
-            new AttributesDescriptor("Method", CDSSyntaxHighlighter.ANNOTATION),
-            new AttributesDescriptor("Bad value", CDSSyntaxHighlighter.BAD_CHARACTER)
+            new AttributesDescriptor("Key", DefaultLanguageHighlighterColors.KEYWORD),
+            new AttributesDescriptor("Method", DefaultLanguageHighlighterColors.METADATA),
+            new AttributesDescriptor("Bad value", DefaultLanguageHighlighterColors.OPERATION_SIGN)
     };
 
     @Nullable

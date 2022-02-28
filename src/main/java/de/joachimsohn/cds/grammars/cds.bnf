@@ -12,11 +12,11 @@
   tokenTypeClass="de.joachimsohn.cds.lang.CDSTokenType"
 
   tokens = [
-    LINE_COMMENT = 'regexp://.+'
+    LINE_COMMENT = 'regexp://.*'
     BLOCK_COMMENT = 'regexp:/\*[\w\n]*\*/'
 
     stringlit = "regexp:'[\w\.(\.\.)\-/@]+'"
-    numberlit = 'regexp:-?\d+(\.\d*)?'
+    numberlit = 'regexp:\d+(\.\d*)?'
 
     B_TRUE = 'true'
     B_FALSE = 'false'
@@ -61,6 +61,7 @@
     KW_FUNCTION = 'function'
     KW_ACTION = 'action'
     KW_RETURNS = 'returns'
+    KW_LOCALIZED = 'localized'
 
     KW_ASSOCIATION_TO = 'Association to'
     KW_COMPOSITION_OF = 'Composition of'
@@ -79,10 +80,6 @@
     KW_OR = 'or'
     KW_EXISTS = 'exists'
     KW_INSERT = 'insert'
-    KW_INTEGRITY = 'integrity'
-    KW_FORMAT = 'format'
-    KW_RANGE = 'range'
-    KW_NOTNULL = 'notNull'
     KW_NOT_NULL = 'not null'
     UPDATE = 'update'
     KW_USER = '$user'
@@ -103,22 +100,29 @@
 
     //annotations
     ANNOT_REQUIRES = 'requires'
+    ANNOT_READ_ONLY = 'readonly'
     ANNOT_RESTRICT = 'restrict'
     ANNOT_GRANT = 'grant'
     ANNOT_TO = 'to'
-    ANNOT_ASSERT = 'assert'
+    ANNOT_TITLE = 'title'
+    ANNOT_ASSERT_UNIQUE = 'assert.unique'
     ANNOT_UNIQUE = 'unique'
-    ANNOT_CDS_ON = 'cds.on'
-    ANNOT_READ_ONLY = 'readonly'
+    ANNOT_CDS_ON_INSERT = 'cds.on.insert'
+    ANNOT_CDS_ON_UPDATE = 'cds.on.update'
     ANNOT_MANDATORY = 'mandatory'
-    ANNOT_CORE = 'Core'
-    ANNOT_MEDIATYPE = 'MediaType'
-    ANNOT_COMPUTED = 'Computed'
-    ANNOT_IMMUTABLE = 'Immutable'
-    ANNOT_ISMEDIATYPE = 'IsMediaType'
-    ANNOT_ISURL = 'IsUrl'
+    ANNOT_ASSERT_INTEGRITY = 'assert.integrity'
+    ANNOT_ASSERT_FORMAT = 'assert.format'
+    ANNOT_ASSERT_RANGE = 'assert.range'
+    ANNOT_ASSERT_NOTNULL = 'assert.notNull'
+    ANNOT_CORE_COMPUTED = 'Core.Computed'
+    ANNOT_CORE_IMMUMUTABLE = 'Core.Immutable'
+    ANNOT_CORE_ISMEDIATYPE = 'Core.IsMediaType'
+    ANNOT_CORE_MEDIATYPE = 'Core.MediaType'
+    ANNOT_CORE_ISURL = 'Core.IsUrl'
     ANNOT_FIORI_DRAFT_ENABLED = 'fiori.draft.enabled'
     ANNOT_ODATA_DRAFT_ENABLED = 'odata.draft.enabled'
+    ANNOT_UI_HIDDEN = 'UI.Hidden'
+    ANNOT_UI_HIDDENFILTER = 'UI.HiddenFilter'
   ]
 }
 File ::= [Namespace] Import* RootItems*
@@ -131,7 +135,11 @@ private ImportMultiple ::= T_LBRACE ImportMultipleItem (T_COMMA ImportMultipleIt
 private ImportMultipleItem ::= ImportIdentifier
 private ImportIdentifier ::= PropertyPath [ImportAs]
 
-RootItems ::= Model | Service
+RootItems ::= Model | Service | Annotate
+
+Annotate ::= 'annotate' PropertyPath 'with' AnnotateBody  T_SEMI
+private AnnotateBody ::= T_LBRACK AnnotateBodyField* T_LBRACK
+private AnnotateBodyField ::= identifier Annotation
 
 Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
@@ -182,32 +190,40 @@ private MethodParamsValue ::= identifier T_COLON identifier
 Annotation ::= (T_AT AnnotationParenthesized | T_AT AnnotationEntry)*
 private AnnotationParenthesized ::= T_LPAREN AnnotationEntry* T_RPAREN
 private AnnotationEntry ::=  AnnotationType
-private AnnotationCore ::= ANNOT_CORE T_DOT (AnnotationCoreMediaType | ANNOT_COMPUTED | ANNOT_IMMUTABLE | ANNOT_ISMEDIATYPE | ANNOT_ISURL)
-private AnnotationCoreMediaType ::= ANNOT_MEDIATYPE T_COLON literal_string
-private AnnotationCDS ::= ANNOT_CDS_ON ( KW_INSERT | KW_UPDATE ) T_COLON (KW_NOW | KW_USER)
+private AnnotationCore ::=  ANNOT_CORE_COMPUTED | ANNOT_CORE_IMMUMUTABLE | ANNOT_CORE_ISMEDIATYPE | ANNOT_CORE_ISURL
+private AnnotationCoreMediaType ::= ANNOT_CORE_MEDIATYPE T_COLON literal_string
+private AnnotationCDS ::= (ANNOT_CDS_ON_INSERT | ANNOT_CDS_ON_UPDATE) T_COLON (KW_NOW | KW_USER)
 private AnnotationRequires ::= ANNOT_REQUIRES T_COLON literal_string
-private AnnotationAssert ::= ANNOT_ASSERT T_DOT (AnnotationAssertUnique | AnnotationAssertIntegrity | AnnotationAssertFormat | AnnotationAssertRange | AnnotationAssertNotNull)
-private AnnotationAssertUnique ::= ANNOT_UNIQUE T_COLON T_LBRACE AnnotationAssertUniqueField (T_COMMA AnnotationAssertUniqueField)* T_RBRACE
+private AnnotationAssertUnique ::= ANNOT_ASSERT_UNIQUE T_COLON T_LBRACE AnnotationAssertUniqueField (T_COMMA AnnotationAssertUniqueField)* T_RBRACE
 private AnnotationAssertUniqueField ::= EntityFieldIdentifier T_COLON T_LBRACK identifier (T_COMMA identifier)* T_RBRACK
-private AnnotationAssertIntegrity ::= KW_INTEGRITY T_COLON literal_boolean
-private AnnotationAssertFormat ::= KW_FORMAT T_COLON literal_string T_COLON
-private AnnotationAssertRange ::= KW_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
-private AnnotationAssertNotNull ::= KW_NOTNULL T_COLON literal_boolean
+private AnnotationAssertIntegrity ::= ANNOT_ASSERT_INTEGRITY T_COLON literal_boolean
+private AnnotationAssertFormat ::= ANNOT_ASSERT_FORMAT T_COLON literal_string T_COLON
+private AnnotationAssertRange ::= ANNOT_ASSERT_RANGE T_COLON (T_LBRACK ( literal_number | R_DATE ) T_RBRACK | Datatype_Enum) T_COLON
+private AnnotationAssertNotNull ::= ANNOT_ASSERT_NOTNULL T_COLON literal_boolean
 private AnnotationRestrict ::= ANNOT_RESTRICT T_COLON T_LBRACK T_LBRACE AnnotationStatement T_RBRACE T_RBRACK
 private AnnotationStatement ::= AnnotationGrant [AnnotationGrantTo] [AnnotationGrantWhere]
 private AnnotationGrant ::= ANNOT_GRANT T_COLON T_LBRACK AnnotationGrantType (T_COMMA literal_string)* T_RBRACK
 private AnnotationGrantTo ::= T_COMMA ANNOT_TO T_COLON literal_string T_COMMA?
 private AnnotationGrantWhere ::= T_COMMA KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
 private AnnotationGrantType ::= literal_string //TODO: T_HYPH ('READ' | KW_UPDATE | 'DELETE') T_HYPH
+private AnnotationTitle ::= ANNOT_TITLE T_COLON literal_string
 
 private AnnotationType ::=  ANNOT_READ_ONLY
                           | ANNOT_FIORI_DRAFT_ENABLED
                           | ANNOT_MANDATORY
+                          | ANNOT_UI_HIDDEN
+                          | ANNOT_UI_HIDDENFILTER
+                          | AnnotationTitle
+                          | AnnotationAssertUnique
                           | AnnotationCDS
                           | AnnotationRestrict
                           | AnnotationRequires
-                          | AnnotationAssert
+                          | AnnotationAssertIntegrity
+                          | AnnotationAssertFormat
+                          | AnnotationAssertRange
+                          | AnnotationAssertNotNull
                           | AnnotationCore
+                          | AnnotationCoreMediaType
 
 SQL ::= SQLSelect SQLFrom [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private SQLSelect ::= KW_SELECT SQLSelectIdentifier (KW_AS SQLSelectIdentifier)?
@@ -233,7 +249,7 @@ private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | Relation ) T_SEMI
 private relation_field_identifier ::= identifier
 
-private Datatype ::= Datatypes Annotation [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
+private Datatype ::= ( Datatypes | EntityIdentifier ) Annotation [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 Datatypes ::= 'Boolean'
             | 'Integer'
             | 'Integer64'
@@ -243,7 +259,7 @@ Datatypes ::= 'Boolean'
             | 'Time'
             | 'DateTime'
             | 'Timestamp'
-            | 'String' [Datatype_Argument]
+            | [KW_LOCALIZED] 'String' [Datatype_Argument]
             | 'Binary' [Datatype_Argument]
             | 'LargeBinary'
             | 'LargeString'
@@ -255,5 +271,5 @@ private Datatype_Enum ::= KW_ENUM T_LBRACE (identifier (Datatype_Enum_assignment
 private Datatype_Enum_assignment ::= T_ASSIGN (literal_string | literal_number | literal_boolean)
 
 private literal_string ::= stringlit
-private literal_number ::= numberlit
+private literal_number ::= [T_MINUS]numberlit
 private literal_boolean ::= B_FALSE | B_TRUE

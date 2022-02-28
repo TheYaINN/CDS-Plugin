@@ -25,10 +25,10 @@ import static de.joachimsohn.cds.psi.CDSTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-LINE_COMMENT="//".+
+LINE_COMMENT="//".*
 BLOCK_COMMENT="/"\*[\w\n]*\*"/"
 STRINGLIT='[\w\.(\.\.)\-/@]+'
-NUMBERLIT=-?[0-9]+(\.[0-9]*)?
+NUMBERLIT=[0-9]+(\.[0-9]*)?
 ID=[a-zA-Z_0-9]+
 
 %%
@@ -111,7 +111,7 @@ ID=[a-zA-Z_0-9]+
   "restrict"                 { return ANNOT_RESTRICT; }
   "grant"                    { return ANNOT_GRANT; }
   "to"                       { return ANNOT_TO; }
-  "assert"                   { return ANNOT_ASSERT; }
+  "assert.unique"            { return ANNOT_ASSERT; }
   "unique"                   { return ANNOT_UNIQUE; }
   "cds.on"                   { return ANNOT_CDS_ON; }
   "readonly"                 { return ANNOT_READ_ONLY; }
