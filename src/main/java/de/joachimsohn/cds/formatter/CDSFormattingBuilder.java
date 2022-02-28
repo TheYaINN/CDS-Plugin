@@ -10,9 +10,11 @@ public class CDSFormattingBuilder implements FormattingModelBuilder {
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, CDSLanguage.INSTANCE)
-                .around(CDSTypes.T_LBRACE).spaces(1)
-                .before(CDSTypes.T_RBRACE).spaces(1)
-                .around(CDSTypes.T_COLON).spaces(1)
+                .withinPair(CDSTypes.T_LBRACE, CDSTypes.T_RBRACE).spaceIf(settings.getCommonSettings(CDSLanguage.INSTANCE.getID()).SPACE_WITHIN_BRACES)
+                .withinPair(CDSTypes.T_LBRACK, CDSTypes.T_RBRACK).spaceIf(settings.getCommonSettings(CDSLanguage.INSTANCE.getID()).SPACE_WITHIN_BRACKETS)
+                .withinPair(CDSTypes.T_LPAREN, CDSTypes.T_RPAREN).spaceIf(settings.getCommonSettings(CDSLanguage.INSTANCE.getID()).SPACE_WITHIN_PARENTHESES)
+                .after(CDSTypes.T_COLON).spaceIf(settings.getCommonSettings(CDSLanguage.INSTANCE.getID()).SPACE_AFTER_COLON)
+
                 ;
     }
 

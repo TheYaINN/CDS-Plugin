@@ -72,6 +72,7 @@ ID=[a-zA-Z_0-9]+
   "function"                 { return KW_FUNCTION; }
   "action"                   { return KW_ACTION; }
   "returns"                  { return KW_RETURNS; }
+  "localized"                { return KW_LOCALIZED; }
   "Association to"           { return KW_ASSOCIATION_TO; }
   "Composition of"           { return KW_COMPOSITION_OF; }
   "many"                     { return KW_MANY; }
@@ -88,10 +89,6 @@ ID=[a-zA-Z_0-9]+
   "or"                       { return KW_OR; }
   "exists"                   { return KW_EXISTS; }
   "insert"                   { return KW_INSERT; }
-  "integrity"                { return KW_INTEGRITY; }
-  "format"                   { return KW_FORMAT; }
-  "range"                    { return KW_RANGE; }
-  "notNull"                  { return KW_NOTNULL; }
   "not null"                 { return KW_NOT_NULL; }
   "update"                   { return UPDATE; }
   "$user"                    { return KW_USER; }
@@ -108,23 +105,29 @@ ID=[a-zA-Z_0-9]+
   "inner"                    { return KW_INNER; }
   "where"                    { return KW_WHERE; }
   "requires"                 { return ANNOT_REQUIRES; }
+  "readonly"                 { return ANNOT_READ_ONLY; }
   "restrict"                 { return ANNOT_RESTRICT; }
   "grant"                    { return ANNOT_GRANT; }
   "to"                       { return ANNOT_TO; }
-  "assert.unique"            { return ANNOT_ASSERT; }
+  "title"                    { return ANNOT_TITLE; }
+  "assert.unique"            { return ANNOT_ASSERT_UNIQUE; }
   "unique"                   { return ANNOT_UNIQUE; }
-  "cds.on"                   { return ANNOT_CDS_ON; }
-  "readonly"                 { return ANNOT_READ_ONLY; }
+  "cds.on.insert"            { return ANNOT_CDS_ON_INSERT; }
+  "cds.on.update"            { return ANNOT_CDS_ON_UPDATE; }
   "mandatory"                { return ANNOT_MANDATORY; }
-  "Core"                     { return ANNOT_CORE; }
-  "MediaType"                { return ANNOT_MEDIATYPE; }
-  "Computed"                 { return ANNOT_COMPUTED; }
-  "Immutable"                { return ANNOT_IMMUTABLE; }
-  "IsMediaType"              { return ANNOT_ISMEDIATYPE; }
-  "IsUrl"                    { return ANNOT_ISURL; }
+  "assert.integrity"         { return ANNOT_ASSERT_INTEGRITY; }
+  "assert.format"            { return ANNOT_ASSERT_FORMAT; }
+  "assert.range"             { return ANNOT_ASSERT_RANGE; }
+  "assert.notNull"           { return ANNOT_ASSERT_NOTNULL; }
+  "Core.Computed"            { return ANNOT_CORE_COMPUTED; }
+  "Core.Immutable"           { return ANNOT_CORE_IMMUMUTABLE; }
+  "Core.IsMediaType"         { return ANNOT_CORE_ISMEDIATYPE; }
+  "Core.MediaType"           { return ANNOT_CORE_MEDIATYPE; }
+  "Core.IsUrl"               { return ANNOT_CORE_ISURL; }
   "fiori.draft.enabled"      { return ANNOT_FIORI_DRAFT_ENABLED; }
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
-  "KW_UPDATE"                { return KW_UPDATE; }
+  "UI.Hidden"                { return ANNOT_UI_HIDDEN; }
+  "UI.HiddenFilter"          { return ANNOT_UI_HIDDENFILTER; }
   "R_DATE"                   { return R_DATE; }
 
   {LINE_COMMENT}             { return LINE_COMMENT; }

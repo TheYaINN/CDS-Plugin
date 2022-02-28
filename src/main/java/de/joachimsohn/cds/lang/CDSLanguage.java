@@ -15,5 +15,4 @@ public class CDSLanguage extends Language {
         return true;
     }
 
-
 }
