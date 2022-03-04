@@ -11,7 +11,6 @@ import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
 import de.joachimsohn.cds.lang.CDSLanguage;
 import de.joachimsohn.cds.lang.Constants;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CDSCodeStyleProvider extends CodeStyleSettingsProvider {
 
@@ -20,9 +19,9 @@ public class CDSCodeStyleProvider extends CodeStyleSettingsProvider {
         return new CDSCodeStyleSettings(settings);
     }
 
-    @Nullable
+
     @Override
-    public String getConfigurableDisplayName() {
+    public @NotNull String getConfigurableDisplayName() {
         return Constants.LANG_NAME;
     }
 

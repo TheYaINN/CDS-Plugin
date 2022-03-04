@@ -2,7 +2,6 @@ package de.joachimsohn.cds.highlight;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
@@ -10,68 +9,62 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import de.joachimsohn.cds.CDSLexerAdapter;
-import de.joachimsohn.cds.psi.CDSTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+import static de.joachimsohn.cds.psi.CDSTypes.*;
 
 public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
-
-    public static final TextAttributesKey ANNOTATION = createTextAttributesKey("CDSAnnotation", DefaultLanguageHighlighterColors.METADATA);
-    private static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("CDSBlockComment", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
-
-    public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SIMPLE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey KEY = createTextAttributesKey("CDSKey", DefaultLanguageHighlighterColors.KEYWORD);
-    private static final TextAttributesKey STRING = createTextAttributesKey("CDSString", DefaultLanguageHighlighterColors.STRING);
-    private static final TextAttributesKey NUMBER = createTextAttributesKey("CDSNumber", DefaultLanguageHighlighterColors.NUMBER);
-    private static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("CDSLineComment", DefaultLanguageHighlighterColors.LINE_COMMENT);
-
-    private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
-    private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{LINE_COMMENT, BLOCK_COMMENT};
-    private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] ANNOTATION_KEYS = new TextAttributesKey[]{ANNOTATION};
-    private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
-    private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
-    private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
-
 
     @Override
     public @NotNull Lexer getHighlightingLexer() {
         return new CDSLexerAdapter();
     }
 
+    private final TokenSet KEYWORDS = TokenSet.create(
+            KW_NAMESPACE, KW_USING, KW_TYPE, KW_ENTITY,
+            KW_ACTION, KW_ACTIONS, KW_ASPECT, B_TRUE,
+            B_FALSE, KW_KEY, KW_FUNCTION, KW_SERVICE, KW_FROM
+    );
+    private final TokenSet ANNOTATION = TokenSet.create(
+            T_AT, ANNOT_REQUIRES, ANNOT_READ_ONLY, ANNOT_RESTRICT,
+            ANNOT_TITLE, ANNOT_ASSERT_UNIQUE, ANNOT_CDS_ON_INSERT,
+            ANNOT_CDS_ON_UPDATE, ANNOT_MANDATORY, ANNOT_ASSERT_INTEGRITY, ANNOT_ASSERT_FORMAT,
+            ANNOT_ASSERT_RANGE, ANNOT_ASSERT_NOTNULL, ANNOT_CORE_COMPUTED, ANNOT_CORE_ISURL,
+            ANNOT_CORE_IMMUMUTABLE, ANNOT_CORE_ISMEDIATYPE, ANNOT_CORE_MEDIATYPE, ANNOT_CORE_ISURL,
+            ANNOT_FIORI_DRAFT_ENABLED, ANNOT_ODATA_DRAFT_ENABLED, ANNOT_UI_HIDDEN, ANNOT_UI_HIDDENFILTER
+    );
+
+    private final TokenSet NUMBER_LITERALS = TokenSet.create(NUMBERLIT);
+    private final TokenSet STRING_LITERALS = TokenSet.create(STRINGLIT);
+    private final TokenSet REFERENCES = TokenSet.create(KW_USER, KW_NOW, KW_SELF);
+
+    private static @NotNull TextAttributesKey[] keys(TextAttributesKey keys) {
+        return new TextAttributesKey[]{keys};
+    }
 
     @Override
     public @NotNull TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(CDSTypes.KW_NAMESPACE) || tokenType.equals(CDSTypes.KW_USING)
-                || tokenType.equals(CDSTypes.KW_TYPE) || tokenType.equals(CDSTypes.KW_ENTITY)
-                || tokenType.equals(CDSTypes.KW_ACTION) || tokenType.equals(CDSTypes.KW_ACTIONS)
-                || tokenType.equals(CDSTypes.KW_ASPECT) || tokenType.equals(CDSTypes.B_TRUE)
-                || tokenType.equals(CDSTypes.B_FALSE)
-                || tokenType.equals(CDSTypes.KW_KEY) || tokenType.equals(CDSTypes.KW_FUNCTION)
-                || tokenType.equals(CDSTypes.KW_SERVICE) || tokenType.equals(CDSTypes.KW_FROM)) {
-            return KEY_KEYS;
-        } else if (tokenType.equals(CDSTypes.NUMBERLIT) || tokenType.equals(CDSTypes.KW_USER) || tokenType.equals(CDSTypes.KW_NOW) || tokenType.equals(CDSTypes.KW_SELF)) {
-            return NUMBER_KEYS;
-        } else if (tokenType.equals(CDSTypes.STRINGLIT)) {
-            return STRING_KEYS;
-        } else if (tokenType.equals(CDSTypes.T_AT) || tokenType.equals(CDSTypes.ANNOT_RESTRICT)
-                || tokenType.equals(CDSTypes.ANNOT_GRANT) || tokenType.equals(CDSTypes.ANNOT_TO)
-                || tokenType.equals(CDSTypes.ANNOT_ASSERT) || tokenType.equals(CDSTypes.ANNOT_UNIQUE)
-                || tokenType.equals(CDSTypes.ANNOT_CDS_ON) || tokenType.equals(CDSTypes.ANNOT_READ_ONLY)
-                || tokenType.equals(CDSTypes.ANNOT_MANDATORY) || tokenType.equals(CDSTypes.ANNOT_CORE)
-                || tokenType.equals(CDSTypes.ANNOT_IMMUTABLE) || tokenType.equals(CDSTypes.ANNOT_ISMEDIATYPE)
-                || tokenType.equals(CDSTypes.ANNOT_ISURL) || tokenType.equals(CDSTypes.ANNOT_MEDIATYPE)
-                || tokenType.equals(CDSTypes.ANNOT_FIORI_DRAFT_ENABLED) || tokenType.equals(CDSTypes.ANNOT_ODATA_DRAFT_ENABLED)
-                || tokenType.equals(CDSTypes.ANNOT_REQUIRES)
-        ) {
-            return ANNOTATION_KEYS;
-        } else if (tokenType.equals(CDSTypes.LINE_COMMENT) || tokenType.equals(CDSTypes.BLOCK_COMMENT)) {
-            return COMMENT_KEYS;
+
+        if (KEYWORDS.contains(tokenType)) {
+            return keys(DefaultLanguageHighlighterColors.KEYWORD);
+        } else if (STRING_LITERALS.contains(tokenType)) {
+            return keys(DefaultLanguageHighlighterColors.STRING);
+        } else if (NUMBER_LITERALS.contains(tokenType)) {
+            return keys(DefaultLanguageHighlighterColors.NUMBER);
+        } else if (tokenType.equals(LINE_COMMENT)) {
+            return keys(DefaultLanguageHighlighterColors.LINE_COMMENT);
+        } else if (tokenType.equals(BLOCK_COMMENT)) {
+            return keys(DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+        } else if (REFERENCES.contains(tokenType)) {
+            return keys(DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+        } else if (ANNOTATION.contains(tokenType)) {
+            return keys(DefaultLanguageHighlighterColors.METADATA);
+
         } else {
-            return EMPTY_KEYS;
+            return TextAttributesKey.EMPTY_ARRAY;
         }
     }
 
@@ -81,5 +74,6 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
         public @NotNull SyntaxHighlighter getSyntaxHighlighter(@Nullable Project project, @Nullable VirtualFile virtualFile) {
             return new CDSSyntaxHighlighter();
         }
+
     }
 }
