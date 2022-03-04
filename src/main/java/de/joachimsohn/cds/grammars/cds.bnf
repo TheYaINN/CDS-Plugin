@@ -11,9 +11,11 @@
   elementTypeClass="de.joachimsohn.cds.lang.CDSElementType"
   tokenTypeClass="de.joachimsohn.cds.lang.CDSTokenType"
 
+  psiImplUtilClass="de.joachimsohn.cds.util.CDSPsiUtil"
+
   tokens = [
     LINE_COMMENT = 'regexp://.*'
-    BLOCK_COMMENT = 'regexp:/\*[\w\n]*\*/'
+    BLOCK_COMMENT = 'regexp:/\*[\n\s\w\W]*\*/'
 
     stringlit = "regexp:'[\w\.(\.\.)\-/@]+'"
     numberlit = 'regexp:\d+(\.\d*)?'
@@ -167,7 +169,7 @@ private EntityMirrorSpecifierParameter ::= identifier | T_MUL
 private EntityTypeReference ::= KW_TYPE_OF EntityTypeReferenceObjectIdentifier
 private EntityTypeReferenceObjectIdentifier ::= id [T_COLON id] { extends = identifier }
 
-private Join ::= JoinType EntityIdentifier KW_ON Expression [JoinBody] [SQLWhere] [SQLGroupBy] [SQLOrderBy]
+private Join ::= JoinType PropertyPath KW_ON Expression [JoinBody] [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private JoinType ::= ( KW_LEFT | KW_RIGHT )? ( KW_OUTER | KW_INNER )? KW_JOIN
 private JoinBody ::= T_LBRACE JoinField (T_COMMA JoinField)* T_RBRACE
 private JoinField ::= PropertyPath (KW_AS identifier)?
@@ -203,8 +205,8 @@ private AnnotationAssertNotNull ::= ANNOT_ASSERT_NOTNULL T_COLON literal_boolean
 private AnnotationRestrict ::= ANNOT_RESTRICT T_COLON T_LBRACK T_LBRACE AnnotationStatement T_RBRACE T_RBRACK
 private AnnotationStatement ::= AnnotationGrant [AnnotationGrantTo] [AnnotationGrantWhere]
 private AnnotationGrant ::= ANNOT_GRANT T_COLON T_LBRACK AnnotationGrantType (T_COMMA literal_string)* T_RBRACK
-private AnnotationGrantTo ::= T_COMMA ANNOT_TO T_COLON literal_string T_COMMA?
-private AnnotationGrantWhere ::= T_COMMA KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
+private AnnotationGrantTo ::= [T_COMMA] ANNOT_TO T_COLON literal_string
+private AnnotationGrantWhere ::= [T_COMMA] KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
 private AnnotationGrantType ::= literal_string //TODO: T_HYPH ('READ' | KW_UPDATE | 'DELETE') T_HYPH
 private AnnotationTitle ::= ANNOT_TITLE T_COLON literal_string
 
@@ -236,7 +238,7 @@ SQLOrderBy ::= KW_ORDER_BY identifier ( KW_ASC | KW_DESC )?
 
 private Expression ::= ExpressionKey (T_ASSIGN ExpressionValue)?
 private ExpressionKey ::= PropertyPath
-private ExpressionValue ::= ( KW_USER | KW_NOW  | KW_SELF) | PropertyPath
+private ExpressionValue ::= ( KW_USER | KW_NOW | KW_SELF) | PropertyPath
 
 identifier ::= id
 

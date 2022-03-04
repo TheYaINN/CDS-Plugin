@@ -26,7 +26,7 @@ EOL=\R
 WHITE_SPACE=\s+
 
 LINE_COMMENT="//".*
-BLOCK_COMMENT="/"\*[\w\n]*\*"/"
+BLOCK_COMMENT="/"\*[\n\s\w\W]*\*"/"
 STRINGLIT='[\w\.(\.\.)\-/@]+'
 NUMBERLIT=[0-9]+(\.[0-9]*)?
 ID=[a-zA-Z_0-9]+
