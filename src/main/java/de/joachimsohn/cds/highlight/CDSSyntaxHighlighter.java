@@ -47,6 +47,7 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public @NotNull TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
+
         if (KEYWORDS.contains(tokenType)) {
             return keys(DefaultLanguageHighlighterColors.KEYWORD);
         } else if (STRING_LITERALS.contains(tokenType)) {
@@ -61,6 +62,7 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
             return keys(DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
         } else if (ANNOTATION.contains(tokenType)) {
             return keys(DefaultLanguageHighlighterColors.METADATA);
+
         } else {
             return TextAttributesKey.EMPTY_ARRAY;
         }

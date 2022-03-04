@@ -73,6 +73,7 @@ ID=[a-zA-Z_0-9]+
   "action"                   { return KW_ACTION; }
   "returns"                  { return KW_RETURNS; }
   "localized"                { return KW_LOCALIZED; }
+
   "Association to"           { return KW_ASSOCIATION_TO; }
   "Composition of"           { return KW_COMPOSITION_OF; }
   "many"                     { return KW_MANY; }
@@ -128,6 +129,7 @@ ID=[a-zA-Z_0-9]+
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
   "UI.Hidden"                { return ANNOT_UI_HIDDEN; }
   "UI.HiddenFilter"          { return ANNOT_UI_HIDDENFILTER; }
+
   "R_DATE"                   { return R_DATE; }
 
   {LINE_COMMENT}             { return LINE_COMMENT; }

@@ -48,7 +48,6 @@
     T_MINUS = '-'
     T_MUL = '*'
 
-
     //Definitions
     KW_NAMESPACE = 'namespace'
     KW_USING = 'using'
@@ -63,6 +62,7 @@
     KW_FUNCTION = 'function'
     KW_ACTION = 'action'
     KW_RETURNS = 'returns'
+
     KW_LOCALIZED = 'localized'
 
     KW_ASSOCIATION_TO = 'Association to'
@@ -159,7 +159,9 @@ Entity ::=  Annotation KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | E
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
+
 EntityField ::= Annotation [EntityFieldModifier] EntityFieldIdentifier T_COLON (Datatype | Relation | EntityTypeReference | EntityBody) Annotation T_SEMI
+
 private EntityFieldModifier ::= KW_KEY | KW_VIRTUAL
 private EntityFieldIdentifier ::= identifier
 private EntityMirror ::= KW_AS (KW_PROJECTION KW_ON | KW_SELECT KW_FROM) PropertyPath (EntityMirrorSpecifier | EntityMirrorExcluding)?
@@ -170,6 +172,7 @@ private EntityTypeReference ::= KW_TYPE_OF EntityTypeReferenceObjectIdentifier
 private EntityTypeReferenceObjectIdentifier ::= id [T_COLON id] { extends = identifier }
 
 private Join ::= JoinType PropertyPath KW_ON Expression [JoinBody] [SQLWhere] [SQLGroupBy] [SQLOrderBy]
+
 private JoinType ::= ( KW_LEFT | KW_RIGHT )? ( KW_OUTER | KW_INNER )? KW_JOIN
 private JoinBody ::= T_LBRACE JoinField (T_COMMA JoinField)* T_RBRACE
 private JoinField ::= PropertyPath (KW_AS identifier)?
@@ -227,6 +230,7 @@ private AnnotationType ::=  ANNOT_READ_ONLY
                           | AnnotationCore
                           | AnnotationCoreMediaType
 
+
 SQL ::= SQLSelect SQLFrom [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private SQLSelect ::= KW_SELECT SQLSelectIdentifier (KW_AS SQLSelectIdentifier)?
 private SQLSelectIdentifier ::= identifier
@@ -250,6 +254,7 @@ private relation_identifier ::= PropertyPath { extends = identifier }
 private relation_body ::= T_LBRACE relation_field+ T_RBRACE
 private relation_field ::= KW_KEY? relation_field_identifier T_COLON ( Datatype | Relation ) T_SEMI
 private relation_field_identifier ::= identifier
+
 
 private Datatype ::= [KW_ARRAY] ( Datatypes | EntityIdentifier ) Annotation [Datatype_Enum] [KW_NOT_NULL] (KW_DEFAULT (literal_string | literal_number | literal_boolean))?
 Datatypes ::= 'Boolean'
