@@ -20,7 +20,8 @@ Want to support otherwise? -> help me improve the plugin by opening issues or co
 
 ## Contextual Information
 
-The `type` is strictly not a keyword or reserved in CDS, yet to avoid parsing errors it is seen as a reserved word.
+`type` & `title` are strictly seen not as keywords or reserved in CDS, yet to avoid parsing errors it is handled as a
+reserved keyword.
 
 ## Changelog
 * 0.3.5

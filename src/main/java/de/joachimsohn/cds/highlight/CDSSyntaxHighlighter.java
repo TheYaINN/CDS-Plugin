@@ -59,7 +59,7 @@ public class CDSSyntaxHighlighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(BLOCK_COMMENT)) {
             return keys(DefaultLanguageHighlighterColors.BLOCK_COMMENT);
         } else if (REFERENCES.contains(tokenType)) {
-            return keys(DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+            return keys(DefaultLanguageHighlighterColors.NUMBER);
         } else if (ANNOTATION.contains(tokenType)) {
             return keys(DefaultLanguageHighlighterColors.METADATA);
 

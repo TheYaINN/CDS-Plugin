@@ -135,6 +135,8 @@ ID=[a-zA-Z_0-9]+
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
   "UI.Hidden"                { return ANNOT_UI_HIDDEN; }
   "UI.HiddenFilter"          { return ANNOT_UI_HIDDENFILTER; }
+  "ValueList"                { return ANNOT_VALUELIST; }
+  "#fixed"                   { return ANNOT_VALUELIST_FIXED; }
   "R_DATE"                   { return R_DATE; }
 
   {LINE_COMMENT}             { return LINE_COMMENT; }

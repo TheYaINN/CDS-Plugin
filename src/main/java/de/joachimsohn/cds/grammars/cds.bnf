@@ -145,9 +145,9 @@ private ImportIdentifier ::= PropertyPath [FieldRename]
 
 RootItems ::= Model | Service | Annotate
 
-Annotate ::= KW_ANNOTATE PropertyPath KW_WITH AnnotateBody  T_SEMI
+Annotate ::= KW_ANNOTATE PropertyPath KW_WITH (AnnotateBody | Annotation) T_SEMI
 private AnnotateBody ::= T_LBRACE AnnotateBodyField* T_RBRACE
-private AnnotateBodyField ::= identifier Annotation
+private AnnotateBodyField ::= identifier Annotation T_SEMI
 
 Model ::= [KW_DEFINE] ( Type | Entity | Aspect )
 
