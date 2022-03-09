@@ -20,7 +20,7 @@ import java.util.*;
 
 public class CDSUtil {
 
-    public static List<CDSEntity> findProperties(Project project, String key) {
+    public static List<CDSEntity> findEntity(Project project, String key) {
         List<CDSEntity> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(CDSFileType.INSTANCE, GlobalSearchScope.allScope(project));
@@ -40,7 +40,7 @@ public class CDSUtil {
         return result;
     }
 
-    public static List<CDSEntity> findProperties(Project project) {
+    public static List<CDSEntity> findEntity(Project project) {
         List<CDSEntity> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(CDSFileType.INSTANCE, GlobalSearchScope.allScope(project));

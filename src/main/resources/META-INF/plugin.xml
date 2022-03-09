@@ -38,6 +38,9 @@
                 implementation="de.joachimsohn.cds.codestyle.CDSLanguageCodeStyleSettingsProvider"/>
         <lang.formatter language="Cds"
                         implementationClass="de.joachimsohn.cds.formatter.CDSFormattingBuilder"/>
+        <annotator language="JAVA" implementationClass="de.joachimsohn.cds.annotator.CDSAnnotator"/>
+        <lang.findUsagesProvider language="Cds"
+                                 implementationClass="de.joachimsohn.cds.usage.CDSUsageProvider"/>
     </extensions>
 
     <actions>

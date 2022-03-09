@@ -18,6 +18,7 @@ dependencies {
 
 intellij {
     version = '2021.3.1'
+    plugins = ['com.intellij.java']
 }
 
 test {

@@ -161,7 +161,7 @@ private TypeObject ::= T_LBRACE TypeField* T_RBRACE
 private TypeField ::= TypeFieldIdentifier T_COLON Datatype T_SEMI
 private TypeFieldIdentifier ::= identifier
 
-Entity ::= Annotation KW_ENTITY EntityIdentifier [EntityExtend] (EntityBody | EntityMirror) Join* [Actions] T_SEMI
+Entity ::= Annotation KW_ENTITY identifier [EntityExtend] (EntityBody | EntityMirror) Join* [Actions] T_SEMI
 private EntityIdentifier ::= identifier
 private EntityExtend ::= T_COLON EntityIdentifier (T_COMMA EntityIdentifier)*
 private EntityBody ::= T_LBRACE EntityField+ T_RBRACE
