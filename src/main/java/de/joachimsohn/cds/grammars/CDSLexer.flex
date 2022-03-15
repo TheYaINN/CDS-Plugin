@@ -59,6 +59,8 @@ ID=[a-zA-Z_0-9]+
   "_"                        { return T_UNDER; }
   "-"                        { return T_MINUS; }
   "*"                        { return T_MUL; }
+  ">"                        { return T_MORE; }
+  "<"                        { return T_LESS; }
   "namespace"                { return KW_NAMESPACE; }
   "using"                    { return KW_USING; }
   "from"                     { return KW_FROM; }
@@ -73,6 +75,8 @@ ID=[a-zA-Z_0-9]+
   "action"                   { return KW_ACTION; }
   "returns"                  { return KW_RETURNS; }
   "localized"                { return KW_LOCALIZED; }
+  "annotate"                 { return KW_ANNOTATE; }
+  "with"                     { return KW_WITH; }
 
   "Association to"           { return KW_ASSOCIATION_TO; }
   "Composition of"           { return KW_COMPOSITION_OF; }
@@ -85,15 +89,18 @@ ID=[a-zA-Z_0-9]+
   "projection"               { return KW_PROJECTION; }
   "excluding"                { return KW_EXCLUDING; }
   "actions"                  { return KW_ACTIONS; }
+  "DELETE"                   { return KW_DELETE; }
+  "READ"                     { return KW_READ; }
+  "UPDATE"                   { return KW_UPDATE; }
   "select"                   { return KW_SELECT; }
   "and"                      { return KW_AND; }
   "or"                       { return KW_OR; }
   "exists"                   { return KW_EXISTS; }
   "insert"                   { return KW_INSERT; }
   "not null"                 { return KW_NOT_NULL; }
-  "update"                   { return UPDATE; }
   "$user"                    { return KW_USER; }
   "$now"                     { return KW_NOW; }
+  "now()"                    { return KW_NOW_METH; }
   "$self"                    { return KW_SELF; }
   "group by"                 { return KW_GROUP_BY; }
   "order by"                 { return KW_ORDER_BY; }
@@ -129,6 +136,8 @@ ID=[a-zA-Z_0-9]+
   "odata.draft.enabled"      { return ANNOT_ODATA_DRAFT_ENABLED; }
   "UI.Hidden"                { return ANNOT_UI_HIDDEN; }
   "UI.HiddenFilter"          { return ANNOT_UI_HIDDENFILTER; }
+  "ValueList"                { return ANNOT_VALUELIST; }
+  "#fixed"                   { return ANNOT_VALUELIST_FIXED; }
 
   "R_DATE"                   { return R_DATE; }
 
