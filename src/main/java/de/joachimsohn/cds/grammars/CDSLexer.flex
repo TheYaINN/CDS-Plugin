@@ -77,6 +77,7 @@ ID=[a-zA-Z_0-9]+
   "localized"                { return KW_LOCALIZED; }
   "annotate"                 { return KW_ANNOTATE; }
   "with"                     { return KW_WITH; }
+
   "Association to"           { return KW_ASSOCIATION_TO; }
   "Composition of"           { return KW_COMPOSITION_OF; }
   "many"                     { return KW_MANY; }
@@ -137,6 +138,7 @@ ID=[a-zA-Z_0-9]+
   "UI.HiddenFilter"          { return ANNOT_UI_HIDDENFILTER; }
   "ValueList"                { return ANNOT_VALUELIST; }
   "#fixed"                   { return ANNOT_VALUELIST_FIXED; }
+
   "R_DATE"                   { return R_DATE; }
 
   {LINE_COMMENT}             { return LINE_COMMENT; }

@@ -68,6 +68,8 @@
     KW_ANNOTATE = 'annotate'
     KW_WITH = 'with'
 
+    KW_LOCALIZED = 'localized'
+
     KW_ASSOCIATION_TO = 'Association to'
     KW_COMPOSITION_OF = 'Composition of'
     KW_MANY = 'many'
@@ -133,6 +135,7 @@
     ANNOT_UI_HIDDENFILTER = 'UI.HiddenFilter'
     ANNOT_VALUELIST = "ValueList"
     ANNOT_VALUELIST_FIXED = "#fixed"
+
   ]
 }
 File ::= [Namespace] Import* RootItems*
@@ -172,6 +175,7 @@ private EntityMirrorExcluding ::= KW_EXCLUDING T_LBRACE EntityFieldIdentifier T_
 private EntityTypeReference ::= KW_TYPE_OF EntityTypeReferenceObjectIdentifier
 private EntityTypeReferenceObjectIdentifier ::= id [T_COLON id] { extends = identifier }
 
+
 private Join ::= JoinType PropertyPath [FieldRename] KW_ON Expression [JoinBody] [SQLWhere] [SQLGroupBy] [SQLOrderBy]
 private JoinType ::= ( KW_LEFT | KW_RIGHT )? ( KW_OUTER | KW_INNER )? KW_JOIN
 private JoinBody ::= T_LBRACE (T_MUL | JoinField (T_COMMA JoinField)*) T_RBRACE
@@ -206,6 +210,7 @@ private AnnotationStatement ::= AnnotationGrant [AnnotationGrantTo] [AnnotationG
 private AnnotationGrant ::= ANNOT_GRANT T_COLON T_LBRACK AnnotationGrantType (T_COMMA literal_string)* T_RBRACK
 private AnnotationGrantTo ::= [T_COMMA] ANNOT_TO T_COLON literal_string
 private AnnotationGrantWhere ::= [T_COMMA] KW_WHERE T_COLON T_HYPH Expression ( KW_EXISTS T_LPAREN SQL T_RPAREN )? T_HYPH
+
 private AnnotationGrantType ::= T_HYPH (KW_READ | KW_UPDATE | KW_DELETE | MethodIdentifier | T_MUL) T_HYPH //TODO fix needed space between hyph and read / update / delete
 private AnnotationTitle ::= ANNOT_TITLE T_COLON literal_string
 private AnnotationValueList ::= ANNOT_VALUELIST T_COLON T_LBRACE AnnotationValueListBody T_RBRACE
